@@ -18,6 +18,7 @@ void __stdcall frameStageNotifyHook(int frameStage) {
 
 	if (frameStage == FRAME_RENDER_START) {
 		visualMisc::drawGrenadePrediction();
+		visualMisc::maintainCrosshair();
 	}
 
 	// safe call

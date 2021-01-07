@@ -12,6 +12,8 @@ namespace visualMisc {
 
 	void drawGrenadePrediction();
 
+	void maintainCrosshair();
+
 	void drawHitmarker();
 
 	void watermark();

@@ -3,6 +3,7 @@
 *.dll
 *.vmp
 *.lib
+*.ilk
 *.exp
 *.pdb
 Objects/

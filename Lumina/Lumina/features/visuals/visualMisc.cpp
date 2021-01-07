@@ -71,7 +71,7 @@ namespace visualMisc {
 	
 	int drawSpectators() {
 
-		VMProtectBeginMutation("visualMisc::drawGrenadePrediction");
+		VMProtectBeginMutation("visualMisc::drawSpectators");
 
 		if (!config::visual.showSpectators)
 			return 0;
@@ -164,11 +164,29 @@ namespace visualMisc {
 		if (!game::getLocalPlayer())
 			return;
 
-		ConVar* cl_grenadepreview = (ConVar*)interfaces::console->get_convar(XorStr("cl_grenadepreview"));
+		static ConVar* cl_grenadepreview = (ConVar*)interfaces::console->get_convar(XorStr("cl_grenadepreview"));
 
 		*(int*)((DWORD)&cl_grenadepreview->fnChangeCallbacks + 0xC) = NULL;
 
 		cl_grenadepreview->set_value(config::visual.showGrenadePred);
+
+		VMProtectEnd();
+	}
+
+	void maintainCrosshair() {
+
+		VMProtectBeginMutation("visualMisc::maintainCrosshair");
+
+		Entity* localPlayer = game::getLocalPlayer();
+
+		if (localPlayer && localPlayer->isAlive()) {
+
+			static ConVar* weapon_debug_spread_show = (ConVar*)interfaces::console->get_convar(XorStr("weapon_debug_spread_show"));
+
+			*(int*)((DWORD)&weapon_debug_spread_show->fnChangeCallbacks + 0xC) = NULL;
+
+			weapon_debug_spread_show->set_value(localPlayer->m_bIsScoped() || !config::visual.spreadCircle.enable ? 0 : 3);
+		}
 
 		VMProtectEnd();
 	}
