@@ -1,0 +1,493 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Fichiers sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Fichiers de ressources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Fichiers sources\sdk">
+      <UniqueIdentifier>{4b591468-4fa4-4b5f-8c11-a4354b11a260}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\security">
+      <UniqueIdentifier>{609ffff4-1233-4231-b4a2-e5edbee6c97b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\common">
+      <UniqueIdentifier>{4e0d1e8a-4033-4fbc-b346-9d61a1625f7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\hook">
+      <UniqueIdentifier>{a79e6209-ef1b-4dc5-a27f-c33e14818a57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\sdk\interfaces">
+      <UniqueIdentifier>{b3988637-dc0f-423e-8c6f-f3185824453d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\sdk\structs">
+      <UniqueIdentifier>{ef748a34-a533-4c25-b39d-8060a48b91d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\ui">
+      <UniqueIdentifier>{0f29de97-3088-47b9-a043-e811647bd495}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\hook\functions">
+      <UniqueIdentifier>{68032718-dda3-4439-b65d-fff28acd154a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\sdk\math">
+      <UniqueIdentifier>{3fb1bd71-a852-4c38-9a19-3d87e22c7bfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\features">
+      <UniqueIdentifier>{7ea22b8b-aece-450b-883d-ccdd2d750335}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\features\visuals">
+      <UniqueIdentifier>{e575b879-9f27-4f88-8a8b-b121b335750a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\features\misc">
+      <UniqueIdentifier>{46339cc5-f047-4b16-8732-81d4e7659cb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\ui\zgui">
+      <UniqueIdentifier>{5733fa88-4a76-40e5-a591-2cafb0ef6127}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\common\json">
+      <UniqueIdentifier>{796d95e8-6eb4-4abe-96cd-ef62e175dd47}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="sdk\interfaces.cpp">
+      <Filter>Fichiers sources\sdk</Filter>
+    </ClCompile>
+    <ClCompile Include="sdk\offsets.cpp">
+      <Filter>Fichiers sources\sdk</Filter>
+    </ClCompile>
+    <ClCompile Include="common\common.cpp">
+      <Filter>Fichiers sources\common</Filter>
+    </ClCompile>
+    <ClCompile Include="common\utils.cpp">
+      <Filter>Fichiers sources\common</Filter>
+    </ClCompile>
+    <ClCompile Include="hook\vtableHook.cpp">
+      <Filter>Fichiers sources\hook</Filter>
+    </ClCompile>
+    <ClCompile Include="sdk\interfaces\CGlowObjectManager.cpp">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="hook\hook.cpp">
+      <Filter>Fichiers sources\hook</Filter>
+    </ClCompile>
+    <ClCompile Include="hook\functions\paintTraverse.cpp">
+      <Filter>Fichiers sources\hook\functions</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\render.cpp">
+      <Filter>Fichiers sources\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="hook\functions\shutdown.cpp">
+      <Filter>Fichiers sources\hook\functions</Filter>
+    </ClCompile>
+    <ClCompile Include="hook\functions\lockCursor.cpp">
+      <Filter>Fichiers sources\hook\functions</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\texture.cpp">
+      <Filter>Fichiers sources\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="common\config.cpp">
+      <Filter>Fichiers sources\common</Filter>
+    </ClCompile>
+    <ClCompile Include="features\visuals\esp.cpp">
+      <Filter>Fichiers sources\features\visuals</Filter>
+    </ClCompile>
+    <ClCompile Include="sdk\structs\Entity.cpp">
+      <Filter>Fichiers sources\sdk\structs</Filter>
+    </ClCompile>
+    <ClCompile Include="sdk\netvars.cpp">
+      <Filter>Fichiers sources\sdk</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\image.cpp">
+      <Filter>Fichiers sources\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\menu.cpp">
+      <Filter>Fichiers sources\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="common\input.cpp">
+      <Filter>Fichiers sources\common</Filter>
+    </ClCompile>
+    <ClCompile Include="features\visuals\chams.cpp">
+      <Filter>Fichiers sources\features\visuals</Filter>
+    </ClCompile>
+    <ClCompile Include="hook\functions\drawModelExecute.cpp">
+      <Filter>Fichiers sources\hook\functions</Filter>
+    </ClCompile>
+    <ClCompile Include="features\visuals\skinchanger.cpp">
+      <Filter>Fichiers sources\features\visuals</Filter>
+    </ClCompile>
+    <ClCompile Include="features\misc\voice.cpp">
+      <Filter>Fichiers sources\features\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="features\misc\misc.cpp">
+      <Filter>Fichiers sources\features\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="features\visuals\visualMisc.cpp">
+      <Filter>Fichiers sources\features\visuals</Filter>
+    </ClCompile>
+    <ClCompile Include="common\events.cpp">
+      <Filter>Fichiers sources\common</Filter>
+    </ClCompile>
+    <ClCompile Include="hook\functions\frameStageNotify.cpp">
+      <Filter>Fichiers sources\hook\functions</Filter>
+    </ClCompile>
+    <ClCompile Include="features\misc\bypasses.cpp">
+      <Filter>Fichiers sources\features\misc</Filter>
+    </ClCompile>
+    <ClCompile Include="hook\functions\serverSideChecks.cpp">
+      <Filter>Fichiers sources\hook\functions</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\zgui\dist\zgui.cc">
+      <Filter>Fichiers sources\ui\zgui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\sound.cpp">
+      <Filter>Fichiers sources\ui</Filter>
+    </ClCompile>
+    <ClCompile Include="features\visuals\glow.cpp">
+      <Filter>Fichiers sources\features\visuals</Filter>
+    </ClCompile>
+    <ClCompile Include="hook\functions\doPostScreenEffects.cpp">
+      <Filter>Fichiers sources\hook\functions</Filter>
+    </ClCompile>
+    <ClCompile Include="common\json\json.cpp">
+      <Filter>Fichiers sources\common\json</Filter>
+    </ClCompile>
+    <ClCompile Include="common\game.cpp">
+      <Filter>Fichiers sources\common</Filter>
+    </ClCompile>
+    <ClCompile Include="sdk\structs\ClientClass.cpp">
+      <Filter>Fichiers sources\sdk\structs</Filter>
+    </ClCompile>
+    <ClCompile Include="hook\functions\fireEventClientSide.cpp">
+      <Filter>Fichiers sources\hook\functions</Filter>
+    </ClCompile>
+    <ClCompile Include="hook\functions\createMove.cpp">
+      <Filter>Fichiers sources\hook\functions</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common\includes.h">
+      <Filter>Fichiers sources\common</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces.h">
+      <Filter>Fichiers sources\sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\offsets.h">
+      <Filter>Fichiers sources\sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="common\common.h">
+      <Filter>Fichiers sources\common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\utils.h">
+      <Filter>Fichiers sources\common</Filter>
+    </ClInclude>
+    <ClInclude Include="security\eraser.hpp">
+      <Filter>Fichiers sources\security</Filter>
+    </ClInclude>
+    <ClInclude Include="security\instr.h">
+      <Filter>Fichiers sources\security</Filter>
+    </ClInclude>
+    <ClInclude Include="security\lazy.hpp">
+      <Filter>Fichiers sources\security</Filter>
+    </ClInclude>
+    <ClInclude Include="security\xorstr.hpp">
+      <Filter>Fichiers sources\security</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\CGlowObjectManager.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\CHud.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\CSPlayerResource.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\IBaseClientDll.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\IClientEntityList.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\IClientModeShared.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\IClientState.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\ICVar.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\IEngineClient.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\IEngineTrace.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\IGameEventManager.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\IGlobalVarsBase.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\IInput.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\ILocalize.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\IMaterialSystem.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\IMatRenderContext.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\IMemAlloc.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\IMoveHelper.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\IPhysicsSurfaceProps.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\IPrediction.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\ISurface.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\IVDebugOverlay.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\IViewRender.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\IViewRenderBeams.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\IVModelInfo.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\IVModelRender.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\IVPanel.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\IVRenderView.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\IWeaponSystem.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\math\Color.h">
+      <Filter>Fichiers sources\sdk\math</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\math\CUtlVector.h">
+      <Filter>Fichiers sources\sdk\math</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\math\matrix3x4_t.h">
+      <Filter>Fichiers sources\sdk\math</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\math\QAngle.h">
+      <Filter>Fichiers sources\sdk\math</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\math\Vector.h">
+      <Filter>Fichiers sources\sdk\math</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\math\Vector2D.h">
+      <Filter>Fichiers sources\sdk\math</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\math\Vector4D.h">
+      <Filter>Fichiers sources\sdk\math</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\math\VMatrix.h">
+      <Filter>Fichiers sources\sdk\math</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\defines.h">
+      <Filter>Fichiers sources\sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\structs\CBoneChache.h">
+      <Filter>Fichiers sources\sdk\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\structs\CCSGameRulesProxy.h">
+      <Filter>Fichiers sources\sdk\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\structs\CCSGOPlayerAnimState.h">
+      <Filter>Fichiers sources\sdk\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\structs\ClientClass.h">
+      <Filter>Fichiers sources\sdk\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\structs\CNetChannel.h">
+      <Filter>Fichiers sources\sdk\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\structs\ConVar.h">
+      <Filter>Fichiers sources\sdk\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\structs\IClientEntity.h">
+      <Filter>Fichiers sources\sdk\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\structs\IMaterial.h">
+      <Filter>Fichiers sources\sdk\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\structs\IMaterialVar.h">
+      <Filter>Fichiers sources\sdk\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\structs\INetChannelInfo.h">
+      <Filter>Fichiers sources\sdk\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\structs\IRefCounted.h">
+      <Filter>Fichiers sources\sdk\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\structs\misc.h">
+      <Filter>Fichiers sources\sdk\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\structs\structs.h">
+      <Filter>Fichiers sources\sdk\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\structs\trace_ray.h">
+      <Filter>Fichiers sources\sdk\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="hook\vtableHook.h">
+      <Filter>Fichiers sources\hook</Filter>
+    </ClInclude>
+    <ClInclude Include="hook\hook.h">
+      <Filter>Fichiers sources\hook</Filter>
+    </ClInclude>
+    <ClInclude Include="hook\functions\paintTraverse.h">
+      <Filter>Fichiers sources\hook\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\render.h">
+      <Filter>Fichiers sources\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="hook\functions\shutdown.h">
+      <Filter>Fichiers sources\hook\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="hook\functions\lockCursor.h">
+      <Filter>Fichiers sources\hook\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\image.h">
+      <Filter>Fichiers sources\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\texture.h">
+      <Filter>Fichiers sources\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="common\config.h">
+      <Filter>Fichiers sources\common</Filter>
+    </ClInclude>
+    <ClInclude Include="features\visuals\esp.h">
+      <Filter>Fichiers sources\features\visuals</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\structs\Entity.h">
+      <Filter>Fichiers sources\sdk\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\netvars.h">
+      <Filter>Fichiers sources\sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\structs\datamap.h">
+      <Filter>Fichiers sources\sdk\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="common\vfunc.h">
+      <Filter>Fichiers sources\common</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\structs\mystructs.h">
+      <Filter>Fichiers sources\sdk\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\menu.h">
+      <Filter>Fichiers sources\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="common\input.h">
+      <Filter>Fichiers sources\common</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\sound.h">
+      <Filter>Fichiers sources\ui</Filter>
+    </ClInclude>
+    <ClInclude Include="features\visuals\chams.h">
+      <Filter>Fichiers sources\features\visuals</Filter>
+    </ClInclude>
+    <ClInclude Include="hook\functions\drawModelExecute.h">
+      <Filter>Fichiers sources\hook\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="features\visuals\skinchanger.h">
+      <Filter>Fichiers sources\features\visuals</Filter>
+    </ClInclude>
+    <ClInclude Include="features\misc\voice.h">
+      <Filter>Fichiers sources\features\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="features\misc\misc.h">
+      <Filter>Fichiers sources\features\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="features\visuals\visualMisc.h">
+      <Filter>Fichiers sources\features\visuals</Filter>
+    </ClInclude>
+    <ClInclude Include="common\events.h">
+      <Filter>Fichiers sources\common</Filter>
+    </ClInclude>
+    <ClInclude Include="hook\functions\frameStageNotify.h">
+      <Filter>Fichiers sources\hook\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="features\misc\bypasses.h">
+      <Filter>Fichiers sources\features\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="hook\functions\serverSideChecks.h">
+      <Filter>Fichiers sources\hook\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\zgui\dist\zgui.hh">
+      <Filter>Fichiers sources\ui\zgui</Filter>
+    </ClInclude>
+    <ClInclude Include="features\visuals\glow.h">
+      <Filter>Fichiers sources\features\visuals</Filter>
+    </ClInclude>
+    <ClInclude Include="hook\functions\doPostScreenEffects.h">
+      <Filter>Fichiers sources\hook\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="common\json\json.h">
+      <Filter>Fichiers sources\common\json</Filter>
+    </ClInclude>
+    <ClInclude Include="common\json\json-forwards.h">
+      <Filter>Fichiers sources\common\json</Filter>
+    </ClInclude>
+    <ClInclude Include="common\game.h">
+      <Filter>Fichiers sources\common</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\IConsole.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="hook\functions\fireEventClientSide.h">
+      <Filter>Fichiers sources\hook\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\ISteamGameServer.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\IStudioRender.h">
+      <Filter>Fichiers sources\sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="hook\functions\createMove.h">
+      <Filter>Fichiers sources\hook\functions</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="exportOrdinals.def">
+      <Filter>Fichiers sources</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource.rc">
+      <Filter>Fichiers de ressources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

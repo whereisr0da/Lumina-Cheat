@@ -1,0 +1,8 @@
+*.bndb
+*.idb
+*.dll
+*.vmp
+*.lib
+*.exp
+*.pdb
+Objects/

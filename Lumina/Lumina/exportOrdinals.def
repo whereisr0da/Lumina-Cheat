@@ -1,0 +1,5 @@
+LIBRARY
+EXPORTS
+   Breakpad_SetSteamID   @1
+   CreateInterface   @2
+   g_dwDllEntryThreadId   @3
