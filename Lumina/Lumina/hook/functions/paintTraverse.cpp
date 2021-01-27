@@ -19,7 +19,7 @@ void __stdcall paintTraverseHook(unsigned int panel, bool force_repaint, bool al
 	returnCall(interfaces::panel, panel, force_repaint, allow_force);
 
 	// last panel
-	if (strstr(interfaces::panel->GetName(panel), XorStr("MatSystemTopPanel"))) {
+	if (FNV1a::get(interfaces::panel->GetName(panel)) == HASH("MatSystemTopPanel")) {
 
 		if (game::getLocalPlayer() && game::isEnvironmentValid())
 		{

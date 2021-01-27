@@ -4,13 +4,13 @@
 
 namespace misc {
 
-	void hitmarkerSound(void* event);
+	void hitmarkerSound(void* event, void* eventInfo);
 
-	void fixSkin(void* event);
+	void fixSkin(void* event, void* eventInfo);
 
-	void roundSounds(void* event);
+	void roundSounds(void* event, void* eventInfo);
 
-	void headShoot(void* event);
+	void headShoot(void* event, void* eventInfo);
 
 	void fastStop(void* cmd);
 

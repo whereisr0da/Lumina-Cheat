@@ -55,6 +55,11 @@ namespace hook {
 
 		panelHook.release();
 		clientHook.release();
+		surfaceHook.release();
+		modelRenderHook.release();
+		fileSystemHook.release();
+		clientModeHook.release();
+		cacheMdlHook.release();
 
 		VMProtectEnd();
 	}
@@ -75,6 +80,7 @@ namespace hook {
 		panelHook.hook_index(41, reinterpret_cast<void*>(paintTraverseHook));
 
 		clientHook.hook_index(4, reinterpret_cast<void*>(shutdownHook));
+		clientHook.hook_index(6, reinterpret_cast<void*>(levelInitPostEntityHook));
 		clientHook.hook_index(37, reinterpret_cast<void*>(frameStageNotifyHook));
 
 		surfaceHook.hook_index(67, reinterpret_cast<void*>(lockCursorHook));
@@ -87,6 +93,7 @@ namespace hook {
 
 		clientModeHook.hook_index(44, reinterpret_cast<void*>(doPostScreenEffectHook));
 		clientModeHook.hook_index(24, reinterpret_cast<void*>(createMoveHook));
+		clientModeHook.hook_index(17, reinterpret_cast<void*>(shouldDrawFogHook));
 
 		//cacheMdlHook.hook_index(10, reinterpret_cast<void*>(findMdl));
 

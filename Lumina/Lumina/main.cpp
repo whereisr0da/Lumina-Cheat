@@ -10,6 +10,7 @@
 #include "features/misc/voice.h"
 #include "features/visuals/skinchanger.h"
 #include "ui/sound.h"
+#include "features/visuals/world.h"
 
 bool CheckGame() {
 
@@ -66,6 +67,8 @@ DWORD WINAPI Start(LPVOID param) {
 	config::init();
 
 	sound::init();
+
+	world::init();
 
 	events::init();
 

@@ -6,8 +6,9 @@
 #include "../../ui/sound.h"
 #include "../../common/game.h"
 #include "../../common/common.h"
+#include "../../common/events.h"
 
-void misc::hitmarkerSound(void* event) {
+void misc::hitmarkerSound(void* event, void* eventInfo) {
 
 	VMProtectBeginMutation("misc::hitmarkerSound");
 
@@ -73,7 +74,7 @@ void misc::hitmarkerSound(void* event) {
 	VMProtectEnd();
 }
 
-void misc::fixSkin(void* event) {
+void misc::fixSkin(void* event, void* eventInfo) {
 
 	VMProtectBeginMutation("misc::fixSkin");
 
@@ -113,24 +114,6 @@ void misc::fixSkin(void* event) {
 	VMProtectEnd();
 }
 
-float Magnitude(Vector a)
-{
-	return sqrt((a.x * a.x) + (a.y * a.y));
-}
-Vector Normalize(Vector value)
-{
-	float num = Magnitude(value);
-	if (num != 0.f)
-		return value / num;
-	return Vector(0.f, 0.f, 0.f);
-}
-Vector ClampMagnitude(Vector vector, float maxLength)
-{
-	if (Magnitude(vector) > maxLength)
-		return Vector(Normalize(vector).x * maxLength, Normalize(vector).y * maxLength, 0);
-	return vector;
-}
-
 void misc::silentWalk(void* cmd_)
 {
 	VMProtectBeginMutation("silentWalk");
@@ -155,61 +138,13 @@ void misc::silentWalk(void* cmd_)
 
 	moveDir.x = cmd->sidemove;
 	moveDir.y = cmd->forwardmove;
-	moveDir = ClampMagnitude(moveDir, maxSpeed);
+	moveDir = math::ClampMagnitude(moveDir, maxSpeed);
 
 	cmd->sidemove = moveDir.x;
 	cmd->forwardmove = moveDir.y;
 
 	if (!(localPlayer->m_vecVelocity().Length2D() > maxSpeed + 1))
 		cmd->buttons &= ~IN_SPEED;
-
-	VMProtectEnd();
-}
-
-void vector_angles(const Vector& forward, Vector& angles)
-{
-	VMProtectBeginMutation("vector_angles");
-
-	Vector view;
-
-	if (!forward[0] && !forward[1])
-	{
-		view[0] = 0.0f;
-		view[1] = 0.0f;
-	}
-	else
-	{
-		view[1] = atan2(forward[1], forward[0]) * 180.0f / M_PI;
-
-		if (view[1] < 0.0f)
-			view[1] += 360.0f;
-
-		view[2] = sqrt(forward[0] * forward[0] + forward[1] * forward[1]);
-		view[0] = atan2(forward[2], view[2]) * 180.0f / M_PI;
-	}
-
-	angles[0] = -view[0];
-	angles[1] = view[1];
-	angles[2] = 0.f;
-
-	VMProtectEnd();
-}
-
-void angle_vectors(const Vector& angles, Vector& forward)
-{
-	VMProtectBeginMutation("angle_vectors");
-
-	float sp, sy, cp, cy;
-
-	sy = sin(DEG2RAD(angles[1]));
-	cy = cos(DEG2RAD(angles[1]));
-
-	sp = sin(DEG2RAD(angles[0]));
-	cp = cos(DEG2RAD(angles[0]));
-
-	forward.x = cp * cy;
-	forward.y = cp * sy;
-	forward.z = -sp;
 
 	VMProtectEnd();
 }
@@ -264,13 +199,13 @@ execute:
 	Vector direction;
 	QAngle real_view = m_pcmd->viewangles;
 
-	vector_angles(velocity, direction);
+	math::vector_angles(velocity, direction);
 
 	direction.y = real_view.y - direction.y;
 
 	Vector forward;
 
-	angle_vectors(direction, forward);
+	math::angle_vectors(direction, forward);
 
 
 	static auto cl_forwardspeed = (ConVar*)interfaces::console->get_convar(XorStr("cl_forwardspeed"));
@@ -289,7 +224,7 @@ execute:
 }
 
 
-void misc::roundSounds(void* event) {
+void misc::roundSounds(void* event, void* eventInfo_) {
 
 	VMProtectBeginMutation("misc::roundSounds");
 
@@ -298,7 +233,7 @@ void misc::roundSounds(void* event) {
 
 	auto pEvent = (IGameEvent*)event;
 
-	if (strstr(pEvent->GetName(), XorStr("round_end"))) {
+	if (((eventInfo*)eventInfo_)->hash == HASH("round_end")) {
 
 		auto localPlayer = game::getLocalPlayer();
 
@@ -325,7 +260,7 @@ void misc::roundSounds(void* event) {
 		}
 	}
 
-	else if (strstr(pEvent->GetName(), XorStr("round_start"))) {
+	else if (((eventInfo*)eventInfo_)->hash == HASH("round_start")) {
 
 		interfaces::surface->PlaySound(sound::sounds[config::visual.sounds.roundStartSound].c_str());
 	}
@@ -333,7 +268,7 @@ void misc::roundSounds(void* event) {
 	VMProtectEnd();
 }
 
-void misc::headShoot(void* event) {
+void misc::headShoot(void* event, void* eventInfo) {
 
 	VMProtectBeginMutation("misc::headShoot");
 

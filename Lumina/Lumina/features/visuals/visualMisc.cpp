@@ -157,6 +157,50 @@ namespace visualMisc {
 		return 0;
 	}
 
+	void optimization() {
+
+		VMProtectBeginMutation("visualMisc::optimization");
+
+		// omg, this code
+
+		static ConVar* mat_disable_bloom = (ConVar*)interfaces::console->get_convar(XorStr("mat_disable_bloom"));
+
+		*(int*)((DWORD)&mat_disable_bloom->fnChangeCallbacks + 0xC) = NULL;
+
+		mat_disable_bloom->nFlags &= (1 << 14);
+
+		mat_disable_bloom->set_value((int)config::cheats.optimization);
+
+
+
+		static ConVar* mat_colorcorrection = (ConVar*)interfaces::console->get_convar(XorStr("mat_colorcorrection"));
+
+		*(int*)((DWORD)&mat_colorcorrection->fnChangeCallbacks + 0xC) = NULL;
+
+		mat_colorcorrection->nFlags &= (1 << 14);
+
+		mat_colorcorrection->set_value((int)!config::cheats.optimization);
+
+
+		static ConVar* shadows = (ConVar*)interfaces::console->get_convar(XorStr("cl_csm_enabled"));
+
+		*(int*)((DWORD)&shadows->fnChangeCallbacks + 0xC) = NULL;
+
+		shadows->nFlags &= (1 << 14);
+
+		shadows->set_value((int)!config::cheats.optimization);
+
+		static ConVar* mat_postprocess_enable = (ConVar*)interfaces::console->get_convar(XorStr("mat_postprocess_enable"));
+
+		*(int*)((DWORD)&mat_postprocess_enable->fnChangeCallbacks + 0xC) = NULL;
+
+		mat_postprocess_enable->nFlags &= (1 << 14);
+
+		mat_postprocess_enable->set_value((int)!config::cheats.optimization);
+
+		VMProtectEnd();
+	}
+
 	void drawGrenadePrediction() {
 
 		VMProtectBeginMutation("visualMisc::drawGrenadePrediction");

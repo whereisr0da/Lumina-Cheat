@@ -155,14 +155,14 @@ namespace chams {
 
 		//bool isWeapon = strstr(modelName, XorStr("models/weapons/v_")) && !strstr(modelName, XorStr("v_models"));
 		//bool isWeaponWorld = strstr(modelName, XorStr("models/weapons/w_")) && !strstr(modelName, XorStr("w_models"));
-		bool isHands = strstr(modelName, XorStr("arms")) && !strstr(modelName, XorStr("sleeve"));
-		bool isSleeves = strstr(modelName, XorStr("arms")) && strstr(modelName, XorStr("sleeve"));
+		//bool isHands = strstr(modelName, XorStr("arms")) && !strstr(modelName, XorStr("sleeve"));
+		//bool isSleeves = strstr(modelName, XorStr("arms")) && strstr(modelName, XorStr("sleeve"));
 		bool isPlayer = entity->isPlayer() && entity->isAlive();//strstr(modelName, XorStr("models/player"));
 
 		CHAMS(config::visual.enemyChamsVisible, isPlayer && game::getLocalPlayer()->m_iTeamNum() != entity->m_iTeamNum(), renderInfo)
 		//CHAMS(config::visual.enemyChamsNotVisible, isPlayer && game::getLocalPlayer()->m_iTeamNum() != entity->m_iTeamNum(), renderInfo)
-		CHAMS(config::visual.handChams, isHands, renderInfo)
-		CHAMS(config::visual.sleeveChams, isSleeves, renderInfo)
+		//CHAMS(config::visual.handChams, isHands, renderInfo)
+		//CHAMS(config::visual.sleeveChams, isSleeves, renderInfo)
 		//CHAMS(config::visual.weaponChams, isWeapon, renderInfo)
 
 		VMProtectEnd();

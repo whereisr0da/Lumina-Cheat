@@ -89,7 +89,7 @@ bool zgui::buttonWithPosition(const char *id, const vec2 size, const vec2 cursor
 }
 
 // ========================================================================
-void zgui::checkbox(const char *id, bool &value) {
+bool zgui::checkbox(const char *id, bool &value) {
 
     VMProtectBeginMutation("zgui::checkbox");
 
@@ -108,12 +108,16 @@ void zgui::checkbox(const char *id, bool &value) {
 
     const bool active = window_ctx.blocking == utils::hash::hash(id);
 
+    bool clicked_value = false;
+
     if (const bool hovered = utils::input::mouse_in_region(draw_pos.x, draw_pos.y, control_width + 6 + text_width, control_height); !active && hovered && utils::input::key_pressed(VK_LBUTTON)) {
         window_ctx.blocking = utils::hash::hash(id);
     }
     else if (active && !utils::input::key_down(VK_LBUTTON)) {
         window_ctx.blocking = 0;
         value = !value;
+
+        clicked_value = true;
 
         if(!value)
           sound::playClosingSound();
@@ -129,6 +133,8 @@ void zgui::checkbox(const char *id, bool &value) {
     utils::misc::push_cursor_pos(vec2{cursor_pos.x, cursor_pos.y + global_config.item_spacing});
 
     utils::misc::push_font(font);
+
+    return clicked_value;
 
     VMProtectEnd();
 }
@@ -319,8 +325,10 @@ void zgui::sendToClipboard(HWND hwnd, const std::string& s) {
   GlobalFree(hg);
 }
 
-void zgui::colorpicker(const char* id, zgui::color& item)
+bool zgui::colorpicker(const char* id, zgui::color& item)
 {
+    bool setColor = false;
+
   try {
    
   std::vector<std::string> id_split = utils::hash::split_str(id, '#');
@@ -365,6 +373,8 @@ void zgui::colorpicker(const char* id, zgui::color& item)
   itemstring += std::to_string(item.b);
   itemstring += std::to_string(item.a);
  
+
+
   if (const bool hovered = utils::input::mouse_in_region(draw_pos.x, draw_pos.y, control_width + 6 + text_wide, control_height); !active && hovered && utils::input::key_pressed(VK_RBUTTON)) {
     rightclicked = true;
   }
@@ -401,6 +411,7 @@ void zgui::colorpicker(const char* id, zgui::color& item)
           item.r = rainbow.r;
           item.g = rainbow.g;
           item.b = rainbow.b;
+          setColor = true;
         }
         //if (key_released(VK_LBUTTON))
         //	window_ctx.blocking = 0;
@@ -423,6 +434,7 @@ void zgui::colorpicker(const char* id, zgui::color& item)
         item.r = rainbow.r;
         item.g = rainbow.g;
         item.b = rainbow.b;
+        setColor = true;
       }
 
       xoffset += 5;
@@ -437,6 +449,7 @@ void zgui::colorpicker(const char* id, zgui::color& item)
           item.r = grey.r;
           item.g = grey.g;
           item.b = grey.b;
+          setColor = true;
         }
         //if (key_released(VK_LBUTTON))
         //	window_ctx.blocking = 0;
@@ -459,22 +472,30 @@ void zgui::colorpicker(const char* id, zgui::color& item)
         item.r = grey.r;
         item.g = grey.g;
         item.b = grey.b;
+        setColor = true;
       }
 
       xoffset += 4;
 
     }
 
-    if (window_ctx.blocking == 0 && utils::input::mouse_in_region(draw_pos.x - (control_height - 2), draw_pos.y, 8, 10) && utils::input::key_pressed(VK_LBUTTON))
-      item.a = std::clamp(item.a - 1, min, max);
-    else if (window_ctx.blocking == 0 && utils::input::mouse_in_region(draw_pos.x + control_width, draw_pos.y, 8, 10) && utils::input::key_pressed(VK_LBUTTON))
-      item.a = std::clamp(item.a + 1, min, max);
+    if (window_ctx.blocking == 0 && utils::input::mouse_in_region(draw_pos.x - (control_height - 2), draw_pos.y, 8, 10) && utils::input::key_pressed(VK_LBUTTON)) {
+        item.a = std::clamp(item.a - 1, min, max);
+        setColor = true;
+    }
+      
+    else if (window_ctx.blocking == 0 && utils::input::mouse_in_region(draw_pos.x + control_width, draw_pos.y, 8, 10) && utils::input::key_pressed(VK_LBUTTON)) {
+        item.a = std::clamp(item.a + 1, min, max);
+        setColor = true;
+    }
+      
 
     if (utils::input::key_down(VK_LBUTTON) && utils::input::mouse_in_region(sliderxoffset, slideryoffset, slider_width + 5, slider_height) && window_ctx.blocking == utils::hash::hash(id)) {
       window_ctx.blocking = utils::hash::hash(id);
       float value_unmapped = std::clamp(mouse_pos.x - sliderxoffset, 0.0f, static_cast<float>(slider_width));
       int value_mapped = static_cast<int>(value_unmapped / slider_width * (max - min) + min);
       item.a = value_mapped;
+      setColor = true;
     }
 
     const int dynamic_width = (static_cast<float>(item.a) - min) / (max - min) * slider_width - 2;
@@ -512,6 +533,8 @@ void zgui::colorpicker(const char* id, zgui::color& item)
     {
 
     } 
+
+    return setColor;
 }
 
 

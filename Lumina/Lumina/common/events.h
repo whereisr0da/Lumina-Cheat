@@ -3,10 +3,17 @@
 #define events_h
 
 #include "../sdk/interfaces/IGameEventManager.h"
+#include "includes.h"
+
+struct eventInfo {
+	char* name;
+	uint32_t hash;
+	void* callback;
+};
+
+using eventWorker = void(*)(IGameEvent*, eventInfo*);
 
 // from fatality.win source code
-
-using eventWorker = void(*)(IGameEvent*);
 
 namespace events {
 

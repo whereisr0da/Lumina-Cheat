@@ -9,7 +9,7 @@ namespace events {
 
 	listener* eventListener = NULL;
 
-	std::map<std::string, eventWorker*> eventWorkers;
+	std::map<hash32_t, eventInfo*> eventWorkers;
 
 	void init() {
 
@@ -26,14 +26,24 @@ namespace events {
 
 		interfaces::gameEventManager->RemoveListener(eventListener);
 		
+		for (auto& eventInfoPointer : eventWorkers)
+			free((eventInfo*)(eventInfoPointer.second));
+
 		eventWorkers.clear();
 
 		delete eventListener;
+
+#ifdef _DEBUG
+		common::ps(XorStr("events::shutdown : done"));
+#endif
 	}
 
 #define ADD_EVENT(str,pointer,var) \
-	std::string var = XorStr(str); \
-	eventWorkers[var] = (eventWorker*)pointer;\
+	eventInfo* var = (eventInfo*)malloc(sizeof(eventInfo)); \
+	var->name = XorStr(str); \
+	var->hash = HASH(str); \
+	var->callback = (void*)pointer; \
+	eventWorkers[var->hash] = var; \
 
 	listener::listener()
 	{
@@ -45,8 +55,8 @@ namespace events {
 		ADD_EVENT("round_start", misc::roundSounds, tmp3)
 		ADD_EVENT("player_death", misc::headShoot, tmp4)
 
-		for (auto& eventPointer : eventWorkers)
-			interfaces::gameEventManager->AddListener(this, eventPointer.first.c_str(), false);
+		for (auto& eventInfoPointer : eventWorkers)
+			interfaces::gameEventManager->AddListener(this, eventInfoPointer.second->name, false);
 
 #ifdef _DEBUG
 		common::ps(XorStr("listener::listener : done"));
@@ -61,11 +71,12 @@ namespace events {
 
 		if (event) {
 
-			std::string eventName = event->GetName();
+			hash32_t eventNameHash = FNV1a::get(event->GetName());
 
-			if (eventWorkers.count(eventName)) 
-				((eventWorker)eventWorkers.at(eventName))(event);
-		
+			if (eventWorkers.count(eventNameHash)){
+				auto currentEventInfo = eventWorkers.at(eventNameHash);
+				((eventWorker)currentEventInfo->callback)(event, currentEventInfo);
+			}
 		}
 
 		VMProtectEnd();

@@ -81,6 +81,128 @@ struct chams_t
 #define CHAMS_(name) \
 	chams_t name; \
 
+
+#define BOOL_WRITE(bool_, config) \
+	std::istringstream(config.asString()) >> std::boolalpha >> bool_;
+
+#define INT_WRITE(int_, config) \
+	 int_ = std::stoi(config.asString());
+
+#define FLOAT_WRITE(float_, config) \
+	 float_ = std::stof(config.asString());
+
+
+#define CHAMS_JSON(name, nameStr, pad) \
+	config[XorStr(nameStr)][XorStr("enable")] = visual.name.enable; \
+	config[XorStr(nameStr)][XorStr("throughWall")] = visual.name.throughWall; \
+	config[XorStr(nameStr)][XorStr("throughWallOnlyIfDead")] = visual.name.throughWallOnlyIfDead; \
+	config[XorStr(nameStr)][XorStr("material")] = visual.name.material; \
+	config[XorStr(nameStr)][XorStr("rainbowColor")] = visual.name.rainbowColor; \
+	COLOR_JSON_WRITE(pad, visual.name.color) \
+	config[XorStr(nameStr)][XorStr("color")] = pad; \
+
+
+#define COLOR_JSON_WRITE(name, path) \
+		Json::Value name(Json::arrayValue); \
+		name.append(Json::Value(path.r())); \
+		name.append(Json::Value(path.g())); \
+		name.append(Json::Value(path.b())); \
+		name.append(Json::Value(path.a())); \
+
+#define SKIN_JSON(side,name,sideStr,nameStr) \
+	config[XorStr("skins")][XorStr(sideStr)][XorStr(nameStr)][XorStr("paint")] = visual.skins.side.name.paint; \
+	config[XorStr("skins")][XorStr(sideStr)][XorStr(nameStr)][XorStr("wear")] = visual.skins.side.name.wear; \
+	config[XorStr("skins")][XorStr(sideStr)][XorStr(nameStr)][XorStr("seed")] = visual.skins.side.name.seed; \
+	config[XorStr("skins")][XorStr(sideStr)][XorStr(nameStr)][XorStr("stattrack")] = visual.skins.side.name.stattrack; \
+	config[XorStr("skins")][XorStr(sideStr)][XorStr(nameStr)][XorStr("stattrackCount")] = visual.skins.side.name.stattrackCount; \
+	config[XorStr("skins")][XorStr(sideStr)][XorStr(nameStr)][XorStr("quality")] = visual.skins.side.name.quality; \
+	config[XorStr("skins")][XorStr(sideStr)][XorStr(nameStr)][XorStr("sticker1")] = visual.skins.side.name.sticker1; \
+	config[XorStr("skins")][XorStr(sideStr)][XorStr(nameStr)][XorStr("sticker2")] = visual.skins.side.name.sticker2; \
+	config[XorStr("skins")][XorStr(sideStr)][XorStr(nameStr)][XorStr("sticker3")] = visual.skins.side.name.sticker3; \
+	config[XorStr("skins")][XorStr(sideStr)][XorStr(nameStr)][XorStr("sticker4")] = visual.skins.side.name.sticker4; \
+
+#define SKIN_COLLECTION_JSON(side, sideStr) \
+		SKIN_JSON(side, awpSkin, sideStr, "awpSkin") \
+		SKIN_JSON(side, ak47Skin, sideStr, "ak47Skin") \
+		SKIN_JSON(side, uspSkin, sideStr, "uspSkin") \
+		SKIN_JSON(side, deagleSkin, sideStr, "deagleSkin") \
+		SKIN_JSON(side, ssg08Skin, sideStr, "ssg08Skin") \
+		SKIN_JSON(side, scarSkin, sideStr, "scarSkin") \
+		SKIN_JSON(side, m4a1Skin, sideStr, "m4a1Skin") \
+		SKIN_JSON(side, famasSkin, sideStr, "famasSkin") \
+		SKIN_JSON(side, g3sg1Skin, sideStr, "g3sg1Skin") \
+		SKIN_JSON(side, m4a1s1Skin, sideStr, "m4a1s1Skin") \
+		SKIN_JSON(side, sg553Skin, sideStr, "sg553Skin") \
+		SKIN_JSON(side, augSkin, sideStr, "augSkin") \
+		SKIN_JSON(side, galilSkin, sideStr, "galilSkin") \
+	    SKIN_JSON(side, mac10Skin, sideStr, "mac10Skin") \
+		SKIN_JSON(side, mp5Skin, sideStr, "mp5Skin") \
+		SKIN_JSON(side, mp7Skin, sideStr, "mp7Skin") \
+		SKIN_JSON(side, mp9Skin, sideStr, "mp9Skin") \
+		SKIN_JSON(side, ppbizonSkin, sideStr, "ppbizonSkin") \
+		SKIN_JSON(side, p90Skin, sideStr, "p90Skin") \
+		SKIN_JSON(side, umpSkin, sideStr, "umpSkin") \
+		SKIN_JSON(side, cz75Skin, sideStr, "cz75Skin") \
+		SKIN_JSON(side, dualberttaSkin, sideStr, "dualberttaSkin") \
+		SKIN_JSON(side, fiveSevenSkin, sideStr, "fiveSevenSkin") \
+		SKIN_JSON(side, glockSkin, sideStr, "glockSkin") \
+		SKIN_JSON(side, p250Skin, sideStr, "p250Skin") \
+		SKIN_JSON(side, tec9Skin, sideStr, "tec9Skin") \
+		SKIN_JSON(side, revolverSkin, sideStr, "revolverSkin") \
+
+
+#define COLOR_JSON_READ(path,json) \
+		path.SetColor(std::stoi(json[0].asString()),std::stoi(json[1].asString()),std::stoi(json[2].asString()),std::stoi(json[3].asString())); \
+
+#define SKIN_JSON_READ(side,name,sideStr,nameStr) \
+	INT_WRITE(visual.skins.side.name.paint, config[XorStr("skins")][XorStr(sideStr)][XorStr(nameStr)][XorStr("paint")]); \
+	FLOAT_WRITE(visual.skins.side.name.wear, config[XorStr("skins")][XorStr(sideStr)][XorStr(nameStr)][XorStr("wear")]); \
+	INT_WRITE(visual.skins.side.name.seed, config[XorStr("skins")][XorStr(sideStr)][XorStr(nameStr)][XorStr("seed")]); \
+	BOOL_WRITE(visual.skins.side.name.stattrack, config[XorStr("skins")][XorStr(sideStr)][XorStr(nameStr)][XorStr("stattrack")]); \
+	INT_WRITE(visual.skins.side.name.stattrackCount, config[XorStr("skins")][XorStr(sideStr)][XorStr(nameStr)][XorStr("stattrackCount")]); \
+	INT_WRITE(visual.skins.side.name.quality, config[XorStr("skins")][XorStr(sideStr)][XorStr(nameStr)][XorStr("quality")]); \
+	INT_WRITE(visual.skins.side.name.sticker1, config[XorStr("skins")][XorStr(sideStr)][XorStr(nameStr)][XorStr("sticker1")]); \
+	INT_WRITE(visual.skins.side.name.sticker2, config[XorStr("skins")][XorStr(sideStr)][XorStr(nameStr)][XorStr("sticker2")]); \
+	INT_WRITE(visual.skins.side.name.sticker3, config[XorStr("skins")][XorStr(sideStr)][XorStr(nameStr)][XorStr("sticker3")]); \
+	INT_WRITE(visual.skins.side.name.sticker4, config[XorStr("skins")][XorStr(sideStr)][XorStr(nameStr)][XorStr("sticker4")]); \
+
+#define CHAMS_JSON_READ(name, nameStr, pad) \
+	BOOL_WRITE(visual.name.enable, config[XorStr(nameStr)][XorStr("enable")]); \
+	BOOL_WRITE(visual.name.throughWall, config[XorStr(nameStr)][XorStr("throughWall")]); \
+	BOOL_WRITE(visual.name.throughWallOnlyIfDead, config[XorStr(nameStr)][XorStr("throughWallOnlyIfDead")]); \
+	INT_WRITE(visual.name.material, config[XorStr(nameStr)][XorStr("material")]); \
+	BOOL_WRITE(visual.name.rainbowColor, config[XorStr(nameStr)][XorStr("rainbowColor")]); \
+	COLOR_JSON_READ(visual.name.color, config[XorStr(nameStr)][XorStr("color")]) \
+
+#define SKIN_COLLECTION_JSON_READ(side, sideStr) \
+		SKIN_JSON_READ(side, awpSkin, sideStr, "awpSkin") \
+		SKIN_JSON_READ(side, ak47Skin, sideStr, "ak47Skin") \
+		SKIN_JSON_READ(side, uspSkin, sideStr, "uspSkin") \
+		SKIN_JSON_READ(side, deagleSkin, sideStr, "deagleSkin") \
+		SKIN_JSON_READ(side, ssg08Skin, sideStr, "ssg08Skin") \
+		SKIN_JSON_READ(side, scarSkin, sideStr, "scarSkin") \
+		SKIN_JSON_READ(side, m4a1Skin, sideStr, "m4a1Skin") \
+		SKIN_JSON_READ(side, famasSkin, sideStr, "famasSkin") \
+		SKIN_JSON_READ(side, g3sg1Skin, sideStr, "g3sg1Skin") \
+		SKIN_JSON_READ(side, m4a1s1Skin, sideStr, "m4a1s1Skin") \
+		SKIN_JSON_READ(side, sg553Skin, sideStr, "sg553Skin") \
+		SKIN_JSON_READ(side, augSkin, sideStr, "augSkin") \
+		SKIN_JSON_READ(side, galilSkin, sideStr, "galilSkin") \
+	    SKIN_JSON_READ(side, mac10Skin, sideStr, "mac10Skin") \
+		SKIN_JSON_READ(side, mp5Skin, sideStr, "mp5Skin") \
+		SKIN_JSON_READ(side, mp7Skin, sideStr, "mp7Skin") \
+		SKIN_JSON_READ(side, mp9Skin, sideStr, "mp9Skin") \
+		SKIN_JSON_READ(side, ppbizonSkin, sideStr, "ppbizonSkin") \
+		SKIN_JSON_READ(side, p90Skin, sideStr, "p90Skin") \
+		SKIN_JSON_READ(side, umpSkin, sideStr, "umpSkin") \
+		SKIN_JSON_READ(side, cz75Skin, sideStr, "cz75Skin") \
+		SKIN_JSON_READ(side, dualberttaSkin, sideStr, "dualberttaSkin") \
+		SKIN_JSON_READ(side, fiveSevenSkin, sideStr, "fiveSevenSkin") \
+		SKIN_JSON_READ(side, glockSkin, sideStr, "glockSkin") \
+		SKIN_JSON_READ(side, p250Skin, sideStr, "p250Skin") \
+		SKIN_JSON_READ(side, tec9Skin, sideStr, "tec9Skin") \
+		SKIN_JSON_READ(side, revolverSkin, sideStr, "revolverSkin") \
+
 namespace config {
 
 	struct visuals {
@@ -182,12 +304,27 @@ namespace config {
 		bool showSpectators;
 		bool showGrenadePred;
 		bool showRadar;
+
+		struct
+		{
+			bool enable;
+			Color worldColor;
+			Color propsColor;
+		} world;
+
+		struct
+		{
+			bool enable;
+			int sky;
+			Color skyColor;
+		} sky;
 	};
 
 	struct cheat {
 
 		bool fastStop;
 		bool silentWalk;
+		bool optimization;
 	};
 
 	extern visuals visual;

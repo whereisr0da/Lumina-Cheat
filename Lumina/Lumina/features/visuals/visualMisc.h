@@ -17,4 +17,6 @@ namespace visualMisc {
 	void drawHitmarker();
 
 	void watermark();
+
+	void optimization();
 }

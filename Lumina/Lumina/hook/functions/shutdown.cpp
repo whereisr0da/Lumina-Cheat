@@ -17,19 +17,19 @@ void __stdcall shutdownHook(void* _interface) {
 
 	common::unload = true;
 
+	input::undo();
+
 	events::shutdown();
 
-	hook::shutdown();
+	returnCall(interfaces::baseClientDll);
 
-	input::undo();
+	hook::shutdown();
 
 	common::active = false;
 
 #ifdef _DEBUG
 	common::ps(XorStr("shutdownHook : done"));
 #endif 
-
-	returnCall(interfaces::baseClientDll);
 
 	VMProtectEnd();
 }

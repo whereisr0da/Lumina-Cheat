@@ -79,12 +79,12 @@ typedef unsigned __int64		uint64;
 #define	FL_INWATER				(1 << 10)
 
 #define TEXTURE_GROUP_LIGHTMAP						_w( "Lightmaps" )
-#define TEXTURE_GROUP_WORLD							_w( "World textures" )
+#define TEXTURE_GROUP_WORLD							( "World textures" )
 #define TEXTURE_GROUP_MODEL							_w( "Model textures" )
 #define TEXTURE_GROUP_VGUI							_w( "VGUI textures" )
 #define TEXTURE_GROUP_PARTICLE						_w( "Particle textures" )
 #define TEXTURE_GROUP_DECAL							_w( "Decal textures" )
-#define TEXTURE_GROUP_SKYBOX						_w( "SkyBox textures" )
+#define TEXTURE_GROUP_SKYBOX						( "SkyBox textures" )
 #define TEXTURE_GROUP_CLIENT_EFFECTS				_w( "ClientEffect textures" )
 #define TEXTURE_GROUP_OTHER							_w( "Other textures" )
 #define TEXTURE_GROUP_PRECACHED						_w( "Precached" )				// TODO: assign texture groups to the precached materials

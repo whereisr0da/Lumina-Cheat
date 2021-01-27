@@ -404,7 +404,7 @@ namespace zgui {
 
     void sendToClipboard(HWND hwnd, const std::string& s);
 
-    ZGUI_API void colorpicker(const char* id, zgui::color& item);
+    ZGUI_API bool colorpicker(const char* id, zgui::color& item);
 
     ZGUI_API bool begin_window(std::string_view title, vec2 default_size, unsigned long font, int flags = 0);
 
@@ -414,7 +414,7 @@ namespace zgui {
 
     ZGUI_API void end_groupbox();
 
-    ZGUI_API void checkbox(const char *id, bool &value);
+    ZGUI_API bool checkbox(const char *id, bool &value);
 
     ZGUI_API void toggle_button(const char *id, vec2 size, bool &value);
 

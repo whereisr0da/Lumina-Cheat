@@ -24,6 +24,8 @@
 #include "image.h"
 #include "sound.h"
 
+#include "../features/visuals/world.h"
+
 namespace menu {
 
 	bool visible = false;
@@ -703,9 +705,9 @@ namespace menu {
 		espColor.b = config::visual.enemyEsp.espColor.b();
 		espColor.a = config::visual.enemyEsp.espColor.a();
 
-		zgui::colorpicker(XorStr("Esp color#espColor"), espColor);
+		if(zgui::colorpicker(XorStr("Esp color#espColor"), espColor))
 
-		config::visual.enemyEsp.espColor.SetColor(espColor.r, espColor.g, espColor.b, espColor.a);
+			config::visual.enemyEsp.espColor.SetColor(espColor.r, espColor.g, espColor.b, espColor.a);
 
 		zgui::setMousePos(x + 200, y);
 
@@ -751,9 +753,8 @@ namespace menu {
 		chamsColor.b = config::visual.enemyChamsVisible.color.b();
 		chamsColor.a = config::visual.enemyChamsVisible.color.a();
 
-		zgui::colorpicker(XorStr("Chams color#chamsColor"), chamsColor);
-
-		config::visual.enemyChamsVisible.color.SetColor(chamsColor.r, chamsColor.g, chamsColor.b, chamsColor.a);
+		if(zgui::colorpicker(XorStr("Chams color#chamsColor"), chamsColor))
+			config::visual.enemyChamsVisible.color.SetColor(chamsColor.r, chamsColor.g, chamsColor.b, chamsColor.a);
 
 		zgui::setMousePos(x + 200, y + 100);
 
@@ -786,9 +787,8 @@ namespace menu {
 		glowColor.b = config::visual.glow.glowColor.b();
 		glowColor.a = config::visual.glow.glowColor.a();
 
-		zgui::colorpicker(XorStr("Glow color#glowColor"), glowColor);
-
-		config::visual.glow.glowColor.SetColor(glowColor.r, glowColor.g, glowColor.b, glowColor.a);
+		if(zgui::colorpicker(XorStr("Glow color#glowColor"), glowColor))
+			config::visual.glow.glowColor.SetColor(glowColor.r, glowColor.g, glowColor.b, glowColor.a);
 
 		zgui::setMousePos(x + 200, y + 150);
 
@@ -812,9 +812,8 @@ namespace menu {
 		chamsColor2.b = config::visual.handChams.color.b();
 		chamsColor2.a = config::visual.handChams.color.a();
 
-		zgui::colorpicker(XorStr("Chams color#chamsColorHand"), chamsColor2);
-
-		config::visual.handChams.color.SetColor(chamsColor2.r, chamsColor2.g, chamsColor2.b, chamsColor2.a);
+		if(zgui::colorpicker(XorStr("Chams color#chamsColorHand"), chamsColor2))
+			config::visual.handChams.color.SetColor(chamsColor2.r, chamsColor2.g, chamsColor2.b, chamsColor2.a);
 
 		zgui::setMousePos(x + 200, y + 200);
 
@@ -854,6 +853,11 @@ namespace menu {
 		zgui::setMousePos(x + 520, y);
 
 		zgui::checkbox(XorStr("Silent walk"), config::cheats.silentWalk);
+
+
+		zgui::setMousePos(x + 620, y);
+
+		zgui::checkbox(XorStr("Optimize"), config::cheats.optimization);
 
 
 		zgui::setMousePos(x, y + 100);
@@ -934,6 +938,53 @@ namespace menu {
 
 		zgui::combobox(XorStr("Model#Model__"), modelNames, config::visual.teamMateModel.id);
 
+		zgui::setMousePos(x, y + 300);
+
+		if (zgui::checkbox(XorStr("World Modulation#dfshdshdeshsdhsds"), config::visual.world.enable)) {
+			world::worldModulation();
+		}
+
+		zgui::setMousePos(x + 100, y + 300);
+
+		zgui::color worldColor = zgui::color();
+
+		worldColor.r = config::visual.world.worldColor.r();
+		worldColor.g = config::visual.world.worldColor.g();
+		worldColor.b = config::visual.world.worldColor.b();
+		worldColor.a = config::visual.world.worldColor.a();
+
+		if (zgui::colorpicker(XorStr("World Color#WorlddColor"), worldColor)) {
+			config::visual.world.worldColor.SetColor(worldColor.r, worldColor.g, worldColor.b, worldColor.a);
+			world::worldModulation();
+		}
+
+		zgui::setMousePos(x + 200, y + 300);
+
+		zgui::color proposColor = zgui::color();
+
+		proposColor.r = config::visual.world.propsColor.r();
+		proposColor.g = config::visual.world.propsColor.g();
+		proposColor.b = config::visual.world.propsColor.b();
+		proposColor.a = config::visual.world.propsColor.a();
+
+		if (zgui::colorpicker(XorStr("Props Color#PropssdColor"), proposColor)) {
+			config::visual.world.propsColor.SetColor(proposColor.r, proposColor.g, proposColor.b, proposColor.a);
+			world::worldModulation();
+		}
+
+		zgui::setMousePos(x + 300, y + 300);
+
+		if (zgui::checkbox(XorStr("Sky Changer#ChangerSKy"), config::visual.sky.enable)) {
+			world::changeWorldSky();
+		}
+
+		zgui::setMousePos(x + 400, y + 300);
+
+		if (zgui::combobox(XorStr("Sky#dfshgdshsdhds"), world::skyboxs, config::visual.sky.sky)) {
+			world::changeWorldSky();
+		}
+
+
 		VMProtectEnd();
 	}
 
@@ -986,6 +1037,12 @@ if (parseInt(text, &var)) \
 			
 			inputKnifeSkin = std::to_string(currentSide ? config::visual.skins.tSkins.knifePaint : config::visual.skins.ctSkins.knifePaint);
 
+
+		if(config::visual.world.enable)
+			world::worldModulation();
+
+		if (config::visual.sky.enable)
+			world::changeWorldSky();
 
 		VMProtectEnd();
 	}

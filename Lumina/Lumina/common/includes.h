@@ -41,6 +41,9 @@
 
 #include "../sdk/defines.h"
 
+#include "../security/hash.h"
+
+#include "../sdk/math/math.h"
 #include "../sdk/math/Color.h"
 #include "../sdk/math/CUtlVector.h"
 #include "../sdk/math/Vector.h"
@@ -111,6 +114,8 @@
 #include "../hook/functions/doPostScreenEffects.h"
 #include "../hook/functions/fireEventClientSide.h"
 #include "../hook/functions/createMove.h"
+#include "../hook/functions/shouldDrawFog.h"
+#include "../hook/functions/levelInitPostEntity.h"
 
 #include "config.h"
 
