@@ -820,6 +820,30 @@ namespace menu {
 		zgui::combobox(XorStr("Material#materialHand"), materialsNames, config::visual.handChams.material);
 
 
+
+
+		zgui::setMousePos(x, y + 300);
+
+		zgui::checkbox(XorStr("Steeves chams#useSteeves"), config::visual.sleeveChams.enable);
+
+		zgui::setMousePos(x + 100, y + 300);
+
+		zgui::color chamsColor3 = zgui::color();
+
+		chamsColor3.r = config::visual.sleeveChams.color.r();
+		chamsColor3.g = config::visual.sleeveChams.color.g();
+		chamsColor3.b = config::visual.sleeveChams.color.b();
+		chamsColor3.a = config::visual.sleeveChams.color.a();
+
+		if (zgui::colorpicker(XorStr("Chams color#chamsColorSteeves"), chamsColor3))
+			config::visual.sleeveChams.color.SetColor(chamsColor3.r, chamsColor3.g, chamsColor3.b, chamsColor3.a);
+
+		zgui::setMousePos(x + 200, y + 300);
+
+		zgui::combobox(XorStr("Material#materialSteeves"), materialsNames, config::visual.sleeveChams.material);
+
+
+
 		VMProtectEnd();
 	}
 

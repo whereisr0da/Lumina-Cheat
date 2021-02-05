@@ -17,7 +17,7 @@ namespace chams {
 
 	void init();
 
-	bool drawModelExecute(void* context, void* state, const ModelRenderInfo_t& renderInfo, void* matrix);
+	bool drawModelExecute(void* context, void* state, const ModelRenderInfo_t& renderInfo, void* matrix, const char* modelName, bool arms, bool sleeve);
 
 	void drawMaterial(chams_t* chams, const ModelRenderInfo_t& renderInfo);
 

@@ -9,12 +9,12 @@
 class math
 {
 public:
-	static float math::Magnitude(Vector a)
+	static float Magnitude(Vector a)
 	{
 		return sqrt((a.x * a.x) + (a.y * a.y));
 	}
 
-	static Vector math::Normalize(Vector value)
+	static Vector Normalize(Vector value)
 	{
 		float num = Magnitude(value);
 		if (num != 0.f)
@@ -22,14 +22,14 @@ public:
 		return Vector(0.f, 0.f, 0.f);
 	}
 
-	static Vector math::ClampMagnitude(Vector vector, float maxLength)
+	static Vector ClampMagnitude(Vector vector, float maxLength)
 	{
 		if (Magnitude(vector) > maxLength)
 			return Vector(Normalize(vector).x * maxLength, Normalize(vector).y * maxLength, 0);
 		return vector;
 	}
 
-	static void math::vector_angles(const Vector& forward, Vector& angles)
+	static void vector_angles(const Vector& forward, Vector& angles)
 	{
 		VMProtectBeginMutation("math::vector_angles");
 
@@ -58,7 +58,7 @@ public:
 		VMProtectEnd();
 	}
 
-	static void math::angle_vectors(const Vector& angles, Vector& forward)
+	static void angle_vectors(const Vector& angles, Vector& forward)
 	{
 		VMProtectBeginMutation("math::angle_vectors");
 

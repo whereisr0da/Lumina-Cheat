@@ -124,19 +124,18 @@ namespace chams {
 		drawOriginal = false; \
 	} \
 
-	bool drawModelExecute(void* context, void* state, const ModelRenderInfo_t& renderInfo, void* matrix) {
+#define CHAMS_ELSE(config, vector, info) else if (config.enable && vector) { \
+		drawMaterial(&(config), info); \
+		drawOriginal = false; \
+	} \
+
+	bool drawModelExecute(void* context, void* state, const ModelRenderInfo_t& renderInfo, void* matrix, const char* modelName, bool arms, bool sleeve) {
 
 		VMProtectBeginMutation("chams::drawModelExecute");
 
 		bool drawOriginal = true;
 
-		auto model = reinterpret_cast<const model_t*>(renderInfo.pModel);
-
-		if (!model)
-			return drawOriginal;
-
-		auto modelName = interfaces::modelInfo->GetModelName(model);
-
+		// means !renderInfo.pModel
 		if (!modelName)
 			return drawOriginal;
 
@@ -145,24 +144,35 @@ namespace chams {
 		//mrenderInfo = &renderInfo;
 		currentMatrix = matrix;
 
-		if(renderInfo.entity_index == INVALID_EHANDLE_INDEX)
-			return drawOriginal;
+		bool isHands = arms && !sleeve;
+		bool isSleeves = arms && sleeve;
 
-		Entity* entity = reinterpret_cast<Entity*>(interfaces::clientEntityList->GetClientEntity(renderInfo.entity_index));
+		// hands and sleeves doesn't have an entity
+		if (isHands || isSleeves) {
 
-		if (!entity)
-			return drawOriginal;
+			CHAMS(config::visual.handChams, isHands, renderInfo)
+			CHAMS_ELSE(config::visual.sleeveChams, isSleeves, renderInfo)
+		}
+		else {
+
+			if (renderInfo.entity_index == INVALID_EHANDLE_INDEX)
+				return drawOriginal;
+
+			Entity* entity = reinterpret_cast<Entity*>(interfaces::clientEntityList->GetClientEntity(renderInfo.entity_index));
+
+			if (!entity)
+				return drawOriginal;
+
+			bool isPlayerEnemy = (entity->isPlayer() && entity->isAlive()) && game::getLocalPlayer()->m_iTeamNum() != entity->m_iTeamNum();
+
+			CHAMS(config::visual.enemyChamsVisible, isPlayerEnemy, renderInfo)
+		}
 
 		//bool isWeapon = strstr(modelName, XorStr("models/weapons/v_")) && !strstr(modelName, XorStr("v_models"));
 		//bool isWeaponWorld = strstr(modelName, XorStr("models/weapons/w_")) && !strstr(modelName, XorStr("w_models"));
-		//bool isHands = strstr(modelName, XorStr("arms")) && !strstr(modelName, XorStr("sleeve"));
-		//bool isSleeves = strstr(modelName, XorStr("arms")) && strstr(modelName, XorStr("sleeve"));
-		bool isPlayer = entity->isPlayer() && entity->isAlive();//strstr(modelName, XorStr("models/player"));
-
-		CHAMS(config::visual.enemyChamsVisible, isPlayer && game::getLocalPlayer()->m_iTeamNum() != entity->m_iTeamNum(), renderInfo)
+		//strstr(modelName, XorStr("models/player"));
+		
 		//CHAMS(config::visual.enemyChamsNotVisible, isPlayer && game::getLocalPlayer()->m_iTeamNum() != entity->m_iTeamNum(), renderInfo)
-		//CHAMS(config::visual.handChams, isHands, renderInfo)
-		//CHAMS(config::visual.sleeveChams, isSleeves, renderInfo)
 		//CHAMS(config::visual.weaponChams, isWeapon, renderInfo)
 
 		VMProtectEnd();

@@ -158,6 +158,8 @@ namespace config {
 		BOOL_WRITE(visual.indicators.showFlashDuration, config[XorStr("indicators")][XorStr("showFlashDuration")]);
 
 		CHAMS_JSON_READ(enemyChamsVisible, "enemyChamsVisible", color1)
+		CHAMS_JSON_READ(handChams, "handChams", color2)
+		CHAMS_JSON_READ(sleeveChams, "sleeveChams", color3)
 
 		BOOL_WRITE(visual.showGrenadePred, config[XorStr("showGrenadePred")]);
 
@@ -258,6 +260,8 @@ namespace config {
 		config[XorStr("indicators")][XorStr("showFlashDuration")] = visual.indicators.showFlashDuration;
 
 		CHAMS_JSON(enemyChamsVisible, "enemyChamsVisible", color1)
+		CHAMS_JSON(handChams, "handChams", color2)
+		CHAMS_JSON(sleeveChams, "sleeveChams", color3)
 
 		config[XorStr("world")][XorStr("enable")] = visual.world.enable;
 		COLOR_JSON_WRITE(worldColor, visual.world.worldColor)

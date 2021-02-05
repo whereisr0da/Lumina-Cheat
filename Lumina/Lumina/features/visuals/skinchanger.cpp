@@ -361,6 +361,49 @@ namespace skinchanger {
 			VECTOR_PUSH(playerModels, "models/player/custom_player/legacy/tm_phoenix_variantg.mdl", tmp41)
 			VECTOR_PUSH(playerModels, "models/player/custom_player/legacy/tm_phoenix_varianth.mdl", tmp42)
 
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/ctm_fbi_variantf.mdl", tmp21_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/ctm_fbi_variantg.mdl", tmp22_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/ctm_fbi_varianth.mdl", tmp23_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/ctm_sas_variantf.mdl", tmp24_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/ctm_st6_variante.mdl", tmp25_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/ctm_st6_variantg.mdl", tmp26_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/ctm_st6_varianti.mdl", tmp27_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/ctm_st6_variantk.mdl", tmp28_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/ctm_st6_variantm.mdl", tmp29_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_balkan_variantf.mdl", tmp31_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_balkan_variantg.mdl", tmp32_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_balkan_varianth.mdl", tmp33_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_balkan_varianti.mdl", tmp34_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_balkan_variantj.mdl", tmp35_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_leet_variantf.mdl", tmp36_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_leet_variantg.mdl", tmp37_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_leet_varianth.mdl", tmp38_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_leet_varianti.mdl", tmp39_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_phoenix_variantf.mdl", tmp40_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_phoenix_variantg.mdl", tmp41_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_phoenix_varianth.mdl", tmp42_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/ctm_st6_variantj.mdl", tmp43_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/ctm_st6_variantl.mdl", tmp44_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/ctm_swat_variante.mdl", tmp45_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/ctm_swat_variantf.mdl", tmp46_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/ctm_swat_variantg.mdl", tmp47_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/ctm_swat_varianth.mdl", tmp48_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/ctm_swat_varianti.mdl", tmp49_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/ctm_swat_variantj.mdl", tmp50_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_balkan_variantk.mdl", tmp51_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_balkan_variantl.mdl", tmp52_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_phoenix_varianti.mdl", tmp53_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_professional_varf.mdl", tmp54_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_professional_varf1.mdl", tmp55_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_professional_varf2.mdl", tmp56_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_professional_varf3.mdl", tmp57_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_professional_varf4.mdl", tmp58_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_professional_varg.mdl", tmp59_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_professional_varh.mdl", tmp60_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_professional_vari.mdl", tmp61_)
+			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_professional_varj.mdl", tmp62_)
+
+			/*
 			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/ctm_fbi_variantb.mdl", tmp50)
 			VECTOR_PUSH(armsModels, "models/player/custom_player/nf/lara/lara_arms.mdl", tmp51)
 			VECTOR_PUSH(armsModels, "models/player/custom_player/voikanaa/halo4/cortana.mdl", tmp52)
@@ -377,8 +420,6 @@ namespace skinchanger {
 			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_phoenix_variantf.mdl", tmp63)
 			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_phoenix_variantg.mdl", tmp64)
 			VECTOR_PUSH(armsModels, "models/player/custom_player/legacy/tm_phoenix_varianth.mdl", tmp65)
-
-			/*
 			VECTOR_PUSH(playerModels, "models/player/custom_player/legacy/ctm_fbi_variantf.mdl", tmp21)
 			VECTOR_PUSH(playerModels, "models/player/custom_player/legacy/ctm_fbi_variantg.mdl", tmp22)
 			VECTOR_PUSH(playerModels, "models/player/custom_player/legacy/ctm_fbi_varianth.mdl", tmp23)
@@ -421,6 +462,8 @@ namespace skinchanger {
 			VECTOR_PUSH(playerModels, "models/player/custom_player/legacy/tm_professional_vari.mdl", tmp61)
 			VECTOR_PUSH(playerModels, "models/player/custom_player/legacy/tm_professional_varj.mdl", tmp62)
 			*/
+
+
 
 			//setupAnimations();
 
