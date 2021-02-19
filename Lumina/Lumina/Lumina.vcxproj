@@ -176,6 +176,7 @@
     <ClCompile Include="features\misc\bypasses.cpp" />
     <ClCompile Include="features\misc\misc.cpp" />
     <ClCompile Include="features\misc\voice.cpp" />
+    <ClCompile Include="features\visuals\animationfix.cpp" />
     <ClCompile Include="features\visuals\chams.cpp" />
     <ClCompile Include="features\visuals\esp.cpp" />
     <ClCompile Include="features\visuals\glow.cpp" />
@@ -223,6 +224,7 @@
     <ClInclude Include="features\misc\bypasses.h" />
     <ClInclude Include="features\misc\misc.h" />
     <ClInclude Include="features\misc\voice.h" />
+    <ClInclude Include="features\visuals\animationfix.h" />
     <ClInclude Include="features\visuals\chams.h" />
     <ClInclude Include="features\visuals\esp.h" />
     <ClInclude Include="features\visuals\glow.h" />

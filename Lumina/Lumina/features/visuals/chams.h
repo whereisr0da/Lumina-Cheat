@@ -13,6 +13,16 @@ struct materialInfo {
 	void* currentMatrix;
 };
 
+#define CHAMS(config, vector, info) if (config.enable && vector) { \
+		drawMaterial(&(config), info); \
+		drawOriginal = false; \
+	} \
+
+#define CHAMS_ELSE(config, vector, info) else if (config.enable && vector) { \
+		drawMaterial(&(config), info); \
+		drawOriginal = false; \
+	} \
+
 namespace chams {
 
 	void init();
@@ -23,10 +33,6 @@ namespace chams {
 
 	extern const char* materialsNames[];
 	extern int materialSize;
-
-	//IMaterial* createMaterial(std::string name, std::string buffer, std::string type);
-	//void initKeyValues(KeyValues* kv_, std::string name_);
-	//void loadFromBuffer(KeyValues* vk_, std::string name_, std::string buffer_);
 }
 
 #endif // !chams_h

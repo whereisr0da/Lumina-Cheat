@@ -15,8 +15,18 @@
 
 class ClientMode {};
 
+enum InvalidatePhysicsBits_t : int {
+	POSITION_CHANGED = 0x1,
+	ANGLES_CHANGED = 0x2,
+	VELOCITY_CHANGED = 0x4,
+	ANIMATION_CHANGED = 0x8,
+	BOUNDS_CHANGED = 0x10,
+	SEQUENCE_CHANGED = 0x20
+};
+
 namespace interfaces {
 
+	using invalidatePhysicsRecursiveFn = void(__thiscall*)(void*, InvalidatePhysicsBits_t);
 	using forceUpdateFn = void(__cdecl*)();
 	using hasC4Fn = bool(__thiscall*)(void*);
 	using getSequenceActivityFn = int(__fastcall*)(void*, studiohdr_t*, int);
@@ -51,6 +61,7 @@ namespace interfaces {
 	extern forceUpdateFn forceUpdate;
 	extern CGlowObjectManager* glowManager;
 	extern hasC4Fn hasC4;
+	extern invalidatePhysicsRecursiveFn invalidatePhysicsRecursive;
 	extern ClientMode* clientMode;
 	extern getSequenceActivityFn getSequenceActivity;
 	extern CNetworkStringTableContainer* clientStringTableContainer;

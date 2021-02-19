@@ -11,13 +11,6 @@ namespace chams {
 
 	const char* materialsNames[4];
 
-	/*const char* materialsInternals[4]; = {
-		"textured",//"vgui/white_additive",//"textured", // textured
-		"debug/debugdrawflat", // flat
-		"tools/toolsskyfog.vmt", // 3d la
-		"models/weapons/v_models/eq_healthshot/health_shot_clear.vmt"
-	};*/
-
 	int materialSize = 4;
 	IMaterial* materialPointers[4];
 
@@ -60,12 +53,6 @@ namespace chams {
 
 		std::ofstream(materialPath + StringHeavy("textured.vmt")) << texturedMaterial;
 
-		//materialPointers[0] = interfaces::materialSystem->FindMaterial(XorStr("textured"), XorStr("Model textures"), true, nullptr);
-
-		//IMaterial* mat = interfaces::materialSystem->FindMaterial(materials[materialId], XorStr("Model textures"), true, nullptr);
-
-		//materialPointers[0] = createMaterial("dev_0", texturedMaterial, XorStr("VertexLitGeneric"));
-
 		texturedMaterial.erase(texturedMaterial.length());
 
 		std::string flatMaterial = StringHeavy("\"UnlitGeneric\" {\n");
@@ -73,11 +60,7 @@ namespace chams {
 		flatMaterial.append(StringHeavy("	\"%noToolTexture\"     \"1\"\n"));
 		flatMaterial.append(StringHeavy("}"));
 
-		//materialPointers[1] = createMaterial("dev_1", flatMaterial, XorStr("UnlitGeneric"));
-
 		std::ofstream(materialPath + StringHeavy("flat.vmt")) << flatMaterial;
-
-		//materialPointers[1] = interfaces::materialSystem->FindMaterial(XorStr("flat"), XorStr("Model textures"), true, nullptr);
 
 		flatMaterial.erase(flatMaterial.length());
 
@@ -106,10 +89,6 @@ namespace chams {
 
 		std::ofstream(materialPath + StringHeavy("lsd.vmt")) << lsdMaterial;
 
-		//materialPointers[2] = interfaces::materialSystem->FindMaterial(XorStr("lsd"), XorStr("Model textures"), true, nullptr);
-
-		//materialPointers[2] = createMaterial("dev_2", lsdMaterial, XorStr("VertexLitGeneric"));
-
 		lsdMaterial.erase(lsdMaterial.length());
 
 		VMProtectEnd();
@@ -118,16 +97,6 @@ namespace chams {
 		common::ps(XorStr("chams::init : done"));
 #endif
 	}
-
-#define CHAMS(config, vector, info) if (config.enable && vector) { \
-		drawMaterial(&(config), info); \
-		drawOriginal = false; \
-	} \
-
-#define CHAMS_ELSE(config, vector, info) else if (config.enable && vector) { \
-		drawMaterial(&(config), info); \
-		drawOriginal = false; \
-	} \
 
 	bool drawModelExecute(void* context, void* state, const ModelRenderInfo_t& renderInfo, void* matrix, const char* modelName, bool arms, bool sleeve) {
 
@@ -141,14 +110,13 @@ namespace chams {
 
 		ecx = context;
 		currentState = state;
-		//mrenderInfo = &renderInfo;
 		currentMatrix = matrix;
 
 		bool isHands = arms && !sleeve;
 		bool isSleeves = arms && sleeve;
 
 		// hands and sleeves doesn't have an entity
-		if (isHands || isSleeves) {
+		if ((isHands || isSleeves) && (game::getLocalPlayer() && game::getLocalPlayer()->isAlive())) {
 
 			CHAMS(config::visual.handChams, isHands, renderInfo)
 			CHAMS_ELSE(config::visual.sleeveChams, isSleeves, renderInfo)
@@ -167,13 +135,6 @@ namespace chams {
 
 			CHAMS(config::visual.enemyChamsVisible, isPlayerEnemy, renderInfo)
 		}
-
-		//bool isWeapon = strstr(modelName, XorStr("models/weapons/v_")) && !strstr(modelName, XorStr("v_models"));
-		//bool isWeaponWorld = strstr(modelName, XorStr("models/weapons/w_")) && !strstr(modelName, XorStr("w_models"));
-		//strstr(modelName, XorStr("models/player"));
-		
-		//CHAMS(config::visual.enemyChamsNotVisible, isPlayer && game::getLocalPlayer()->m_iTeamNum() != entity->m_iTeamNum(), renderInfo)
-		//CHAMS(config::visual.weaponChams, isWeapon, renderInfo)
 
 		VMProtectEnd();
 
@@ -209,59 +170,4 @@ namespace chams {
 
 		VMProtectEnd();
 	}
-
-	/*
-	IMaterial* createMaterial(std::string name, std::string buffer, std::string type)
-	{
-		
-		auto matdata =
-			"\"" + type + "\"\
-		\n{\
-		\n\t\"$basetexture\" \"vgui/white_additive\"\
-		\n\t\"$envmap\" \"\"\
-		\n\t\"$model\" \"1\"\
-		\n\t\"$flat\" \"1\"\
-		\n\t\"$nocull\" \"0\"\
-		\n\t\"$selfillum\" \"1\"\
-		\n\t\"$halflambert\" \"1\"\
-		\n\t\"$nofog\" \"0\"\
-		\n\t\"$ignorez\" \"" + std::to_string(ignorez) + "\"\
-		\n\t\"$znearer\" \"0\"\
-		\n\t\"$wireframe\" \"" + std::to_string(wireframe) + "\"\
-        \n}\n";
-		
-
-		auto keyValues = static_cast<KeyValues*>(malloc(sizeof(KeyValues)));
-
-		initKeyValues(keyValues, type.c_str());
-		
-		loadFromBuffer(keyValues, name.c_str(), buffer.c_str());
-
-		auto material = interfaces::materialSystem->CreateMaterial(name.c_str(), keyValues);
-
-		// don't know if it's good
-		material->IncrementReferenceCount();
-
-		return material;
-	}
-
-	void initKeyValues(KeyValues* kv_, std::string name_)
-	{
-		static auto address = interfaces::initKeyValuesMaterial;
-		using Fn = void(__thiscall*)(void* thisptr, const char* name);
-		reinterpret_cast<Fn>(address)(kv_, name_.c_str());
-	}
-
-	void loadFromBuffer(KeyValues* vk_, std::string name_, std::string buffer_)
-	{
-		static auto address = interfaces::loadFromBufferMaterial;
-
-		using Fn = void(__thiscall*)(
-			void* thisptr, const char* resourceName,
-			const char* pBuffer, void* pFileSystem,
-			const char* pPathID, void* pfnEvaluateSymbolProc);
-
-		reinterpret_cast<Fn>(address)(
-			vk_, name_.c_str(), buffer_.c_str(), nullptr, nullptr, nullptr);
-	}*/
 }

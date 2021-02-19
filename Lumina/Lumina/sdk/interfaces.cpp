@@ -38,6 +38,7 @@ namespace interfaces {
 	CNetworkStringTableContainer* clientStringTableContainer = NULL;
 	ISteamGameServer* steamGameServer = NULL;
 	IStudioRender* studioRender = NULL;
+	invalidatePhysicsRecursiveFn invalidatePhysicsRecursive = NULL;
 
 	void init() {
 
@@ -171,6 +172,7 @@ namespace interfaces {
 		RESOLVE_PATTERN(forceUpdate, (forceUpdateFn), common::engineModule, "A1 ? ? ? ? B9 ? ? ? ? 56 FF 50 14 8B 34 85", 0)
 		RESOLVE_PATTERN(glowManager, *(CGlowObjectManager**), common::clientModule, "0F 11 05 ? ? ? ? 83 C8 01 C7 05 ? ? ? ? 00 00 00 00", 3)
 		RESOLVE_PATTERN(hasC4, hasC4Fn, common::clientModule, "56 8B F1 85 F6 74 31", 0)
+		RESOLVE_PATTERN(invalidatePhysicsRecursive, invalidatePhysicsRecursiveFn, common::clientModule, "55 8B EC 83 E4 F8 83 EC 0C 53 8B 5D 08 8B C3 56 83 E0 04", 0)
 		RESOLVE_PATTERN(getSequenceActivity, getSequenceActivityFn, common::clientModule, "55 8B EC 53 8B 5D 08 56 8B F1 83", 0)
 
 		globals = **reinterpret_cast<IGlobalVarsBase***>((*reinterpret_cast<uintptr_t**>(baseClientDll)[0] + 0x1F));	

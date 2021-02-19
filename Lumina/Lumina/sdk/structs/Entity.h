@@ -144,6 +144,9 @@ public:
 			*(int*)(uintptr_t(this) + 0x3244) = value;
 		}
 
+		POFFSET(int, m_nSequence, 0x28BC);
+		POFFSET(float, m_flCycle, 0xA14);
+
 		/*
 		bool is_grenade();
 		int get_weapon_id();
@@ -345,8 +348,6 @@ public:
 		using original_fn = int(__thiscall*)(void*);
 		return (*(original_fn**)networkable())[10](networkable());
 	}
-
-
 
 	/*
 	float m_flSimulationTime() {

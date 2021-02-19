@@ -21,7 +21,6 @@ public:
 
 
 
-
 class recv_prop_ {
 public:
 	char* prop_name;
@@ -59,6 +58,9 @@ public:
 	int element_index;
 	int object_id;
 };
+
+using recv_var_proxy_fn_ = void(*)(const c_recv_proxy_data_* data, void* struct_ptr, void* out_ptr);
+
 
 using CreateClientClassFn = IClientNetworkable * ( *)( int, int );
 using CreateEventFn = IClientNetworkable * ( *)( );

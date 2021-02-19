@@ -183,6 +183,9 @@
     <ClCompile Include="hook\functions\levelInitPostEntity.cpp">
       <Filter>Fichiers sources\hook\functions</Filter>
     </ClCompile>
+    <ClCompile Include="features\visuals\animationfix.cpp">
+      <Filter>Fichiers sources\features\visuals</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\includes.h">
@@ -502,6 +505,9 @@
     </ClInclude>
     <ClInclude Include="hook\functions\levelInitPostEntity.h">
       <Filter>Fichiers sources\hook\functions</Filter>
+    </ClInclude>
+    <ClInclude Include="features\visuals\animationfix.h">
+      <Filter>Fichiers sources\features\visuals</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

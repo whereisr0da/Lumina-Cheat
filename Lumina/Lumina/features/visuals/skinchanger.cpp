@@ -5,231 +5,35 @@
 #include "../../common/config.h"
 #include "../../common/common.h"
 
-/*
-#define SKIN_SLOT(id,side,weapon,weaponObject) \
-	case (int)id: \
-		weaponObject->setFallbackPaintKit(config::visual.skins.side.weapon.paint); \
-		weaponObject->setFallbackWear(config::visual.skins.side.weapon.wear); \
-		weaponObject->setFallbackSeed(config::visual.skins.side.weapon.seed); \
-		weaponObject->setEntityQuality(config::visual.skins.side.weapon.quality); \
-		if(config::visual.skins.side.weapon.stattrack) { \
-			weaponObject->setFallbackStatTrak(config::visual.skins.side.weapon.stattrackCount); \
-			weaponObject->setEntityQuality(9); \
-		} \
-		weaponObject->setAccountID(info.xuidlow); \
-		weaponObject->setItemIDHigh(-1); \
-	break; \
-*/
-
-#define SKIN_SLOT(id,side,weapon,weaponObject) \
-	case (int)id: \
-		 applySkin(itemDefinitionIndex, weaponObject, &(config::visual.skins.side.weapon), &info); \
-	break; \
-
-		//
-
-/*
-weaponObject->setFallbackPaintKit(config::visual.skins.side.weapon.paint); \
-		weaponObject->setFallbackWear(0); \
-		weaponObject->setFallbackSeed(0); \
-		weaponObject->setAccountID(info.xuidlow); \
-		if (updateSkin) { \
-			itemIDHighOriginals[itemDefinitionIndex] = weaponObject->getItemIDHigh(); \
-			weaponObject->setItemIDHigh(-1); \
-		} \
-		else if (weaponObject->getItemIDHigh() != itemIDHighOriginals[itemDefinitionIndex]) { \
-			weaponObject->setItemIDHigh(itemIDHighOriginals[itemDefinitionIndex]); \
-		} \
-
-*/
-
-#define STICKER_SLOT(id,side,weapon,slot) \
-	case (int)id: \
-		switch (slot) \
-		{\
-		case 0:\
-			return config::visual.skins.side.weapon.sticker1;\
-		case 1:\
-			return config::visual.skins.side.weapon.sticker2;\
-		case 2:\
-			return config::visual.skins.side.weapon.sticker3;\
-		case 3:\
-			return config::visual.skins.side.weapon.sticker4;\
-		case 4:\
-			return config::visual.skins.side.weapon.sticker4;\
-		default:\
-			break;\
-		}\
-	break;\
-
-#define STICKER_GROUPE(side,slot) \
-	STICKER_SLOT(WEAPON_AK47,side,ak47Skin,slot) \
-	STICKER_SLOT(WEAPON_AWP,side,awpSkin,slot) \
-	STICKER_SLOT(WEAPON_USP_SILENCER,side,uspSkin,slot) \
-	STICKER_SLOT(WEAPON_DEAGLE,side,deagleSkin,slot) \
-	STICKER_SLOT(WEAPON_SSG08,side, ssg08Skin,slot) \
-	STICKER_SLOT(WEAPON_SCAR20,side, scarSkin,slot) \
-	STICKER_SLOT(WEAPON_M4A1, side, m4a1Skin,slot) \
-	STICKER_SLOT(WEAPON_FAMAS, side, famasSkin, slot) \
-	STICKER_SLOT(WEAPON_G3SG1, side, g3sg1Skin, slot) \
-	STICKER_SLOT(WEAPON_M4A1_SILENCER, side, m4a1s1Skin, slot) \
-	STICKER_SLOT(WEAPON_SG556, side, sg553Skin, slot) \
-	STICKER_SLOT(WEAPON_AUG, side, augSkin, slot) \
-	STICKER_SLOT(WEAPON_GALILAR, side, galilSkin, slot) \
-	STICKER_SLOT(WEAPON_MAC10, side, mac10Skin, slot) \
-	STICKER_SLOT(WEAPON_MP5SD, side, mp5Skin, slot) \
-	STICKER_SLOT(WEAPON_MP7, side, mp7Skin, slot) \
-	STICKER_SLOT(WEAPON_MP9, side, mp9Skin, slot) \
-	STICKER_SLOT(WEAPON_BIZON, side, ppbizonSkin, slot) \
-	STICKER_SLOT(WEAPON_P90, side, p90Skin, slot) \
-	STICKER_SLOT(WEAPON_UMP45, side, umpSkin, slot) \
-	STICKER_SLOT(WEAPON_CZ75A, side, cz75Skin, slot) \
-	STICKER_SLOT(WEAPON_ELITE, side, dualberttaSkin, slot) \
-	STICKER_SLOT(WEAPON_FIVESEVEN, side, fiveSevenSkin, slot) \
-	STICKER_SLOT(WEAPON_GLOCK, side, glockSkin, slot) \
-	STICKER_SLOT(WEAPON_P250, side, p250Skin, slot) \
-	STICKER_SLOT(WEAPON_TEC9, side, tec9Skin, slot) \
-	STICKER_SLOT(WEAPON_REVOLVER, side, revolverSkin, slot) \
-
-	//default: 
-	//	return reinterpret_cast<decltype(hooked_uint_fn)*>(o_uint_fn)(thisptr, nullptr, slot, attribute, fl); 
-	//break; 
-
-/*
-
-	case (int)WEAPON_KNIFE: \
-		switch (slot) \
-		{\
-		case 0:\
-			return 0;\
-		case 1:\
-			return 0;\
-		case 2:\
-			return 0;\
-		case 3:\
-			return 0;\
-		case 4:\
-			return 0;\
-		default:\
-			break;\
-		}\
-	break;\
-	case (int)WEAPON_KNIFE_T: \
-		switch (slot) \
-		{\
-		case 0:\
-			return 0;\
-		case 1:\
-			return 0;\
-		case 2:\
-			return 0;\
-		case 3:\
-			return 0;\
-		case 4:\
-			return 0;\
-		default:\
-			break;\
-		}\
-	break;\
-*/
-
-// don't know why, but EU csgo version has two usp and cz id
-#define SKIN_GROUPE(side,weaponObject) \
-	SKIN_SLOT(WEAPON_AK47,side,ak47Skin,weaponObject) \
-	SKIN_SLOT(WEAPON_AWP,side,awpSkin,weaponObject) \
-	SKIN_SLOT(WEAPON_USP_SILENCER,side,uspSkin,weaponObject) \
-	SKIN_SLOT(262205,side,uspSkin,weaponObject) \
-	SKIN_SLOT(WEAPON_DEAGLE,side,deagleSkin,weaponObject) \
-	SKIN_SLOT(WEAPON_SSG08,side, ssg08Skin,weaponObject) \
-	SKIN_SLOT(WEAPON_SCAR20,side, scarSkin,weaponObject) \
-	SKIN_SLOT(WEAPON_M4A1, side, m4a1Skin, weaponObject) \
-	SKIN_SLOT(WEAPON_FAMAS, side, famasSkin, weaponObject) \
-	SKIN_SLOT(WEAPON_G3SG1, side, g3sg1Skin, weaponObject) \
-	SKIN_SLOT(WEAPON_M4A1_SILENCER, side, m4a1s1Skin, weaponObject) \
-	SKIN_SLOT(WEAPON_SG556, side, sg553Skin, weaponObject) \
-	SKIN_SLOT(WEAPON_AUG, side, augSkin, weaponObject) \
-	SKIN_SLOT(WEAPON_GALILAR, side, galilSkin, weaponObject) \
-	SKIN_SLOT(WEAPON_MAC10, side, mac10Skin, weaponObject) \
-	SKIN_SLOT(WEAPON_MP5SD, side, mp5Skin, weaponObject) \
-	SKIN_SLOT(WEAPON_MP7, side, mp7Skin, weaponObject) \
-	SKIN_SLOT(WEAPON_MP9, side, mp9Skin, weaponObject) \
-	SKIN_SLOT(WEAPON_BIZON, side, ppbizonSkin, weaponObject) \
-	SKIN_SLOT(WEAPON_P90, side, p90Skin, weaponObject) \
-	SKIN_SLOT(WEAPON_UMP45, side, umpSkin, weaponObject) \
-	SKIN_SLOT(WEAPON_CZ75A, side, cz75Skin, weaponObject) \
-	SKIN_SLOT(262207, side, cz75Skin, weaponObject) \
-	SKIN_SLOT(WEAPON_ELITE, side, dualberttaSkin, weaponObject) \
-	SKIN_SLOT(WEAPON_FIVESEVEN, side, fiveSevenSkin, weaponObject) \
-	SKIN_SLOT(WEAPON_GLOCK, side, glockSkin, weaponObject) \
-	SKIN_SLOT(WEAPON_P250, side, p250Skin, weaponObject) \
-	SKIN_SLOT(WEAPON_TEC9, side, tec9Skin, weaponObject) \
-	SKIN_SLOT(WEAPON_REVOLVER, side, revolverSkin, weaponObject) \
-
-
-//SKIN_SLOT(262205,side,uspSkin,weaponObject) 
-//SKIN_SLOT(262207, side, cz75Skin, weaponObject) 
-/*
-using recv_var_proxy_fn_ = void(*)(const c_recv_proxy_data_* data, void* struct_ptr, void* out_ptr);
-using array_length_recv_proxy_fn_ = void(*)(void* struct_ptr, int object_id, int current_array_length);
-using data_table_recv_var_proxy_fn_ = void(*)(const recv_prop_* prop, void** out_ptr, void* data_ptr, int object_id);
-
-recv_var_proxy_fn_ sequenceOrginalFn = nullptr;
-recv_var_proxy_fn_ recvModelIndex;
-*/
-
-/*
-#define KNIFE_SKIN(side) \
-	int knifeModelId = interfaces::modelInfo->GetModelIndex(knifeModelNames[config::visual.skins.side.knifeId]); \
-	int knifeDefinitionId = getKnifeDefinitionIndex(config::visual.skins.side.knifeId); \
-	currentWeapon->setItemDefinitionIndex(knifeDefinitionId); \
-	currentWeapon->setFallbackPaintKit(config::visual.skins.side.knifePaint); \
-	currentWeapon->setEntityQuality(3); \
-	currentWeapon->setFallbackWear(0); \
-	currentWeapon->setFallbackSeed(0); \
-	currentWeapon->setModelIndex(knifeModelId); \
-	currentWeaponBase->setViewModelIndex(knifeModelId); \
-	if (!localPlayer->m_hViewModel()) { continue; }\
-	auto viewModel = (C_BaseViewModel*)(interfaces::clientEntityList->GetClientEntityFromHandle(localPlayer->m_hViewModel())); \
-	if (!viewModel) { continue; } \
-	auto viewModelWeaponHandle = viewModel->m_hWeapon(); \
-	if (!viewModelWeaponHandle) { continue; } \
-	auto currentPlayerWeapon = (C_BaseAttributableItem*)(interfaces::clientEntityList->GetClientEntityFromHandle(viewModelWeaponHandle)); \
-	if (currentPlayerWeapon->itemDefinitionIndex() != knifeDefinitionId) { continue; } \
-	viewModel->setModelIndex(knifeModelId); \
-	currentWeapon->setItemIDHigh(-1); \
-*/
-
 namespace skinchanger {
-
-	/*
-	const char* playerModels[] = {
-		"models/player/custom_player/legacy/ctm_fbi_variantb.mdl",
-		"models/player/custom_player/legacy/ctm_fbi_variantf.mdl",
-		"models/player/custom_player/legacy/ctm_fbi_variantg.mdl",
-		"models/player/custom_player/legacy/ctm_fbi_varianth.mdl",
-		"models/player/custom_player/legacy/ctm_sas_variantf.mdl",
-		"models/player/custom_player/legacy/ctm_st6_variante.mdl",
-		"models/player/custom_player/legacy/ctm_st6_variantg.mdl",
-		"models/player/custom_player/legacy/ctm_st6_varianti.mdl",
-		"models/player/custom_player/legacy/ctm_st6_variantk.mdl",
-		"models/player/custom_player/legacy/ctm_st6_variantm.mdl",
-		"models/player/custom_player/legacy/tm_balkan_variantf.mdl",
-		"models/player/custom_player/legacy/tm_balkan_variantg.mdl",
-		"models/player/custom_player/legacy/tm_balkan_varianth.mdl",
-		"models/player/custom_player/legacy/tm_balkan_varianti.mdl",
-		"models/player/custom_player/legacy/tm_balkan_variantj.mdl",
-		"models/player/custom_player/legacy/tm_leet_variantf.mdl",
-		"models/player/custom_player/legacy/tm_leet_variantg.mdl",
-		"models/player/custom_player/legacy/tm_leet_varianth.mdl",
-		"models/player/custom_player/legacy/tm_leet_varianti.mdl",
-		"models/player/custom_player/legacy/tm_phoenix_variantf.mdl",
-		"models/player/custom_player/legacy/tm_phoenix_variantg.mdl",
-		"models/player/custom_player/legacy/tm_phoenix_varianth.mdl"
-	};*/
 
 	std::vector<std::string> knifeModelNames = {};
 	std::vector<std::string> playerModels = {};
 	std::vector<std::string> armsModels = {};
+
+	int m_last_seq;
+
+	constexpr int sequence_default_draw = 0;
+	constexpr int sequence_default_idle1 = 1;
+	constexpr int sequence_default_idle2 = 2;
+	constexpr int sequence_default_heavy_miss1 = 9;
+	constexpr int sequence_default_heavy_hit1 = 10;
+	constexpr int sequence_default_heavy_backstab = 11;
+	constexpr int sequence_default_lookat01 = 12;
+
+	constexpr int sequence_butterfly_draw = 0;
+	constexpr int sequence_butterfly_draw2 = 1;
+	constexpr int sequence_butterfly_lookat01 = 13;
+	constexpr int sequence_butterfly_lookat03 = 15;
+
+	constexpr int sequence_falchion_idle1 = 1;
+	constexpr int sequence_falchion_heavy_miss1 = 8;
+	constexpr int sequence_falchion_heavy_miss1_noflip = 9;
+	constexpr int sequence_falchion_lookat01 = 12;
+	constexpr int sequence_falchion_lookat02 = 13;
+
+	constexpr int sequence_push_idle1 = 1;
+	constexpr int sequence_push_heavy_miss2 = 11;
 
 	// init to the highest item index possible
 	static int itemIDHighOriginals[GLOVE_HYDRA];
@@ -290,31 +94,6 @@ namespace skinchanger {
 			return -1;
 		}
 	}
-
-	/*
-	const char* knifeModelNames[] = {
-		"models/weapons/v_knife_default_t.mdl",
-		"models/weapons/v_knife_default_ct.mdl",
-		"models/weapons/v_knife_bayonet.mdl",
-		"models/weapons/v_knife_m9_bay.mdl",
-		"models/weapons/v_knife_karam.mdl",
-		"models/weapons/v_knife_survival_bowie.mdl",
-		"models/weapons/v_knife_butterfly.mdl",
-		"models/weapons/v_knife_falchion_advanced.mdl",
-		"models/weapons/v_knife_flip.mdl",
-		"models/weapons/v_knife_gut.mdl",
-		"models/weapons/v_knife_tactical.mdl",
-		"models/weapons/v_knife_push.mdl",
-		"models/weapons/v_knife_gypsy_jackknife.mdl",
-		"models/weapons/v_knife_stiletto.mdl",
-		"models/weapons/v_knife_widowmaker.mdl",
-		"models/weapons/v_knife_ursus.mdl",
-		"models/weapons/v_knife_skeleton.mdl", //skeleton knife
-		"models/weapons/v_knife_outdoor.mdl", //nomad knife
-		"models/weapons/v_knife_canis.mdl", //survivak knife
-		"models/weapons/v_knife_cord.mdl", //paracord knife
-		"models/weapons/v_knife_css.mdl"
-	};*/
 
 	void init() {
 
@@ -462,10 +241,6 @@ namespace skinchanger {
 			VECTOR_PUSH(playerModels, "models/player/custom_player/legacy/tm_professional_vari.mdl", tmp61)
 			VECTOR_PUSH(playerModels, "models/player/custom_player/legacy/tm_professional_varj.mdl", tmp62)
 			*/
-
-
-
-			//setupAnimations();
 
 			VMProtectEnd();
 	}
@@ -684,262 +459,140 @@ namespace skinchanger {
 		VMProtectEnd();
 	}
 
-	/*
-	int getSequenceActivityWorker(C_BaseViewModel* viewModel, int sequence) {
+	void updateAnimations(C_BaseCombatWeapon* ent) {
 
-		auto localPlayer = (Entity*)(interfaces::clientEntityList->GetClientEntity(interfaces::engineClient->GetLocalPlayer()));
+		VMProtectBeginMutation("skinchanger::updateAnimations");
 
-		if (!localPlayer)
-			return -1;
+		// from : legendware
 
-		if (!localPlayer->model())
-			return -1;
+		int seq = *ent->m_nSequence();
 
-		auto hdr = interfaces::modelInfo->GetStudioModel(localPlayer->model());
+		int itemDefinitionIndex = *((C_BaseAttributableItem*)ent)->m_iItemDefinitionIndex();
 
-		if (!hdr)
-			return -1;
+		// check if this knife needs extra fixing.
+		if (itemDefinitionIndex == WEAPON_KNIFE_BUTTERFLY ||
+			itemDefinitionIndex == WEAPON_KNIFE_FALCHION ||
+			//itemDefinitionIndex == knives_t::DAGGER || 
+			itemDefinitionIndex == WEAPON_KNIFE_SURVIVAL_BOWIE ||
+			itemDefinitionIndex == WEAPON_KNIFE_OUTDOOR) {
 
-		return interfaces::getSequenceActivity(viewModel, hdr, sequence);
-	}
+			// fix the idle sequences.
+			if (seq == sequence_default_idle1 || seq == sequence_default_idle2) {
+				// set the animation to be completed.
+				*ent->m_flCycle() = 0.999f;
 
-	void hookedRecvproxyViewmodel(c_recv_proxy_data_* p_data, void *p_struct, void *p_out) {
-
-		std::vector<long> modelIndexs = {};
-
-		for (std::string model : knifeModelNames) 
-			modelIndexs.push_back((long)interfaces::modelInfo->GetModelIndex(model.c_str()));
-		
-		auto localPlayer = reinterpret_cast<Entity*>(interfaces::clientEntityList->GetClientEntity(interfaces::engineClient->GetLocalPlayer()));
-
-		if (!localPlayer)
-			return;
-
-		if (!localPlayer->isAlive())
-			return;
-
-		// if the viewModel contains a knife
-		if (std::find(modelIndexs.begin(), modelIndexs.end(), p_data->value.m_int) != modelIndexs.end())
-		{
-			int knifeId = localPlayer->m_iTeamNum() == TEAM_COUNTER_TERRORIST ? config::visual.skins.ctSkins.knifeId : config::visual.skins.tSkins.knifeId;
-
-			p_data->value.m_int = interfaces::modelInfo->GetModelIndex(knifeModelNames.at(knifeId).c_str());
-		}
-		
-		if (recvModelIndex)
-			recvModelIndex(p_data, p_struct, p_out);
-	}
-
-	void setViewModelSequence(const c_recv_proxy_data_* pDataConst, void *p_struct, void *p_out) {
-
-		c_recv_proxy_data_* p_data = const_cast<c_recv_proxy_data_*>(pDataConst);
-
-		C_BaseAttributableItem* player_view_model = static_cast<C_BaseAttributableItem*>(p_struct);
-
-		C_BaseViewModel* pViewModel = (C_BaseViewModel*)p_struct;
-
-		if (player_view_model) {
-
-			auto local_player = reinterpret_cast<Entity*>(interfaces::clientEntityList->GetClientEntity(interfaces::engineClient->GetLocalPlayer()));
-
-			Entity* p_owner = (Entity*)(interfaces::clientEntityList->GetClientEntity(player_view_model->m_hOwner() & 0xFFF));
-
-			if (p_owner == local_player) {
-
-				int m_nSequence = p_data->value.m_int;
-
-				/*
-				int originalActivity = getSequenceActivityWorker(pViewModel, m_nSequence); // Get the original sequence activity
-
-				// thanks oneshot : https://www.unknowncheats.me/forum/counterstrike-global-offensive/326785-automated-sequence-fix-knife-model-changer.html
-
-				int newActivity = 1;
-				int num = 0;
-
-				for (size_t i = 0; i < 20; i++) // compare activity with original activity and save new activity // havent seen a sequence above 14 but using 20 if theres is :D
-				{
-					int tempActitivity = getSequenceActivityWorker(pViewModel, i);
-					if (originalActivity != -1 && originalActivity == tempActitivity || originalActivity == -1 && tempActitivity == 213)
-					{
-						newActivity = i;
-						for (size_t t = 0; t < 4; t++)
-							if (getSequenceActivityWorker(pViewModel, i + t) == tempActitivity)
-								num++;
-						break;
-					}
-				}
-
-				if (originalActivity == -1 && newActivity == 1)
-					newActivity = m_nSequence;
-				if (!num)
-					m_nSequence = newActivity;
-				else
-					m_nSequence = RandomInt(newActivity, newActivity + num - 1);
-
-				//pViewModel->SendViewModelMatchingSequence(m_nSequence); // this sets the sequence and resets the sequence timings.
-				
-
-				std::string sz_model = interfaces::modelInfo->GetModelName(interfaces::modelInfo->GetModel(player_view_model->getModelIndex()));
-
-				if (sz_model == XorStr("models/weapons/v_knife_butterfly.mdl")) {
-					switch (m_nSequence) {
-					case SEQUENCE_DEFAULT_DRAW:
-						m_nSequence = RandomInt(SEQUENCE_BUTTERFLY_DRAW, SEQUENCE_BUTTERFLY_DRAW2);
-						break;
-					case SEQUENCE_DEFAULT_LOOKAT01:
-						m_nSequence = RandomInt(SEQUENCE_BUTTERFLY_LOOKAT01, SEQUENCE_BUTTERFLY_LOOKAT03);
-						break;
-					default:
-						m_nSequence++;
-					}
-				}
-				else if (sz_model == XorStr("models/weapons/v_knife_falchion_advanced.mdl")) {
-					switch (m_nSequence) {
-					case SEQUENCE_DEFAULT_IDLE2:
-						m_nSequence = SEQUENCE_FALCHION_IDLE1; break;
-					case SEQUENCE_DEFAULT_HEAVY_MISS1:
-						m_nSequence = RandomInt(SEQUENCE_FALCHION_HEAVY_MISS1, SEQUENCE_FALCHION_HEAVY_MISS1_NOFLIP);
-						break;
-					case SEQUENCE_DEFAULT_LOOKAT01:
-						m_nSequence = RandomInt(SEQUENCE_FALCHION_LOOKAT01, SEQUENCE_FALCHION_LOOKAT02);
-						break;
-					case SEQUENCE_DEFAULT_DRAW:
-					case SEQUENCE_DEFAULT_IDLE1:
-						break;
-					default:
-						m_nSequence--;
-					}
-				}
-				else if (sz_model == XorStr("models/weapons/v_knife_push.mdl")) {
-					switch (m_nSequence) {
-					case SEQUENCE_DEFAULT_IDLE2:
-						m_nSequence = SEQUENCE_DAGGERS_IDLE1; break;
-					case SEQUENCE_DEFAULT_LIGHT_MISS1:
-					case SEQUENCE_DEFAULT_LIGHT_MISS2:
-						m_nSequence = RandomInt(SEQUENCE_DAGGERS_LIGHT_MISS1, SEQUENCE_DAGGERS_LIGHT_MISS5);
-						break;
-					case SEQUENCE_DEFAULT_HEAVY_MISS1:
-						m_nSequence = RandomInt(SEQUENCE_DAGGERS_HEAVY_MISS2, SEQUENCE_DAGGERS_HEAVY_MISS1);
-						break;
-					case SEQUENCE_DEFAULT_HEAVY_HIT1:
-					case SEQUENCE_DEFAULT_HEAVY_BACKSTAB:
-					case SEQUENCE_DEFAULT_LOOKAT01:
-						m_nSequence += 3; break;
-					case SEQUENCE_DEFAULT_DRAW:
-					case SEQUENCE_DEFAULT_IDLE1:
-						break;
-					default:
-						m_nSequence += 2;
-					}
-				}
-				else if (sz_model == XorStr("models/weapons/v_knife_survival_bowie.mdl")) {
-					switch (m_nSequence)
-					{
-					case SEQUENCE_DEFAULT_DRAW:
-					case SEQUENCE_DEFAULT_IDLE1:
-						break;
-					case SEQUENCE_DEFAULT_IDLE2:
-						m_nSequence = SEQUENCE_BOWIE_IDLE1;
-						break;
-					default:
-						m_nSequence--;
-					}
-				}
-				else if (sz_model == XorStr("models/weapons/v_knife_ursus.mdl")) {
-					switch (m_nSequence) {
-					case SEQUENCE_DEFAULT_DRAW:
-						m_nSequence = RandomInt(SEQUENCE_BUTTERFLY_DRAW, SEQUENCE_BUTTERFLY_DRAW2);
-						break;
-					case SEQUENCE_DEFAULT_LOOKAT01:
-						m_nSequence = RandomInt(SEQUENCE_BUTTERFLY_LOOKAT01, SEQUENCE_BUTTERFLY_LOOKAT03);
-						break;
-					default:
-						m_nSequence++;
-						break;
-					}
-				}
-				else if (sz_model == XorStr("models/weapons/v_knife_stiletto.mdl")) {
-					switch (m_nSequence) {
-					case SEQUENCE_DEFAULT_LOOKAT01:
-						m_nSequence = RandomInt(12, 13);
-						break;
-					}
-				}
-				else if (sz_model == XorStr("models/weapons/v_knife_widowmaker.mdl")) {
-					switch (m_nSequence) {
-					case SEQUENCE_DEFAULT_LOOKAT01:
-						m_nSequence = RandomInt(14, 15);
-						break;
-					}
-				}
-				else if (sz_model == XorStr("models/weapons/v_knife_cord.mdl")
-					|| sz_model == XorStr("models/weapons/v_knife_canis.mdl")
-					|| sz_model == XorStr("models/weapons/v_knife_outdoor.mdl")
-					|| sz_model == XorStr("models/weapons/v_knife_skeleton.mdl"))
-				{
-					switch (m_nSequence)
-					{
-					case SEQUENCE_DEFAULT_DRAW:
-						m_nSequence = RandomInt(SEQUENCE_BUTTERFLY_DRAW, SEQUENCE_BUTTERFLY_DRAW2);
-					case SEQUENCE_DEFAULT_LOOKAT01:
-						m_nSequence = RandomInt(SEQUENCE_BUTTERFLY_LOOKAT01, 14);
-					default:
-						m_nSequence = m_nSequence + 1;
-					}
-				}
-
-
-				p_data->value.m_int = m_nSequence;
+				// cycle change, re-render.
+				interfaces::invalidatePhysicsRecursive((void*)ent, ANIMATION_CHANGED);
 			}
 		}
 
-		sequenceOrginalFn(p_data, p_struct, p_out);
-	}
+		// fix sequences.
+		if (m_last_seq != seq) {
+			if (itemDefinitionIndex == WEAPON_KNIFE_BUTTERFLY) {
+				switch (seq) {
+				case sequence_default_draw:
+					seq = RandomInt(sequence_butterfly_draw, sequence_butterfly_draw2);
+					break;
 
-	void setupAnimations() {
+				case sequence_default_lookat01:
+					seq = RandomInt(sequence_butterfly_lookat01, sequence_butterfly_lookat03);
+					break;
 
-		for (auto client_class = interfaces::baseClientDll->GetAllClasses(); client_class; client_class = client_class->m_pNext) {
-
-			if (!strcmp(client_class->m_pNetworkName, XorStr("CBaseViewModel"))) {
-				const auto table = reinterpret_cast<recv_table_*>(client_class->m_pRecvTable);
-				for (int nIndex = 0; nIndex < table->props_count; nIndex++) {
-					recv_prop_* pProp = &table->props[nIndex];
-					if (!pProp || strcmp(pProp->prop_name, XorStr("m_nSequence")))
-						continue;
-					sequenceOrginalFn = static_cast<recv_var_proxy_fn_>(pProp->proxy_fn);
-					pProp->proxy_fn = static_cast<recv_var_proxy_fn_>(setViewModelSequence);
+				default:
+					seq++;
 					break;
 				}
-				break;
 			}
-		}
 
-		auto client_class = interfaces::baseClientDll->GetAllClasses();
+			else if (itemDefinitionIndex == WEAPON_KNIFE_FALCHION) {
+				switch (seq) {
+				case sequence_default_draw:
+				case sequence_default_idle1:
+					break;
 
-		while (client_class) {
-			const char *pszName = client_class->m_pRecvTable->table_name;
-			if (!strcmp(pszName, XorStr("DT_SmokeGrenadeProjectile"))) {
-				for (int i = 0; i < client_class->m_pRecvTable->props_count; i++) {
-					recv_prop_ *pProp = &(client_class->m_pRecvTable->props[i]);
-					const char *name = pProp->prop_name;
-					if (!strcmp(name, XorStr("m_bDidSmokeEffect"))) {
-					}
+				case sequence_default_idle2:
+					seq = sequence_falchion_idle1;
+					break;
+
+				case sequence_default_heavy_miss1:
+					seq = RandomInt(sequence_falchion_heavy_miss1, sequence_falchion_heavy_miss1_noflip);
+					break;
+
+				case sequence_default_lookat01:
+					seq = RandomInt(sequence_falchion_lookat01, sequence_falchion_lookat02);
+					break;
 				}
 			}
-			else if (!strcmp(pszName, XorStr("DT_BaseViewModel"))) {
-				for (int i = 0; i < client_class->m_pRecvTable->props_count; i++) {
-					recv_prop_ *pProp = &(client_class->m_pRecvTable->props[i]);
-					const char *name = pProp->prop_name;
-					if (!strcmp(name, XorStr("m_nModelIndex"))) {
-						recvModelIndex = (recv_var_proxy_fn_)pProp->proxy_fn;
-						pProp->proxy_fn = (recv_var_proxy_fn_)hookedRecvproxyViewmodel;
-					}
+
+			/*
+			else if (itemDefinitionIndex == knives_t::DAGGER) {
+				switch (seq) {
+				case sequence_default_idle2:
+					seq = sequence_push_idle1;
+					break;
+
+				case sequence_default_heavy_hit1:
+				case sequence_default_heavy_backstab:
+				case sequence_default_lookat01:
+					seq += 3;
+					break;
+
+				case sequence_default_heavy_miss1:
+					seq = sequence_push_heavy_miss2;
+					break;
+				}
+
+			}*/
+
+
+			else if (itemDefinitionIndex == WEAPON_KNIFE_STILETTO) {
+				switch (seq) {
+				case sequence_butterfly_lookat01:
+					seq = RandomInt(12, 13);
+					break;
 				}
 			}
-			client_class = client_class->m_pNext;
+
+			else if (itemDefinitionIndex == WEAPON_KNIFE_URSUS ||
+				itemDefinitionIndex == WEAPON_KNIFE_CORD ||
+				itemDefinitionIndex == WEAPON_KNIFE_CANIS ||
+				itemDefinitionIndex == WEAPON_KNIFE_OUTDOOR ||
+				itemDefinitionIndex == WEAPON_KNIFE_SKELETON) {
+				switch (seq) {
+				case sequence_default_draw:
+					seq = RandomInt(sequence_butterfly_draw, sequence_butterfly_draw2);
+					break;
+
+				case sequence_default_lookat01:
+					seq = RandomInt(sequence_butterfly_lookat01, 14);
+					break;
+
+				default:
+					seq++;
+					break;
+				}
+			}
+			else if (itemDefinitionIndex == WEAPON_KNIFE_SURVIVAL_BOWIE) {
+				if (seq > sequence_default_idle1)
+					seq--;
+			}
+
+			else if (itemDefinitionIndex == WEAPON_KNIFE_WIDOWMAKER) {
+				switch (seq) {
+				case sequence_butterfly_lookat01:
+					seq = RandomInt(14, 15);
+					break;
+				}
+			}
+
+			m_last_seq = seq;
 		}
+
+		// write back fixed sequence.
+		*ent->m_nSequence() = seq;
+
+		VMProtectEnd();
 	}
-	*/
 
 	void changeViewModel(C_BaseAttributableItem* pCurrentWeapon) {
 
@@ -1128,61 +781,11 @@ namespace skinchanger {
 				continue;
 
 			// changing skin
-			
 			if (((C_BaseCombatWeapon*)weapon)->IsKnife())
 			{
 				applyKnifeSkin(itemDefinitionIndex, weapon, &info);
 
-				/*
-				if (team == TEAM_COUNTER_TERRORIST) // CT
-				{
-					int knifeModelId = interfaces::modelInfo->GetModelIndex(knifeModelNames.at(config::visual.skins.ctSkins.knifeId).c_str());
-					int knifeDefinitionId = getKnifeDefinitionIndex(config::visual.skins.ctSkins.knifeId);
-
-					if (currentWeapon->itemDefinitionIndex() == WEAPON_KNIFE ||
-						currentWeapon->itemDefinitionIndex() == WEAPON_KNIFE_T ||
-						currentWeapon->itemDefinitionIndex() == knifeDefinitionId)
-					{
-						currentWeapon->setItemDefinitionIndex(knifeDefinitionId);
-
-						currentWeapon->setModelIndex(knifeModelId);
-						currentWeaponBase->setViewModelIndex(knifeModelId);
-
-						currentWeapon->setFallbackPaintKit(config::visual.skins.ctSkins.knifePaint);
-
-						currentWeapon->setEntityQuality(3);
-						currentWeapon->setFallbackWear(0);
-						currentWeapon->setFallbackSeed(0);
-
-						currentWeapon->setItemIDHigh(-1);
-					}
-				}
-
-				else if (team == TEAM_TERRORIST) // T
-				{
-					//KNIFE_SKIN(tSkins)
-
-					int knifeModelId = interfaces::modelInfo->GetModelIndex(knifeModelNames.at(config::visual.skins.tSkins.knifeId).c_str());
-					int knifeDefinitionId = getKnifeDefinitionIndex(config::visual.skins.tSkins.knifeId);
-
-					if (currentWeapon->itemDefinitionIndex() == WEAPON_KNIFE ||
-						currentWeapon->itemDefinitionIndex() == WEAPON_KNIFE_T ||
-						currentWeapon->itemDefinitionIndex() == knifeDefinitionId)
-					{
-						currentWeapon->setItemDefinitionIndex(knifeDefinitionId);
-
-						currentWeapon->setModelIndex(knifeModelId);
-						currentWeaponBase->setViewModelIndex(knifeModelId);
-
-						currentWeapon->setFallbackPaintKit(config::visual.skins.tSkins.knifePaint);
-
-						currentWeapon->setEntityQuality(3);
-						currentWeapon->setFallbackWear(0);
-						currentWeapon->setFallbackSeed(0);
-
-						currentWeapon->setItemIDHigh(-1);
-					}
-				}*/
+				updateAnimations((C_BaseCombatWeapon*)weapon);
 			}
 			else {
 

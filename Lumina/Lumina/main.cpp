@@ -9,6 +9,7 @@
 #include "features/visuals/chams.h"
 #include "features/misc/voice.h"
 #include "features/visuals/skinchanger.h"
+#include "features/visuals/animationfix.h"
 #include "ui/sound.h"
 #include "features/visuals/world.h"
 
@@ -75,6 +76,8 @@ DWORD WINAPI Start(LPVOID param) {
 	input::init();
 
 	skinchanger::init();
+
+	animationfix::init();
 
 	//voice::init();
 
