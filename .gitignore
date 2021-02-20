@@ -6,4 +6,7 @@
 *.ilk
 *.exp
 *.pdb
+*.iobj
+*.node
+Build/*.config
 Objects/

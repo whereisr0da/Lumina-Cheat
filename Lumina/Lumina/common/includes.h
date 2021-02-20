@@ -30,12 +30,14 @@
 #include <VMProtectSDK.h>
 #define StringHeavy(s) (VMProtectDecryptStringA(s))
 #else
-#define StringHeavy(s) (s)
-#define VMProtectBeginMutation(NAME) const char* FUNCTION_NAME = NAME
-#define VMProtectEnd() char* FUNCTION_NAME_END
+// ;)
+// find yourself why I did that
+#include <VMProtectSDK.h>
+#define StringHeavy(s) (VMProtectDecryptStringA(s))
+//#define StringHeavy(s) (s)
+//#define VMProtectBeginMutation(NAME) const char* FUNCTION_NAME = NAME
+//#define VMProtectEnd() char* FUNCTION_NAME_END
 #endif
-
-// utils
 
 #include "vfunc.h"
 

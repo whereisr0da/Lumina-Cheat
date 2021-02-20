@@ -34,15 +34,21 @@ Like I explained earlier, the point of being not detected regarding the code is 
 
 But I've spend a lot of time working on this game, and I think it's now time to do release it as I'm not playing that much anymore.
 
+# How to compile it ?
+
+Compile in Release mode to be sure that the code is mutated. Modify the `sign.bat` file and set your VMProtect path and grab the last `crashhandler.dll` signature as `crashhandler.original.sig`.
+
 # How to use ?
 
-Place the crashhandler.dll file Steam's root folder. CSGO will load it before applying the LoadLibrary hook.
+Place the `crashhandler.dll` file Steam's root folder. CSGO will load it before applying the LoadLibrary hook.
 
 # Features
 
 Like I said, it's a legit cheat, so features are meant to be hidden regarding overwatch. But it's depending of your own gameplay.
 
 - Chams
+    - Enemy
+    - Hands and Steeves 
 - Glow
 - Skin Changer (two slots, T and CT)
     - Weapon (paint, stickers, ...) 
@@ -73,9 +79,28 @@ I started to made the UI from raw, but at the end I didn't want to put too much 
 
 It's why I don't provide screenshots of the menu.
 
+# Preview video
+
+[![](http://img.youtube.com/vi/PN5KUjSbEYw/0.jpg)](http://www.youtube.com/watch?v=PN5KUjSbEYw "")
+
+# Logs
+
+19-02-2021 v0.1.10 : Fix knife animations and hand chams bug
+05-02-2021 v0.1.9  : Added hands and sleeves color changer
+27-01-2021 v0.1.8  : Added world modulation and removed strcmp
+07-01-2021 v0.1.7  : Official release
+14-09-2019 v0.1.0  : Merging Natacha project to Lumina project
+05-06-2018 v0.0.0  : Starting the project
+
+# Bugs
+
+There is still a bug when you plant a bomb, sometimes it crashes but it's too rare so I can debug it.
+
 # Credit
 
 - Oneshot
+- coders from legendware
+- fatality.win 2018 source code
 - JsonCpp http://jsoncpp.sourceforge.net/
 - zxvnme (zgui)
 - coders from pandoracheats.pw
