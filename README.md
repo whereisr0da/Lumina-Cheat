@@ -85,12 +85,12 @@ It's why I don't provide screenshots of the menu.
 
 # Logs
 
-19-02-2021 v0.1.10 : Fix knife animations and hand chams bug
-05-02-2021 v0.1.9  : Added hands and sleeves color changer
-27-01-2021 v0.1.8  : Added world modulation and removed strcmp
-07-01-2021 v0.1.7  : Official release
-14-09-2019 v0.1.0  : Merging Natacha project to Lumina project
-05-06-2018 v0.0.0  : Starting the project
+- 19-02-2021 v0.1.10 : Fix knife animations and hand chams bug
+- 05-02-2021 v0.1.9  : Added hands and sleeves color changer
+- 27-01-2021 v0.1.8  : Added world modulation and removed strcmp
+- 07-01-2021 v0.1.7  : Official release
+- 14-09-2019 v0.1.0  : Merging Natacha project to Lumina project
+- 05-06-2018 v0.0.0  : Starting the project
 
 # Bugs
 
