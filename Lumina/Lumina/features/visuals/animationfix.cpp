@@ -17,12 +17,12 @@ namespace animationfix {
 		auto localPlayer = game::getLocalPlayer();
 
 		if(!localPlayer || !localPlayer->isAlive())
-			recv_model_index(p_data, p_struct, p_out);
+			return recv_model_index(p_data, p_struct, p_out);
 
 		std::vector<int> knifeModelIndexs = {};
 
 		// grab all knife model ids
-		for each (std::string knifeModel in skinchanger::knifeModelNames){
+		for (std::string knifeModel : skinchanger::knifeModelNames){
 			knifeModelIndexs.push_back(interfaces::modelInfo->GetModelIndex(knifeModel.c_str()));
 		}
 
@@ -49,130 +49,133 @@ namespace animationfix {
 
 		C_BaseAttributableItem* player_view_model = (C_BaseAttributableItem*)(p_struct);
 
-		if (player_view_model) {
+		if (!player_view_model)
+			return sequence_proxy_fn(p_data, p_struct, p_out);
 
-			auto local_player = game::getLocalPlayer();
+		auto localPlayer = game::getLocalPlayer();
 
-			Entity* p_owner = (Entity*)(interfaces::clientEntityList->GetClientEntity(*player_view_model->m_hOwner() & 0xFFF));
+		if (!localPlayer || !localPlayer->isAlive())
+			return sequence_proxy_fn(p_data, p_struct, p_out);
 
-			if (p_owner == local_player) {
+		Entity* p_owner = (Entity*)(interfaces::clientEntityList->GetClientEntity(*player_view_model->m_hOwner() & 0xFFF));
 
-				std::string sz_model = interfaces::modelInfo->GetModelName(interfaces::modelInfo->GetModel(*player_view_model->m_nModelIndex()));
+		if (p_owner != localPlayer)
+			return sequence_proxy_fn(p_data, p_struct, p_out);
 
-				hash32_t modelHash = FNV1a::get(sz_model);
+		std::string sz_model = interfaces::modelInfo->GetModelName(interfaces::modelInfo->GetModel(*player_view_model->m_nModelIndex()));
 
-				int m_nSequence = p_data->value.m_int;
+		hash32_t modelHash = FNV1a::get(sz_model);
 
-				if (modelHash == HASH("models/weapons/v_knife_butterfly.mdl")) {
-					switch (m_nSequence) {
-					case SEQUENCE_DEFAULT_DRAW:
-						m_nSequence = RandomInt(SEQUENCE_BUTTERFLY_DRAW, SEQUENCE_BUTTERFLY_DRAW2);
-						break;
-					case SEQUENCE_DEFAULT_LOOKAT01:
-						m_nSequence = RandomInt(SEQUENCE_BUTTERFLY_LOOKAT01, SEQUENCE_BUTTERFLY_LOOKAT03);
-						break;
-					default:
-						m_nSequence++;
-					}
-				}
-				else if (modelHash == HASH("models/weapons/v_knife_falchion_advanced.mdl")) {
-					switch (m_nSequence) {
-					case SEQUENCE_DEFAULT_IDLE2:
-						m_nSequence = SEQUENCE_FALCHION_IDLE1; break;
-					case SEQUENCE_DEFAULT_HEAVY_MISS1:
-						m_nSequence = RandomInt(SEQUENCE_FALCHION_HEAVY_MISS1, SEQUENCE_FALCHION_HEAVY_MISS1_NOFLIP);
-						break;
-					case SEQUENCE_DEFAULT_LOOKAT01:
-						m_nSequence = RandomInt(SEQUENCE_FALCHION_LOOKAT01, SEQUENCE_FALCHION_LOOKAT02);
-						break;
-					case SEQUENCE_DEFAULT_DRAW:
-					case SEQUENCE_DEFAULT_IDLE1:
-						break;
-					default:
-						m_nSequence--;
-					}
-				}
-				else if (modelHash == HASH("models/weapons/v_knife_push.mdl")) {
-					switch (m_nSequence) {
-					case SEQUENCE_DEFAULT_IDLE2:
-						m_nSequence = SEQUENCE_DAGGERS_IDLE1; break;
-					case SEQUENCE_DEFAULT_LIGHT_MISS1:
-					case SEQUENCE_DEFAULT_LIGHT_MISS2:
-						m_nSequence = RandomInt(SEQUENCE_DAGGERS_LIGHT_MISS1, SEQUENCE_DAGGERS_LIGHT_MISS5);
-						break;
-					case SEQUENCE_DEFAULT_HEAVY_MISS1:
-						m_nSequence = RandomInt(SEQUENCE_DAGGERS_HEAVY_MISS2, SEQUENCE_DAGGERS_HEAVY_MISS1);
-						break;
-					case SEQUENCE_DEFAULT_HEAVY_HIT1:
-					case SEQUENCE_DEFAULT_HEAVY_BACKSTAB:
-					case SEQUENCE_DEFAULT_LOOKAT01:
-						m_nSequence += 3; break;
-					case SEQUENCE_DEFAULT_DRAW:
-					case SEQUENCE_DEFAULT_IDLE1:
-						break;
-					default:
-						m_nSequence += 2;
-					}
-				}
-				else if (modelHash == HASH("models/weapons/v_knife_survival_bowie.mdl")) {
-					switch (m_nSequence)
-					{
-					case SEQUENCE_DEFAULT_DRAW:
-					case SEQUENCE_DEFAULT_IDLE1:
-						break;
-					case SEQUENCE_DEFAULT_IDLE2:
-						m_nSequence = SEQUENCE_BOWIE_IDLE1;
-						break;
-					default:
-						m_nSequence--;
-					}
-				}
-				else if (modelHash == HASH("models/weapons/v_knife_ursus.mdl")) {
-					switch (m_nSequence) {
-					case SEQUENCE_DEFAULT_DRAW:
-						m_nSequence = RandomInt(SEQUENCE_BUTTERFLY_DRAW, SEQUENCE_BUTTERFLY_DRAW2);
-						break;
-					case SEQUENCE_DEFAULT_LOOKAT01:
-						m_nSequence = RandomInt(SEQUENCE_BUTTERFLY_LOOKAT01, SEQUENCE_BUTTERFLY_LOOKAT03);
-						break;
-					default:
-						m_nSequence++;
-						break;
-					}
-				}
-				else if (modelHash == HASH("models/weapons/v_knife_stiletto.mdl")) {
-					switch (m_nSequence) {
-					case SEQUENCE_DEFAULT_LOOKAT01:
-						m_nSequence = RandomInt(12, 13);
-						break;
-					}
-				}
-				else if (modelHash == HASH("models/weapons/v_knife_widowmaker.mdl")) {
-					switch (m_nSequence) {
-					case SEQUENCE_DEFAULT_LOOKAT01:
-						m_nSequence = RandomInt(14, 15);
-						break;
-					}
-				}
-				else if (modelHash == HASH("models/weapons/v_knife_cord.mdl")
-					|| modelHash == HASH("models/weapons/v_knife_canis.mdl")
-					|| modelHash == HASH("models/weapons/v_knife_outdoor.mdl")
-					|| modelHash == HASH("models/weapons/v_knife_skeleton.mdl"))
-				{
-					switch (m_nSequence)
-					{
-					case SEQUENCE_DEFAULT_DRAW:
-						m_nSequence = RandomInt(SEQUENCE_BUTTERFLY_DRAW, SEQUENCE_BUTTERFLY_DRAW2);
-					case SEQUENCE_DEFAULT_LOOKAT01:
-						m_nSequence = RandomInt(SEQUENCE_BUTTERFLY_LOOKAT01, 14);
-					default:
-						m_nSequence = m_nSequence + 1;
-					}
-				}
+		int m_nSequence = p_data->value.m_int;
 
-				p_data->value.m_int = m_nSequence;
+		if (modelHash == HASH("models/weapons/v_knife_butterfly.mdl")) {
+			switch (m_nSequence) {
+			case SEQUENCE_DEFAULT_DRAW:
+				m_nSequence = RandomInt(SEQUENCE_BUTTERFLY_DRAW, SEQUENCE_BUTTERFLY_DRAW2);
+				break;
+			case SEQUENCE_DEFAULT_LOOKAT01:
+				m_nSequence = RandomInt(SEQUENCE_BUTTERFLY_LOOKAT01, SEQUENCE_BUTTERFLY_LOOKAT03);
+				break;
+			default:
+				m_nSequence++;
 			}
 		}
+		else if (modelHash == HASH("models/weapons/v_knife_falchion_advanced.mdl")) {
+			switch (m_nSequence) {
+			case SEQUENCE_DEFAULT_IDLE2:
+				m_nSequence = SEQUENCE_FALCHION_IDLE1; break;
+			case SEQUENCE_DEFAULT_HEAVY_MISS1:
+				m_nSequence = RandomInt(SEQUENCE_FALCHION_HEAVY_MISS1, SEQUENCE_FALCHION_HEAVY_MISS1_NOFLIP);
+				break;
+			case SEQUENCE_DEFAULT_LOOKAT01:
+				m_nSequence = RandomInt(SEQUENCE_FALCHION_LOOKAT01, SEQUENCE_FALCHION_LOOKAT02);
+				break;
+			case SEQUENCE_DEFAULT_DRAW:
+			case SEQUENCE_DEFAULT_IDLE1:
+				break;
+			default:
+				m_nSequence--;
+			}
+		}
+		else if (modelHash == HASH("models/weapons/v_knife_push.mdl")) {
+			switch (m_nSequence) {
+			case SEQUENCE_DEFAULT_IDLE2:
+				m_nSequence = SEQUENCE_DAGGERS_IDLE1; break;
+			case SEQUENCE_DEFAULT_LIGHT_MISS1:
+			case SEQUENCE_DEFAULT_LIGHT_MISS2:
+				m_nSequence = RandomInt(SEQUENCE_DAGGERS_LIGHT_MISS1, SEQUENCE_DAGGERS_LIGHT_MISS5);
+				break;
+			case SEQUENCE_DEFAULT_HEAVY_MISS1:
+				m_nSequence = RandomInt(SEQUENCE_DAGGERS_HEAVY_MISS2, SEQUENCE_DAGGERS_HEAVY_MISS1);
+				break;
+			case SEQUENCE_DEFAULT_HEAVY_HIT1:
+			case SEQUENCE_DEFAULT_HEAVY_BACKSTAB:
+			case SEQUENCE_DEFAULT_LOOKAT01:
+				m_nSequence += 3; break;
+			case SEQUENCE_DEFAULT_DRAW:
+			case SEQUENCE_DEFAULT_IDLE1:
+				break;
+			default:
+				m_nSequence += 2;
+			}
+		}
+		else if (modelHash == HASH("models/weapons/v_knife_survival_bowie.mdl")) {
+			switch (m_nSequence)
+			{
+			case SEQUENCE_DEFAULT_DRAW:
+			case SEQUENCE_DEFAULT_IDLE1:
+				break;
+			case SEQUENCE_DEFAULT_IDLE2:
+				m_nSequence = SEQUENCE_BOWIE_IDLE1;
+				break;
+			default:
+				m_nSequence--;
+			}
+		}
+		else if (modelHash == HASH("models/weapons/v_knife_ursus.mdl")) {
+			switch (m_nSequence) {
+			case SEQUENCE_DEFAULT_DRAW:
+				m_nSequence = RandomInt(SEQUENCE_BUTTERFLY_DRAW, SEQUENCE_BUTTERFLY_DRAW2);
+				break;
+			case SEQUENCE_DEFAULT_LOOKAT01:
+				m_nSequence = RandomInt(SEQUENCE_BUTTERFLY_LOOKAT01, SEQUENCE_BUTTERFLY_LOOKAT03);
+				break;
+			default:
+				m_nSequence++;
+				break;
+			}
+		}
+		else if (modelHash == HASH("models/weapons/v_knife_stiletto.mdl")) {
+			switch (m_nSequence) {
+			case SEQUENCE_DEFAULT_LOOKAT01:
+				m_nSequence = RandomInt(12, 13);
+				break;
+			}
+		}
+		else if (modelHash == HASH("models/weapons/v_knife_widowmaker.mdl")) {
+			switch (m_nSequence) {
+			case SEQUENCE_DEFAULT_LOOKAT01:
+				m_nSequence = RandomInt(14, 15);
+				break;
+			}
+		}
+		else if (modelHash == HASH("models/weapons/v_knife_cord.mdl")
+			|| modelHash == HASH("models/weapons/v_knife_canis.mdl")
+			|| modelHash == HASH("models/weapons/v_knife_outdoor.mdl")
+			|| modelHash == HASH("models/weapons/v_knife_skeleton.mdl"))
+		{
+			switch (m_nSequence)
+			{
+			case SEQUENCE_DEFAULT_DRAW:
+				m_nSequence = RandomInt(SEQUENCE_BUTTERFLY_DRAW, SEQUENCE_BUTTERFLY_DRAW2);
+			case SEQUENCE_DEFAULT_LOOKAT01:
+				m_nSequence = RandomInt(SEQUENCE_BUTTERFLY_LOOKAT01, 14);
+			default:
+				m_nSequence = m_nSequence + 1;
+			}
+		}
+
+		p_data->value.m_int = m_nSequence;
 
 		sequence_proxy_fn(p_data, p_struct, p_out);
 

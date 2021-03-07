@@ -13,6 +13,7 @@ public:
 	float x, y, z;
 	Vector( void );
 	Vector( float X, float Y, float Z );
+	void	normalize_aimbot();
 	void Init( float ix = 0.0f, float iy = 0.0f, float iz = 0.0f );
 	bool IsValid() const;
 	float operator[]( int i ) const;
@@ -66,6 +67,13 @@ public:
 	float* Base();
 	float const* Base() const;
 };
+
+
+inline void Vector::normalize_aimbot() {
+	x = std::isfinite(x) ? std::remainderf(x, 360.0f) : 0.0f;
+	y = std::isfinite(y) ? std::remainderf(y, 360.0f) : 0.0f;
+	z = 0.0f;
+}
 
 //===============================================
 inline void Vector::Init( float ix, float iy, float iz )

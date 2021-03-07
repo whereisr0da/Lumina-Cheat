@@ -5,6 +5,7 @@
 #define math_h
 
 #include "Vector.h"
+#include "matrix3x4_t.h"
 
 class math
 {
@@ -16,16 +17,37 @@ public:
 
 	static Vector Normalize(Vector value)
 	{
+		VMProtectBeginMutation("math::Normalize");
+
 		float num = Magnitude(value);
 		if (num != 0.f)
 			return value / num;
+
+		VMProtectEnd();
+
 		return Vector(0.f, 0.f, 0.f);
+	}
+
+	static void transform_vector(Vector& a, matrix3x4_t& b, Vector& out) {
+
+		VMProtectBeginMutation("math::transform_vector");
+
+		out.x = a.Dot(b.m_flMatVal[0]) + b.m_flMatVal[0][3];
+		out.y = a.Dot(b.m_flMatVal[1]) + b.m_flMatVal[1][3];
+		out.z = a.Dot(b.m_flMatVal[2]) + b.m_flMatVal[2][3];
+
+		VMProtectEnd();
 	}
 
 	static Vector ClampMagnitude(Vector vector, float maxLength)
 	{
+		VMProtectBeginMutation("math::ClampMagnitude");
+
 		if (Magnitude(vector) > maxLength)
 			return Vector(Normalize(vector).x * maxLength, Normalize(vector).y * maxLength, 0);
+
+		VMProtectEnd();
+
 		return vector;
 	}
 
@@ -75,6 +97,27 @@ public:
 		forward.z = -sp;
 
 		VMProtectEnd();
+	}
+
+	static Vector calculate_angle(const Vector& source, const Vector& destination, const Vector& viewAngles) {
+
+		VMProtectBeginMutation("math::calculate_angle");
+
+		Vector delta = source - destination;
+		auto radians_to_degrees = [](float radians) { return radians * 180 / static_cast<float>(M_PI); };
+		Vector angles;
+		angles.x = radians_to_degrees(atanf(delta.z / std::hypotf(delta.x, delta.y))) - viewAngles.x;
+		angles.y = radians_to_degrees(atanf(delta.y / delta.x)) - viewAngles.y;
+		angles.z = 0.0f;
+
+		if (delta.x >= 0.0)
+			angles.y += 180.0f;
+
+		angles.normalize_aimbot();
+
+		VMProtectEnd();
+
+		return angles;
 	}
 
 };

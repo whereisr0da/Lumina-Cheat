@@ -3,10 +3,33 @@
 class IMaterialVar
 {
 public:
-	VFUNC( 1, get_tex_value(), ITexture*( __thiscall* )( void* ) )( )
-		VFUNC( 4, set_float_vaue( float val ), void( __thiscall* )( void*, float ) )( val )
-		VFUNC( 5, set_int_value( int val ), void( __thiscall* )( void*, int ) )( val )
-		VFUNC( 6, set_string_value( char const *val ), void( __thiscall* )( void*, char const * ) )( val )
-		VFUNC( 11, set_vec_val( float x, float y, float z ), void( __thiscall* )( void*, float, float, float ) )( x, y, z )
-		VFUNC( 15, set_tex_val( ITexture* tex ), void( __thiscall* )( void*, ITexture* ) )( tex )
+	void* getTexture() {
+		using original_fn = void* (__thiscall*)(IMaterialVar*);
+		return (*(original_fn**)this)[1](this);
+	}
+
+	void setFloat(float val) {
+		using original_fn = void(__thiscall*)(IMaterialVar*, float);
+		return (*(original_fn**)this)[4](this, val);
+	}
+
+	void setInt(int val) {
+		using original_fn = void(__thiscall*)(IMaterialVar*, int);
+		return (*(original_fn**)this)[5](this, val);
+	}
+
+	void setString(char const* val) {
+		using original_fn = void(__thiscall*)(IMaterialVar*, char const*);
+		return (*(original_fn**)this)[6](this, val);
+	}
+
+	void setColor(float r, float g, float b) {
+		using original_fn = void(__thiscall*)(IMaterialVar*, float, float, float);
+		return (*(original_fn**)this)[11](this, r, g, b);
+	}
+
+	void setTexture(void* val) {
+		using original_fn = void(__thiscall*)(IMaterialVar*, void*);
+		return (*(original_fn**)this)[15](this, val);
+	}
 };

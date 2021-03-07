@@ -3,6 +3,7 @@
 #include "../../sdk/interfaces.h"
 #include "../../common/common.h"
 #include "../../features/misc/misc.h"
+#include "../../features/backtrack/backtrack.h"
 
 bool __stdcall createMoveHook(float smt, void* cmd) {
 
@@ -19,6 +20,7 @@ bool __stdcall createMoveHook(float smt, void* cmd) {
 
 	if (game::getLocalPlayer()->isAlive()) {
 		misc::fastStop(userCmd);
+		backtrack::run(userCmd);
 		//misc::silentWalk(userCmd);
 	}
 

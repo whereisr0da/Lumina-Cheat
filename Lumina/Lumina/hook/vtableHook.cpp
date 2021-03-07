@@ -27,7 +27,7 @@ uintptr_t* vmt::search_free_data_page(const char* module_name, const std::size_t
 	};
 
 	// this is very ghetto trick, but it's the only with to keep it at compile time
-	
+	// TODO : use hash
 	if (!strcmp(module_name, StringHeavy("materialsystem.dll")))
 	{
 		module_addr = (HMODULE)LI_MODULE("materialsystem.dll").cached();

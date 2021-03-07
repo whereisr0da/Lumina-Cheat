@@ -4,15 +4,16 @@
 #include "../../sdk/interfaces.h"
 #include "../../common/config.h"
 #include "../../common/common.h"
+#include "../../features/backtrack/backtrack.h"
 
 #include <fstream>
 
 namespace chams {
 
-	const char* materialsNames[4];
+	const char* materialsNames[6];
 
-	int materialSize = 4;
-	IMaterial* materialPointers[4];
+	int materialSize = 6;
+	IMaterial* materialPointers[6];
 
 	std::vector<std::string> materialsInternals = {};
 
@@ -29,12 +30,16 @@ namespace chams {
 		VECTOR_PUSH(materialsInternals, "debug/debugdrawflat", tmp1)
 		VECTOR_PUSH(materialsInternals, "tools/toolsskyfog.vmt", tmp2)
 		VECTOR_PUSH(materialsInternals, "models/weapons/v_models/eq_healthshot/health_shot_clear.vmt", tmp3)
+		VECTOR_PUSH(materialsInternals, "glowOverlay", tmp4)
+		VECTOR_PUSH(materialsInternals, "models/inventory_items/trophy_majors/silver_plain.vmt", tmp5)
 
 		// obligated to do it like this because of xor
 		materialsNames[0] = StringHeavy("TEXTURED");
 		materialsNames[1] = StringHeavy("FLAT");
-		materialsNames[2] = StringHeavy("LSD");
+		materialsNames[2] = StringHeavy("MESHES");
 		materialsNames[3] = StringHeavy("METALIC");
+		materialsNames[4] = StringHeavy("GLOW OVERLAY");
+		materialsNames[5] = StringHeavy("CHROME");
 
 		std::string materialPath = StringHeavy("csgo\\materials\\");
 
@@ -91,6 +96,20 @@ namespace chams {
 
 		lsdMaterial.erase(lsdMaterial.length());
 
+
+		std::string glowOverlayMaterial = StringHeavy("\"VertexLitGeneric\" {\n");
+		glowOverlayMaterial.append(StringHeavy("	\"$additive\" \"1\"\n"));
+		glowOverlayMaterial.append(StringHeavy("	\"$envmap\" \"models/effects/cube_white\"\n"));
+		glowOverlayMaterial.append(StringHeavy("	\"$envmaptint\" \"[0 0 0]\"\n"));
+		glowOverlayMaterial.append(StringHeavy("	\"$envmapfresnel\" \"1\"\n"));
+		glowOverlayMaterial.append(StringHeavy("	\"$envmapfresnelminmaxexp\" \"[0 1 2]\"\n"));
+		glowOverlayMaterial.append(StringHeavy("	\"$alpha\" \"0.8\"\n"));
+		glowOverlayMaterial.append(StringHeavy("}"));
+
+		std::ofstream(materialPath + StringHeavy("glowOverlay.vmt")) << glowOverlayMaterial;
+
+		glowOverlayMaterial.erase(glowOverlayMaterial.length());
+
 		VMProtectEnd();
 
 #ifdef _DEBUG
@@ -118,8 +137,10 @@ namespace chams {
 		// hands and sleeves doesn't have an entity
 		if ((isHands || isSleeves) && (game::getLocalPlayer() && game::getLocalPlayer()->isAlive())) {
 
-			CHAMS(config::visual.handChams, isHands, renderInfo)
-			CHAMS_ELSE(config::visual.sleeveChams, isSleeves, renderInfo)
+			// draw hands
+			CHAMS(config::visual.handChams, isHands, renderInfo, currentMatrix)
+			// draw sleeves
+			CHAMS_ELSE(config::visual.sleeveChams, isSleeves, renderInfo, currentMatrix)
 		}
 		else {
 
@@ -133,7 +154,25 @@ namespace chams {
 
 			bool isPlayerEnemy = (entity->isPlayer() && entity->isAlive()) && game::getLocalPlayer()->m_iTeamNum() != entity->m_iTeamNum();
 
-			CHAMS(config::visual.enemyChamsVisible, isPlayerEnemy, renderInfo)
+			if (isPlayerEnemy && config::cheats.backtrack && config::visual.enemyChamsBacktrack.enable) {
+
+				auto record = &backtrack::records[entity->index()];
+
+				// checks that record exists for the enemy
+				if (record && record->size() > 1 && backtrack::valid_tick(record->front().simulation_time)) {
+
+					int factor = (config::cheats.backtrackVisibility / 100) * record->size();
+
+					for (size_t i = 1; i < factor; i++){
+
+						// draw backtrack
+						CHAMS(config::visual.enemyChamsBacktrack, isPlayerEnemy, renderInfo, record->at(i).matrix)
+					}
+				}
+			}
+
+			// draw player
+			CHAMS(config::visual.enemyChamsVisible, isPlayerEnemy, renderInfo, currentMatrix)
 		}
 
 		VMProtectEnd();
@@ -141,7 +180,7 @@ namespace chams {
 		return drawOriginal;
 	}
 
-	void drawMaterial(chams_t* chams, const ModelRenderInfo_t& renderInfo) {
+	void drawMaterial(chams_t* chams, const ModelRenderInfo_t& renderInfo, void* matrix) {
 
 		VMProtectBeginMutation("chams::drawMaterial");
 
@@ -162,7 +201,34 @@ namespace chams {
 		auto returnCall = reinterpret_cast<drawModelExecuteFn>(hook::modelRenderHook.get_original(21));
 		
 		// draw
-		returnCall(interfaces::modelRender, ecx, currentState, renderInfo, currentMatrix);
+		returnCall(interfaces::modelRender, ecx, currentState, renderInfo, matrix);
+
+		// overlay part
+		if (chams->enableOverlay)
+		{
+			// glow overlay
+			auto glowOverlay = interfaces::materialSystem->FindMaterial(materialsInternals.at(chams->overlayMaterial).c_str(), XorStr("Other textures"), true, nullptr);
+
+			glowOverlay->IncrementReferenceCount();
+
+			bool materialVariableFound = false;
+
+			auto tint = glowOverlay->FindVar(XorStr("$envmaptint"), &materialVariableFound);
+
+			if (materialVariableFound)
+			{
+				interfaces::modelRender->ForcedMaterialOverride(glowOverlay);
+
+				interfaces::renderView->SetColorModulation(chams->overlayColor.Base());
+
+				tint->setColor(chams->overlayColor.rBase(), chams->overlayColor.gBase(), chams->overlayColor.bBase());
+
+				interfaces::renderView->SetBlend(chams->overlayColor.aBase());
+
+				// draw overlay
+				returnCall(interfaces::modelRender, ecx, currentState, renderInfo, matrix);
+			}
+		}
 
 		// reset
 		interfaces::modelRender->ForcedMaterialOverride(nullptr);

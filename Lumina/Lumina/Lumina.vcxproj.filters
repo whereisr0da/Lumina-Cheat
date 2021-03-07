@@ -55,6 +55,9 @@
     <Filter Include="Fichiers sources\common\json">
       <UniqueIdentifier>{796d95e8-6eb4-4abe-96cd-ef62e175dd47}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers sources\features\backtrack">
+      <UniqueIdentifier>{4c6739d4-dca1-423a-8310-1e2cc514f7ad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -185,6 +188,9 @@
     </ClCompile>
     <ClCompile Include="features\visuals\animationfix.cpp">
       <Filter>Fichiers sources\features\visuals</Filter>
+    </ClCompile>
+    <ClCompile Include="features\backtrack\backtrack.cpp">
+      <Filter>Fichiers sources\features\backtrack</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -508,6 +514,9 @@
     </ClInclude>
     <ClInclude Include="features\visuals\animationfix.h">
       <Filter>Fichiers sources\features\visuals</Filter>
+    </ClInclude>
+    <ClInclude Include="features\backtrack\backtrack.h">
+      <Filter>Fichiers sources\features\backtrack</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

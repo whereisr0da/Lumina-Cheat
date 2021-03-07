@@ -38,6 +38,8 @@ namespace sound {
 		VECTOR_PUSH(sounds, "pong.wav", tmp18)
 		VECTOR_PUSH(sounds, "solong.wav", tmp19)
 		VECTOR_PUSH(sounds, "hello.wav", tmp20)
+		VECTOR_PUSH(sounds, "bowser.mp3", tmp21)
+		VECTOR_PUSH(sounds, "newchainssameshackles.mp3", tmp22)
 
 		/*
 		std::string soundPath = XorStr("csgo\\sound\\");

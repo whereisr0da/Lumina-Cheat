@@ -1,10 +1,12 @@
 #pragma once
 
+#include "IMaterialVar.h"
+
 //-----------------------------------------------------------------------------
 // Forward declarations
 //-----------------------------------------------------------------------------
 
-class IMaterialVar;
+//class IMaterialVar;
 class ITexture;
 class IMaterialProxy;
 class Vector;

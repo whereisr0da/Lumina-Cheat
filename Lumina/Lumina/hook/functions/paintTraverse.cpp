@@ -36,7 +36,7 @@ void __stdcall paintTraverseHook(unsigned int panel, bool force_repaint, bool al
 
 		menu::draw();
 
-		visualMisc::watermark();
+		//visualMisc::watermark();
 	}
 
 	VMProtectEnd();

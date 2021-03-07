@@ -15,7 +15,7 @@
 #include "../structs/IClientEntity.h"
 #include "../structs/structs.h"
 
-
+#include "../../security/hash.h"
 
 class C_BaseViewModel
 {
@@ -171,9 +171,9 @@ class Entity {
 public:
 	
 	//NETVAR("DT_CSPlayer", "m_bHasDefuser", m_bHasDefuser, bool)
-	NETVAR("DT_BasePlayer", "m_vecOrigin", origin, Vector);
+	//NETVAR("DT_BasePlayer", "m_vecOrigin", origin, Vector);
 	NETVAR("DT_CSPlayer", "m_flSimulationTime", simulation_time, float);
-	NETVAR("DT_BasePlayer", "m_vecViewOffset[0]", view_offset, Vector);
+	//NETVAR("DT_BasePlayer", "m_vecViewOffset[0]", view_offset, Vector);
 	NETVAR("DT_PlantedC4", "m_bBombTicking", c4_is_ticking, bool);
 	NETVAR("DT_PlantedC4", "m_bBombDefused", c4_is_defused, bool);
 	NETVAR("DT_PlantedC4", "m_hBombDefuser", c4_gets_defused, float);
@@ -193,6 +193,9 @@ public:
 
 	OFFSET(int, m_iHealth, 0x100);
 	OFFSET(int, m_iMaxHealth, 0x29F8);
+
+	OFFSET(Vector, m_vecOrigin, 0x138);
+	OFFSET(Vector, m_vecViewOffset, 0x108);
 
 	OFFSET(int, get_take_damage, 0x27C);
 	OFFSET(bool, m_bDormant, 0xED);
@@ -267,6 +270,7 @@ public:
 	}
 
 	bool hasC4();
+	bool is(hash32_t hash);
 
 	CBaseHandle m_hActiveWeapon() {
 
@@ -296,6 +300,10 @@ public:
 	}
 
 
+	Vector get_eye_pos() {
+		return m_vecOrigin() + m_vecViewOffset();
+	}
+
 	void* GetCollideable() {
 		using original_fn = void * (__thiscall*)(void*);
 		return (*(original_fn**)this)[3](this);
@@ -320,6 +328,29 @@ public:
 		return *reinterpret_cast<int*>(uintptr_t(this) + 0x31E4);
 	}
 
+	bool setup_bones(matrix3x4_t* out, int max_bones, int mask, float time) {
+
+		if (!this) {
+			return false;
+		}
+
+		using original_fn = bool(__thiscall*)(void*, matrix3x4_t*, int, int, float);
+		return (*(original_fn**)animation())[13](animation(), out, max_bones, mask, time);
+	}
+
+	Vector get_bone_position(int bone) {
+
+		matrix3x4_t bone_matrices[128];
+
+		Vector result;
+
+		if (setup_bones(bone_matrices, 128, 256, 0.0f))
+			result = Vector{ bone_matrices[bone][0][3], bone_matrices[bone][1][3], bone_matrices[bone][2][3] };
+		else
+			result = Vector{ };
+
+		return result;
+	}
 
 	/*
 	bool isDormant() {

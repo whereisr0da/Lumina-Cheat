@@ -109,8 +109,7 @@
       <ModuleDefinitionFile>exportOrdinals.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>cmd.exe /c "cd $(SolutionDir)$(Configuration)\..\..\Build\ &amp;&amp; sign.bat"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -173,6 +172,7 @@
     <ClCompile Include="common\input.cpp" />
     <ClCompile Include="common\json\json.cpp" />
     <ClCompile Include="common\utils.cpp" />
+    <ClCompile Include="features\backtrack\backtrack.cpp" />
     <ClCompile Include="features\misc\bypasses.cpp" />
     <ClCompile Include="features\misc\misc.cpp" />
     <ClCompile Include="features\misc\voice.cpp" />
@@ -221,6 +221,7 @@
     <ClInclude Include="common\json\json.h" />
     <ClInclude Include="common\utils.h" />
     <ClInclude Include="common\vfunc.h" />
+    <ClInclude Include="features\backtrack\backtrack.h" />
     <ClInclude Include="features\misc\bypasses.h" />
     <ClInclude Include="features\misc\misc.h" />
     <ClInclude Include="features\misc\voice.h" />

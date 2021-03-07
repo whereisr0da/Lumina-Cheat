@@ -31,6 +31,23 @@ bool Entity::hasC4() {
 	return false;*/
 }
 
+bool Entity::is(hash32_t hash) {
+
+	auto client_class = interfaces::baseClientDll->GetAllClasses();
+
+	while (client_class) {
+
+		const char* pszName = client_class->m_pRecvTable->table_name;
+
+		if (FNV1a::get(pszName) == hash) 
+			return client_class->m_ClassID == (this->Class() ? this->Class()->m_ClassID : -1);
+		
+		client_class = client_class->m_pNext;
+	}
+
+	return false;
+}
+
 C_BaseCombatWeapon* Entity::getWeapon() {
 
 	if (!this->m_hActiveWeapon())

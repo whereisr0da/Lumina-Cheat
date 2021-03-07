@@ -76,6 +76,11 @@ struct chams_t
 	Color color;
 	bool throughWall;
 	bool throughWallOnlyIfDead;
+
+	bool enableOverlay;
+	int overlayMaterial;
+	bool overlayRainbowColor;
+	Color overlayColor;
 };
 
 #define CHAMS_(name) \
@@ -92,7 +97,7 @@ struct chams_t
 	 float_ = std::stof(config.asString());
 
 
-#define CHAMS_JSON(name, nameStr, pad) \
+#define CHAMS_JSON(name, nameStr, pad, pad0) \
 	config[XorStr(nameStr)][XorStr("enable")] = visual.name.enable; \
 	config[XorStr(nameStr)][XorStr("throughWall")] = visual.name.throughWall; \
 	config[XorStr(nameStr)][XorStr("throughWallOnlyIfDead")] = visual.name.throughWallOnlyIfDead; \
@@ -100,7 +105,11 @@ struct chams_t
 	config[XorStr(nameStr)][XorStr("rainbowColor")] = visual.name.rainbowColor; \
 	COLOR_JSON_WRITE(pad, visual.name.color) \
 	config[XorStr(nameStr)][XorStr("color")] = pad; \
-
+	config[XorStr(nameStr)][XorStr("enableOverlay")] = visual.name.enableOverlay; \
+	config[XorStr(nameStr)][XorStr("overlayMaterial")] = visual.name.overlayMaterial; \
+	config[XorStr(nameStr)][XorStr("overlayRainbowColor")] = visual.name.overlayRainbowColor; \
+	COLOR_JSON_WRITE(pad0, visual.name.overlayColor) \
+	config[XorStr(nameStr)][XorStr("overlayColor")] = pad0; \
 
 #define COLOR_JSON_WRITE(name, path) \
 		Json::Value name(Json::arrayValue); \
@@ -173,6 +182,11 @@ struct chams_t
 	INT_WRITE(visual.name.material, config[XorStr(nameStr)][XorStr("material")]); \
 	BOOL_WRITE(visual.name.rainbowColor, config[XorStr(nameStr)][XorStr("rainbowColor")]); \
 	COLOR_JSON_READ(visual.name.color, config[XorStr(nameStr)][XorStr("color")]) \
+	BOOL_WRITE(visual.name.enableOverlay, config[XorStr(nameStr)][XorStr("enableOverlay")]); \
+	INT_WRITE(visual.name.overlayMaterial, config[XorStr(nameStr)][XorStr("overlayMaterial")]); \
+	BOOL_WRITE(visual.name.overlayRainbowColor, config[XorStr(nameStr)][XorStr("overlayRainbowColor")]); \
+	COLOR_JSON_READ(visual.name.overlayColor, config[XorStr(nameStr)][XorStr("overlayColor")]) \
+
 
 #define SKIN_COLLECTION_JSON_READ(side, sideStr) \
 		SKIN_JSON_READ(side, awpSkin, sideStr, "awpSkin") \
@@ -263,6 +277,7 @@ namespace config {
 
 		CHAMS_(enemyChamsVisible)
 		CHAMS_(enemyChamsNotVisible)
+		CHAMS_(enemyChamsBacktrack)
 		CHAMS_(weaponWorldChams)
 		CHAMS_(handChams)
 		CHAMS_(gloveChams)
@@ -325,6 +340,10 @@ namespace config {
 		bool fastStop;
 		bool silentWalk;
 		bool optimization;
+
+		bool backtrack;
+		float backtrackVisibility;
+		float backtrackTime;
 	};
 
 	extern visuals visual;

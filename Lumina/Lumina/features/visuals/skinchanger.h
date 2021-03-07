@@ -7,7 +7,8 @@
 
 #define SKIN_SLOT(id,side,weapon,weaponObject) \
 	case (int)id: \
-		 applySkin(itemDefinitionIndex, weaponObject, &(config::visual.skins.side.weapon), &info); \
+			applySkin(itemDefinitionIndex, weaponObject, &(config::visual.skins.side.weapon), &info); \
+			weaponSkinChanged = true; \
 	break; \
 
 #define STICKER_SLOT(id,side,weapon,slot) \

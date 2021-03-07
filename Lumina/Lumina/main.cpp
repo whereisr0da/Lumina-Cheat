@@ -48,7 +48,7 @@ DWORD WINAPI Start(LPVOID param) {
 
 	freopen_s((FILE**)stdout, XorStr("CONOUT$"), XorStr("w"), stdout);
 
-	common::ps(XorStr("Lumina build : 0.1.10"));
+	common::ps(XorStr("Lumina build : 0.1.11"));
 
 #endif
 
@@ -105,6 +105,8 @@ DWORD WINAPI Start(LPVOID param) {
 
 BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved) {
 
+	VMProtectBeginMutation("DllMain");
+
 	if (fdwReason == DLL_PROCESS_ATTACH)
 	{
 		DisableThreadLibraryCalls((HMODULE)hinstDLL);
@@ -113,6 +115,8 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved) {
 
 		CloseHandle(thread);
 	}
+
+	VMProtectEnd();
 
 	return TRUE;
 }

@@ -6,6 +6,7 @@
 #include "../../sdk/interfaces.h"
 #include "../../features/visuals/skinchanger.h"
 #include "../../features/visuals/visualMisc.h"
+#include "../../features/backtrack/backtrack.h"
 
 void __stdcall frameStageNotifyHook(int frameStage) {
 
@@ -16,10 +17,16 @@ void __stdcall frameStageNotifyHook(int frameStage) {
 	if (common::unload || !game::isEnvironmentValid())
 		return returnCall(interfaces::modelRender, frameStage);
 
+	static auto backtrack_init = (backtrack::init(), false);
+
 	if (frameStage == FRAME_RENDER_START) {
 		visualMisc::drawGrenadePrediction();
 		visualMisc::maintainCrosshair();
 		visualMisc::optimization();
+	}
+
+	else if (frameStage == FRAME_NET_UPDATE_END) {
+		backtrack::update();
 	}
 
 	// safe call

@@ -11,30 +11,6 @@ namespace skinchanger {
 	std::vector<std::string> playerModels = {};
 	std::vector<std::string> armsModels = {};
 
-	int m_last_seq;
-
-	constexpr int sequence_default_draw = 0;
-	constexpr int sequence_default_idle1 = 1;
-	constexpr int sequence_default_idle2 = 2;
-	constexpr int sequence_default_heavy_miss1 = 9;
-	constexpr int sequence_default_heavy_hit1 = 10;
-	constexpr int sequence_default_heavy_backstab = 11;
-	constexpr int sequence_default_lookat01 = 12;
-
-	constexpr int sequence_butterfly_draw = 0;
-	constexpr int sequence_butterfly_draw2 = 1;
-	constexpr int sequence_butterfly_lookat01 = 13;
-	constexpr int sequence_butterfly_lookat03 = 15;
-
-	constexpr int sequence_falchion_idle1 = 1;
-	constexpr int sequence_falchion_heavy_miss1 = 8;
-	constexpr int sequence_falchion_heavy_miss1_noflip = 9;
-	constexpr int sequence_falchion_lookat01 = 12;
-	constexpr int sequence_falchion_lookat02 = 13;
-
-	constexpr int sequence_push_idle1 = 1;
-	constexpr int sequence_push_heavy_miss2 = 11;
-
 	// init to the highest item index possible
 	static int itemIDHighOriginals[GLOVE_HYDRA];
 
@@ -472,12 +448,11 @@ namespace skinchanger {
 		// check if this knife needs extra fixing.
 		if (itemDefinitionIndex == WEAPON_KNIFE_BUTTERFLY ||
 			itemDefinitionIndex == WEAPON_KNIFE_FALCHION ||
-			//itemDefinitionIndex == knives_t::DAGGER || 
 			itemDefinitionIndex == WEAPON_KNIFE_SURVIVAL_BOWIE ||
 			itemDefinitionIndex == WEAPON_KNIFE_OUTDOOR) {
 
 			// fix the idle sequences.
-			if (seq == sequence_default_idle1 || seq == sequence_default_idle2) {
+			if (seq == 1 || seq == 2) {
 				// set the animation to be completed.
 				*ent->m_flCycle() = 0.999f;
 
@@ -486,6 +461,7 @@ namespace skinchanger {
 			}
 		}
 
+		/*
 		// fix sequences.
 		if (m_last_seq != seq) {
 			if (itemDefinitionIndex == WEAPON_KNIFE_BUTTERFLY) {
@@ -523,27 +499,6 @@ namespace skinchanger {
 					break;
 				}
 			}
-
-			/*
-			else if (itemDefinitionIndex == knives_t::DAGGER) {
-				switch (seq) {
-				case sequence_default_idle2:
-					seq = sequence_push_idle1;
-					break;
-
-				case sequence_default_heavy_hit1:
-				case sequence_default_heavy_backstab:
-				case sequence_default_lookat01:
-					seq += 3;
-					break;
-
-				case sequence_default_heavy_miss1:
-					seq = sequence_push_heavy_miss2;
-					break;
-				}
-
-			}*/
-
 
 			else if (itemDefinitionIndex == WEAPON_KNIFE_STILETTO) {
 				switch (seq) {
@@ -590,6 +545,7 @@ namespace skinchanger {
 
 		// write back fixed sequence.
 		*ent->m_nSequence() = seq;
+		*/
 
 		VMProtectEnd();
 	}
@@ -617,7 +573,7 @@ namespace skinchanger {
 
 		// if the weapon is the current weapon of the player
 		if (!pViewModelWeapon || pViewModelWeapon != pCurrentWeapon)
-			localPlayer;
+			return;
 
 		auto pViewModelWeaponInfo = (C_BaseCombatWeapon*)pViewModelWeapon;
 
@@ -636,7 +592,7 @@ namespace skinchanger {
 		VMProtectEnd();
 	}
 
-	void applyKnifeSkin(int itemDefinitionIndex, C_BaseAttributableItem* weaponObject, player_info_t* info) {
+	void applyKnifeSkin(int itemDefinitionIndex, C_BaseAttributableItem* weaponObject, player_info_t* info, bool updateSkin) {
 
 		VMProtectBeginMutation("skinchanger::applyKnifeSkin");
 
@@ -672,18 +628,21 @@ namespace skinchanger {
 				*weaponObject->m_iItemIDHigh() = itemIDHighOriginals[itemDefinitionIndex];
 			}
 			*/
-
-			*weaponObject->m_iItemDefinitionIndex() = knifeDefinitionId;
+			
 			*weaponObject->m_nModelIndex() = knifeModelId;
 
 			((C_BaseCombatWeapon*)weaponObject)->setViewModelIndex(knifeModelId);
 
-			*weaponObject->m_nFallbackPaintKit() = knifePaint;
-			*weaponObject->m_iEntityQuality() = 3;
-			*weaponObject->m_flFallbackWear() = 0;
-			*weaponObject->m_nFallbackSeed() = 0;
+			if (updateSkin) {
 
-			*weaponObject->m_iItemIDHigh() = -1;
+				*weaponObject->m_iItemDefinitionIndex() = knifeDefinitionId;
+				*weaponObject->m_nFallbackPaintKit() = knifePaint;
+				*weaponObject->m_iEntityQuality() = 3;
+				*weaponObject->m_flFallbackWear() = 0;
+				*weaponObject->m_nFallbackSeed() = 0;
+
+				*weaponObject->m_iItemIDHigh() = -1;
+			}
 		}
 
 		VMProtectEnd();
@@ -767,13 +726,32 @@ namespace skinchanger {
 			if (!weapon)
 				continue;
 
+			// sticker fix
+			if (((Entity*)weapon)->is(HASH("CPredictedViewModel"))) {
+
+				if (!((C_BaseCombatWeapon*)weapon)->IsKnife())
+					continue;
+
+				if (info.xuidlow != *weapon->m_OriginalOwnerXuidLow() || info.xuidhigh != *weapon->m_OriginalOwnerXuidHigh())
+					continue;
+
+				int itemDefinitionIndex = *weapon->m_iItemDefinitionIndex();
+
+				// change model first lap
+				applyKnifeSkin(itemDefinitionIndex, weapon, &info, false);
+
+				// change the knife model
+				changeViewModel(weapon);
+
+				// fix animtions
+				updateAnimations((C_BaseCombatWeapon*)weapon);
+			}
+
 			if (!weapon->IsBaseCombatWeapon())
 				continue;
 
 			if (info.xuidlow != *weapon->m_OriginalOwnerXuidLow() || info.xuidhigh != *weapon->m_OriginalOwnerXuidHigh())
 				continue;
-
-			applyStickerHooks((int*)weapon);
 
 			int itemDefinitionIndex = *weapon->m_iItemDefinitionIndex();
 
@@ -783,11 +761,11 @@ namespace skinchanger {
 			// changing skin
 			if (((C_BaseCombatWeapon*)weapon)->IsKnife())
 			{
-				applyKnifeSkin(itemDefinitionIndex, weapon, &info);
-
-				updateAnimations((C_BaseCombatWeapon*)weapon);
+				applyKnifeSkin(itemDefinitionIndex, weapon, &info, true);
 			}
 			else {
+
+				bool weaponSkinChanged = false;
 
 				if (team == TEAM_COUNTER_TERRORIST) // CT
 				{
@@ -804,10 +782,11 @@ namespace skinchanger {
 						SKIN_GROUPE(tSkins, weapon)
 					}
 				}
-			}
 
-			// change the knife model
-			changeViewModel(weapon);
+				// apply sticker ONLY on changed weapons AFTER changing skin and knife model
+				if(weaponSkinChanged)
+					applyStickerHooks((int*)weapon);
+			}
 		}
 
 		// use this to restore at the ID next call

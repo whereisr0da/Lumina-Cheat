@@ -37,6 +37,10 @@ namespace config {
 		BOOL_WRITE(cheats.silentWalk, config[XorStr("silentWalk")])
 		BOOL_WRITE(cheats.optimization, config[XorStr("optimization")])
 
+		BOOL_WRITE(cheats.backtrack, config[XorStr("backtrack")])
+		FLOAT_WRITE(cheats.backtrackVisibility, config[XorStr("backtrackVisibility")])
+		FLOAT_WRITE(cheats.backtrackTime, config[XorStr("backtrackTime")])
+
 #ifdef _DEBUG
 		common::ps(XorStr("config::openCheatConfig : done"));
 #endif
@@ -56,6 +60,10 @@ namespace config {
 		config[XorStr("fastStop")] = cheats.fastStop;
 		config[XorStr("silentWalk")] = cheats.silentWalk;
 		config[XorStr("optimization")] = cheats.optimization;
+
+		config[XorStr("backtrack")] = cheats.backtrack;
+		config[XorStr("backtrackVisibility")] = cheats.backtrackVisibility;
+		config[XorStr("backtrackTime")] = cheats.backtrackTime;
 
 		std::remove(configPath.c_str());
 
@@ -158,6 +166,7 @@ namespace config {
 		BOOL_WRITE(visual.indicators.showFlashDuration, config[XorStr("indicators")][XorStr("showFlashDuration")]);
 
 		CHAMS_JSON_READ(enemyChamsVisible, "enemyChamsVisible", color1)
+		CHAMS_JSON_READ(enemyChamsBacktrack, "enemyChamsBacktrack", color1)
 		CHAMS_JSON_READ(handChams, "handChams", color2)
 		CHAMS_JSON_READ(sleeveChams, "sleeveChams", color3)
 
@@ -259,9 +268,10 @@ namespace config {
 		config[XorStr("spreadCircle")][XorStr("min")] = visual.spreadCircle.min;
 		config[XorStr("indicators")][XorStr("showFlashDuration")] = visual.indicators.showFlashDuration;
 
-		CHAMS_JSON(enemyChamsVisible, "enemyChamsVisible", color1)
-		CHAMS_JSON(handChams, "handChams", color2)
-		CHAMS_JSON(sleeveChams, "sleeveChams", color3)
+		CHAMS_JSON(enemyChamsVisible, "enemyChamsVisible", color1, color1_)
+		CHAMS_JSON(enemyChamsBacktrack, "enemyChamsBacktrack", color4, color4_)
+		CHAMS_JSON(handChams, "handChams", color2, color2_)
+		CHAMS_JSON(sleeveChams, "sleeveChams", color3, color3_)
 
 		config[XorStr("world")][XorStr("enable")] = visual.world.enable;
 		COLOR_JSON_WRITE(worldColor, visual.world.worldColor)

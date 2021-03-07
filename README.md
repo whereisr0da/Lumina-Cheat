@@ -48,6 +48,7 @@ Like I said, it's a legit cheat, so features are meant to be hidden regarding ov
 
 - Chams
     - Enemy
+    - Backtrack
     - Hands and Steeves 
 - Glow
 - Skin Changer (two slots, T and CT)
@@ -63,6 +64,7 @@ Like I said, it's a legit cheat, so features are meant to be hidden regarding ov
     - Indicators (flash, scope, has defuser, has bomb, planting, defusing, ...)
 - Grenade Prediction
 - Radar
+- Backtrack
 - Misc
   - My Spread Circle + Crosshair (not the classic filled cirle)
   - Hitmarker + Sound
@@ -85,6 +87,7 @@ It's why I don't provide screenshots of the menu.
 
 # Logs
 
+- 07-03-2021 v0.1.11 : Added old Natacha features (backtrack, chams overlay, backtrack chams). Fix knife applied to spectators 
 - 19-02-2021 v0.1.10 : Fix knife animations and hand chams bug
 - 05-02-2021 v0.1.9  : Added hands and sleeves color changer
 - 27-01-2021 v0.1.8  : Added world modulation and removed strcmp

@@ -137,17 +137,21 @@ namespace esp {
 				int maxI = 256;
 
 				Color green = Color(0, 255, 0);
+
+				/*
+
 				Color red = Color(255, 0, 0);
-
+				
 				Color currentColor = Color(0, 0, 0);
-
+				
 				int r = (green.r() + ((factor / 255.0) * (red.r() - green.r())));
 				int g = (green.g() + ((factor / 255.0) * (red.g() - green.g())));
 				int b = (green.b() + ((factor / 255.0) * (red.b() - green.b())));
 
-				currentColor.SetColor(r, g, b);
+				
+				currentColor.SetColor(r, g, b);*/
 
-				render::drawRectangle(playerBox.x - space - hearthBarSize, playerBox.y, hearthBarSize, playerBox.h * factor, currentColor);
+				render::drawRectangle(playerBox.x - space - hearthBarSize, playerBox.y, hearthBarSize, playerBox.h * factor, green);
 
 				render::drawOutlinedBox(playerBox.x - space - hearthBarSize, playerBox.y, hearthBarSize, playerBox.h, Color(config::visual.enemyEsp.espColor, 50));
 			}

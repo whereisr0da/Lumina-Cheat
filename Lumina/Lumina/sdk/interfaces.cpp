@@ -101,6 +101,8 @@ namespace interfaces {
 
 	void isValid(void* var, const char* name) {
 
+		VMProtectBeginMutation("interfaces::isValid");
+
 		if (var == NULL) {
 #ifdef _DEBUG
 			common::pf(StringHeavy("interfaces::isValid : %s fail to load"), name);
@@ -113,6 +115,7 @@ namespace interfaces {
 			common::pf(StringHeavy("interfaces::isValid : %s loaded at 0x%x"), name, var);
 		}
 #endif
+		VMProtectEnd();
 	}
 
 	void* getInterface(HMODULE module, const char* name)
@@ -199,6 +202,8 @@ namespace interfaces {
 	{
 		// thx OneShot
 
+		VMProtectBeginMutation("interfaces::BruteInterfaceSteamGameServer");
+
 		std::string interfaceName = StringHeavy("SteamGameServer");
 
 		char buffer[64];
@@ -222,6 +227,9 @@ namespace interfaces {
 #endif
 			}
 		}
+
+		VMProtectEnd();
+
 		return hInterface;
 	}
 

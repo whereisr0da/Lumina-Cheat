@@ -4,8 +4,14 @@
 
 #include "../sdk/math/Color.h"
 #include "texture.h"
-//#include "../ui/fgui/widgets/checkbox.hpp"
-//#include "../ui/fgui/widgets/multibox.hpp"
+
+#define UPDATE_CONFIG(text,object,var) \
+int var = 0; \
+if (parseInt(text, &var)) \
+	currentSkinObject[currentSkin]->object = var; \
+
+#define LOAD_CONFIG(text,object) \
+	text = std::to_string(currentSkinObject[currentSkin]->object); \
 
 namespace menu {
 

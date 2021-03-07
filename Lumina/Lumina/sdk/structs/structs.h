@@ -438,6 +438,7 @@ enum ItemDefinitionIndex : int
 	GLOVE_HYDRA = 5035
 };
 
+
 enum CSWeaponType : int
 {
 	WEAPONTYPE_KNIFE = 1,

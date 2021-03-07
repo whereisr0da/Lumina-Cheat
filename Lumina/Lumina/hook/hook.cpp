@@ -34,6 +34,8 @@ namespace hook {
 
 	void isValid(bool var, std::string name) {
 
+		VMProtectBeginMutation("hook::isValid");
+
 		if (var)
 		{
 #ifdef _DEBUG
@@ -47,6 +49,8 @@ namespace hook {
 #endif 
 			common::exit();
 		}
+
+		VMProtectEnd();
 	}
 
 	void shutdown() {

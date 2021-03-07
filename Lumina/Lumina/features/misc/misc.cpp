@@ -116,7 +116,7 @@ void misc::fixSkin(void* event, void* eventInfo) {
 
 void misc::silentWalk(void* cmd_)
 {
-	VMProtectBeginMutation("silentWalk");
+	VMProtectBeginMutation("misc::silentWalk");
 
 	if (!config::cheats.silentWalk)
 		return;

@@ -13,13 +13,13 @@ struct materialInfo {
 	void* currentMatrix;
 };
 
-#define CHAMS(config, vector, info) if (config.enable && vector) { \
-		drawMaterial(&(config), info); \
+#define CHAMS(config, vector, info, matrix) if (config.enable && vector) { \
+		drawMaterial(&(config), info, matrix); \
 		drawOriginal = false; \
 	} \
 
-#define CHAMS_ELSE(config, vector, info) else if (config.enable && vector) { \
-		drawMaterial(&(config), info); \
+#define CHAMS_ELSE(config, vector, info, matrix) else if (config.enable && vector) { \
+		drawMaterial(&(config), info, matrix); \
 		drawOriginal = false; \
 	} \
 
@@ -29,7 +29,7 @@ namespace chams {
 
 	bool drawModelExecute(void* context, void* state, const ModelRenderInfo_t& renderInfo, void* matrix, const char* modelName, bool arms, bool sleeve);
 
-	void drawMaterial(chams_t* chams, const ModelRenderInfo_t& renderInfo);
+	void drawMaterial(chams_t* chams, const ModelRenderInfo_t& renderInfo, void* matrix);
 
 	extern const char* materialsNames[];
 	extern int materialSize;
