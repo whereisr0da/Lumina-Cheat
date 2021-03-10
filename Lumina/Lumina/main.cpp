@@ -48,7 +48,7 @@ DWORD WINAPI Start(LPVOID param) {
 
 	freopen_s((FILE**)stdout, XorStr("CONOUT$"), XorStr("w"), stdout);
 
-	common::ps(XorStr("Lumina build : 0.1.11"));
+	common::ps(XorStr("Lumina build : 0.1.12"));
 
 #endif
 

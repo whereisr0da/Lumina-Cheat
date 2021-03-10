@@ -86,3 +86,6 @@ __forceinline void erase_function(uint8_t* function)
     erase_function(reinterpret_cast<uint8_t*>((void*&)concat(w, __LINE__)))
 
 #define erase_end  __asm _emit 0x90 __asm _emit 0x90 __asm _emit 0x90 __asm _emit 0x90 __asm _emit 0x90 
+
+#define BLOCK_0 __asm __emit 0xB0 __asm __emit 0x0B __asm __emit 0xF0 __asm __emit 0xB0 __asm __emit 0x0B __asm __emit 0xF0 __asm __emit 0xB0 __asm __emit 0xBE __asm __emit 0xEF __asm __emit 0xDE __asm __emit 0xAD __asm __emit 0x01 __asm __emit 0xDE __asm __emit 0xAD
+#define JUNK_0(a) __asm jmp a BLOCK_0 \

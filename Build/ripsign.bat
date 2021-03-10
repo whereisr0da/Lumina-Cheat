@@ -1,0 +1,1 @@
+python sigthief.py -i crashhandler.original.dll -r -o crashhandler.original.sig

@@ -4,6 +4,14 @@
 
 ![](Resources/preview_0.png)
 
+# IMPORTANT UPDATE
+
+Since people definitly don't know how to use this, things will change from now.
+
+Why ? Because the non-mutated version of the cheat is now detected by AV's as HackTool:Win32/GameHack.*, this mean that the NON-MUTATED VERSION was injected using bad injectors in CSGO. But the point of the cheat is to use mutation to maintain a changing signature. If you don't know how to use it with VMProtect, you should not use it at all. Before trying to cheat in CSGO, you should know about computer science and game hacking in the first place before trying to be a l33t ch3at3r. If you are just a random kid that saw a video talking about cheats on yt, and you've downloaded VS to compile a cheat that you plan to modify to pretend it's our own one. You will be VACED because you don't even know how to properly use this kind of things.
+
+Since the first upload, there are some anti-paste / anti-run in my cheat, but now I will make sure no one that want to cheat for bad purposes can do it without knowledge. If you are in RE or game hacking, it's not a big deal to avoid.
+
 # What is it ?
 
 This is the CSGO cheat I'm coding since 2018.
@@ -72,6 +80,9 @@ Like I said, it's a legit cheat, so features are meant to be hidden regarding ov
   - Fast Stop
   - Silent Walk
   - Flash Timer
+- Bypasses
+  - 3 Party Files
+  - Signature Checks
 
 # About the code
 
@@ -87,13 +98,31 @@ It's why I don't provide screenshots of the menu.
 
 # Logs
 
-- 07-03-2021 v0.1.11 : Added old Natacha features (backtrack, chams overlay, backtrack chams). Fix knife applied to spectators 
-- 19-02-2021 v0.1.10 : Fix knife animations and hand chams bug
-- 05-02-2021 v0.1.9  : Added hands and sleeves color changer
-- 27-01-2021 v0.1.8  : Added world modulation and removed strcmp
-- 07-01-2021 v0.1.7  : Official release
-- 14-09-2019 v0.1.0  : Merging Natacha project to Lumina project
-- 05-06-2018 v0.0.0  : Starting the project
+- 10-03-2021 v0.1.12
+  - Added a new way to grab interfaces since VAC monitors CreateInterface calls now [(see)](https://www.unknowncheats.me/forum/counterstrike-global-offensive/444181-vac-monitors-createinterface-calls.html#post3084991)
+  - "Policy" update
+  - Improved API resolver (export resolved from PEB, without GetProcAddress)
+  - Improved execution speed of backtrack
+  - Updated `crashhandler.dll` certificat
+- 07-03-2021 v0.1.11 
+  - Added old Natacha features 
+  - Added chams overlay
+  - Added backtrack and backtrack chams
+  - Fix knife applied to spectators
+- 19-02-2021 v0.1.10  
+  - Fix knife animations
+  - Fix hand chams bug
+- 05-02-2021 v0.1.9  
+  - Added hands and sleeves color changer
+- 27-01-2021 v0.1.8  
+  - Added world modulation and
+  - Removed strcmp (using hash)
+- 07-01-2021 v0.1.7 
+  - Official release
+- 14-09-2019 v0.1.0 
+  - Merging Natacha project to Lumina project
+- 05-06-2018 v0.0.0  
+  - Starting the project
 
 # Bugs
 

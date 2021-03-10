@@ -27,12 +27,22 @@ namespace backtrack {
 
 	float get_lerp_time() {
 
-		VMProtectBeginMutation("backtrack::get_lerp_time");
+		//VMProtectBeginMutation("backtrack::get_lerp_time");
+
+		JUNK_0(tmp0)
+			tmp0:
 
 		auto ratio = std::clamp(vars.interp_ratio->get_float(), (vars.min_interp_ratio->get_float() != 1.f) ? vars.min_interp_ratio->get_float() : 1.f, vars.max_interp_ratio->get_float());
+
+		JUNK_0(tmp1)
+			tmp1:
+
 		auto result = max(vars.interp->get_float(), (ratio / ((vars.max_update_rate) ? vars.max_update_rate->get_float() : vars.update_rate->get_float())));
 
-		VMProtectEnd(); 
+		JUNK_0(tmp2) 
+			tmp2:
+
+		//VMProtectEnd(); 
 		
 		return result;
 	}
@@ -176,49 +186,85 @@ namespace backtrack {
 
 	Vector get_hitbox_position(Entity* entity, int hitbox_id) {
 
-		VMProtectBeginMutation("backtrack::get_hitbox_position");
+		//VMProtectBeginMutation("backtrack::get_hitbox_position");
 
 		matrix3x4_t bone_matrix[128];
 
+		// NOTE : I can't use mutation on this function due to fps, so, I use random JUNK_0 just for sign (useless)
+
+		JUNK_0(tmp0)
+			tmp0:
+
 		if (entity->setup_bones(bone_matrix, 128, BONE_USED_BY_HITBOX, 0.0f)) {
 
+			JUNK_0(tmp1) 
+				tmp1:
+
 			auto studio_model = interfaces::modelInfo->GetStudioModel(entity->model());
+
+			JUNK_0(tmp2)
+				tmp2:
 
 			if (studio_model) {
 
 				auto hitbox = studio_model->pHitboxSet(0)->pHitbox(hitbox_id);
 
+				JUNK_0(tmp3)
+					tmp3:
+
 				if (hitbox) {
 
 					auto min = Vector{}, max = Vector{};
 
+					JUNK_0(tmp4) 
+						tmp4:
+
 					math::transform_vector(hitbox->bbmin, bone_matrix[hitbox->bone], min);
+
+					JUNK_0(tmp5)
+						tmp5:
+
 					math::transform_vector(hitbox->bbmax, bone_matrix[hitbox->bone], max);
+
+					JUNK_0(tmp6)
+						tmp6:
 
 					return Vector((min.x + max.x) * 0.5f, (min.y + max.y) * 0.5f, (min.z + max.z) * 0.5f);
 				}
 			}
 		}
 
-		VMProtectEnd();
+		//VMProtectEnd();
 
 		return Vector{};
 	}
 
 	bool valid_tick(float simtime) {
 
-		VMProtectBeginMutation("backtrack::valid_tick");
+		//VMProtectBeginMutation("backtrack::valid_tick");
 
 		auto network = interfaces::engineClient->GetNetChannelInfo();
+
+		JUNK_0(tmp0) 
+			tmp0:
 
 		if (!network)
 			return false;
 
+		JUNK_0(tmp1) 
+			tmp1:
+
 		auto delta = std::clamp(network->GetLatency(0) + get_lerp_time(), 0.f, vars.max_unlag->get_float()) - (interfaces::globals->curtime - simtime);
 		
+		JUNK_0(tmp2)
+			tmp2:
+
 		bool result = std::fabsf(delta) <= 0.2f;
 
-		VMProtectEnd();
+		JUNK_0(tmp3) 
+			tmp3:
+
+		//VMProtectEnd();
 		
 		return result;
 	}
@@ -226,11 +272,14 @@ namespace backtrack {
 
 	int time_to_ticks_2(float time) {
 
-		VMProtectBeginMutation("backtrack::time_to_ticks_2");
+		//VMProtectBeginMutation("backtrack::time_to_ticks_2");
 
 		int result = static_cast<int>((0.5f + static_cast<float>(time) / interfaces::globals->interval_per_tick));
 
-		VMProtectEnd();
+		JUNK_0(tmp0)
+			tmp0:
+
+		//VMProtectEnd();
 
 		return result;
 	}

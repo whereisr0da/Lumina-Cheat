@@ -7,13 +7,25 @@
 #define RESOLVE_MODULE(NAME, VAR) VAR = (HMODULE)LI_MODULE(NAME).cached(); \
 	isValid(VAR, StringHeavy(NAME)); \
 
-#define RESOLVE_INTERFACE(VAR, NAME, MODULE, TYPE) VAR = reinterpret_cast<TYPE*>(getInterface(MODULE, NAME)); \
+#define RESOLVE_INTERFACE(VAR, NAME, MODULE, TYPE) VAR = reinterpret_cast<TYPE*>(getInterfaceAddress(MODULE, HASH(NAME))); \
 	isValid(VAR, StringHeavy(NAME)); \
 
 #define RESOLVE_PATTERN(VAR, CAST, MODULE, _PATTERN, PADDING) VAR = CAST(patternScan(MODULE, StringHeavy(_PATTERN)) + PADDING); \
 	isValid(VAR, StringHeavy(_PATTERN)); \
 
+#define RESOLVE_EXPORT(VAR, NAME, NAME_STR, MODULE, CAST) void(*NAME); \
+	VAR = (CAST)(LI_FN(NAME).in(MODULE));\
+	isValid(VAR, StringHeavy(NAME_STR)); \
+
 class ClientMode {};
+
+struct InterfaceNode
+{
+	void* (*Interface)(); //0x0000
+	char* InterfaceName; //0x0004 
+	InterfaceNode* NextInterface; //0x0008 
+};
+
 
 enum InvalidatePhysicsBits_t : int {
 	POSITION_CHANGED = 0x1,
@@ -75,7 +87,8 @@ namespace interfaces {
 	void fromPattern();
 	void erase();
 	void isValid(void* var, const char* name);
-	void* getInterface(HMODULE module, const char* name);
+	//void* getInterface(HMODULE module, const char* name);
+	void* getInterfaceAddress(HMODULE hModule, hash32_t fnvInterface);
 	std::vector<int> patternToByte(const char* pattern);
 	std::uint8_t* patternScan(void* module, const char* signature);
 	void setupSteamInterfaces();

@@ -101,21 +101,22 @@ public:
 
 	static Vector calculate_angle(const Vector& source, const Vector& destination, const Vector& viewAngles) {
 
-		VMProtectBeginMutation("math::calculate_angle");
+		//VMProtectBeginMutation("math::calculate_angle");
 
 		Vector delta = source - destination;
 		auto radians_to_degrees = [](float radians) { return radians * 180 / static_cast<float>(M_PI); };
 		Vector angles;
-		angles.x = radians_to_degrees(atanf(delta.z / std::hypotf(delta.x, delta.y))) - viewAngles.x;
-		angles.y = radians_to_degrees(atanf(delta.y / delta.x)) - viewAngles.y;
+
 		angles.z = 0.0f;
+		angles.y = radians_to_degrees(atanf(delta.y / delta.x)) - viewAngles.y;
+		angles.x = radians_to_degrees(atanf(delta.z / std::hypotf(delta.x, delta.y))) - viewAngles.x;
 
 		if (delta.x >= 0.0)
 			angles.y += 180.0f;
 
 		angles.normalize_aimbot();
 
-		VMProtectEnd();
+		//VMProtectEnd();
 
 		return angles;
 	}

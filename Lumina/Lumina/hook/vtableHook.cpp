@@ -26,58 +26,60 @@ uintptr_t* vmt::search_free_data_page(const char* module_name, const std::size_t
 		return false;
 	};
 
+	hash32_t moduleNameHash = FNV1a::get(module_name);
+
 	// this is very ghetto trick, but it's the only with to keep it at compile time
 	// TODO : use hash
-	if (!strcmp(module_name, StringHeavy("materialsystem.dll")))
+	if (moduleNameHash == HASH("materialsystem.dll"))
 	{
 		module_addr = (HMODULE)LI_MODULE("materialsystem.dll").cached();
 #ifdef _DEBUG
 		common::ps(StringHeavy("vmt::search_free_data_page() : materialsystem.dll cached"));
 #endif
 	}
-	else if (!strcmp(module_name, StringHeavy("client.dll")))
+	else if (moduleNameHash == HASH("client.dll"))
 	{
 		module_addr = (HMODULE)LI_MODULE("client.dll").cached();
 #ifdef _DEBUG
 		common::ps(StringHeavy("vmt::search_free_data_page() : client.dll cached"));
 #endif
 	}
-	else if (!strcmp(module_name, StringHeavy("vgui2.dll")))
+	else if (moduleNameHash == HASH("vgui2.dll"))
 	{
 		module_addr = (HMODULE)LI_MODULE("vgui2.dll").cached();
 #ifdef _DEBUG
 		common::ps(StringHeavy("vmt::search_free_data_page() : vgui2.dll cached"));
 #endif
 	}
-	else if (!strcmp(module_name, StringHeavy("engine.dll")))
+	else if (moduleNameHash == HASH("engine.dll"))
 	{
 		module_addr = (HMODULE)LI_MODULE("engine.dll").cached();
 #ifdef _DEBUG
 		common::ps(StringHeavy("vmt::search_free_data_page() : engine.dll cached"));
 #endif
 	}
-	else if (!strcmp(module_name, StringHeavy("shaderapidx9.dll")))
+	else if (moduleNameHash == HASH("shaderapidx9.dll"))
 	{
 		module_addr = (HMODULE)LI_MODULE("shaderapidx9.dll").cached();
 #ifdef _DEBUG
 		common::ps(StringHeavy("vmt::search_free_data_page() : shaderapidx9.dll cached"));
 #endif
 	}
-	else if (!strcmp(module_name, StringHeavy("vguimatsurface.dll")))
+	else if (moduleNameHash == HASH("vguimatsurface.dll"))
 	{
 		module_addr = (HMODULE)LI_MODULE("vguimatsurface.dll").cached();
 #ifdef _DEBUG
 		common::ps(StringHeavy("vmt::search_free_data_page() : vguimatsurface.dll cached"));
 #endif
 	}
-	else if (!strcmp(module_name, StringHeavy("direct3d.dll")))
+	else if (moduleNameHash == HASH("direct3d.dll"))
 	{
 		module_addr = (HMODULE)LI_MODULE("direct3d.dll").cached();
 #ifdef _DEBUG
 		common::ps(StringHeavy("vmt::search_free_data_page() : direct3d.dll cached"));
 #endif
 	}
-	else if (!strcmp(module_name, StringHeavy("datacache.dll")))
+	else if (moduleNameHash == HASH("datacache.dll"))
 	{
 		module_addr = (HMODULE)LI_MODULE("datacache.dll").cached();
 #ifdef _DEBUG

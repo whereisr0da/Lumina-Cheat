@@ -60,6 +60,7 @@ namespace interfaces {
 	void erase() {
 
 		/*
+		* can't be used due to mutation
 		erase_function((uint8_t*)interfaces::init);
 		erase_function((uint8_t*)interfaces::resolveModules);
 		erase_function((uint8_t*)interfaces::getInterface);
@@ -69,6 +70,7 @@ namespace interfaces {
 		erase_function((uint8_t*)interfaces::patternScan);
 		erase_function((uint8_t*)interfaces::isValid);
 		*/
+
 #ifdef _DEBUG
 		common::ps(StringHeavy("interfaces::erase : done"));
 #endif
@@ -118,6 +120,7 @@ namespace interfaces {
 		VMProtectEnd();
 	}
 
+	/*
 	void* getInterface(HMODULE module, const char* name)
 	{
 		VMProtectBeginMutation("interfaces::getInterface");
@@ -133,27 +136,68 @@ namespace interfaces {
 		return interfaceAddress;
 	}
 
+	bool checkPageProtection(HMODULE hModule, LPCVOID iAddress, int protection) {
+
+		MEMORY_BASIC_INFORMATION mbi = { 0 };
+
+		if (VirtualQuery(iAddress, &mbi, sizeof(mbi)) == sizeof(mbi)) 
+			return mbi.AllocationBase && mbi.Protect & protection;
+
+		return false;
+	}*/
+
+	void* getInterfaceAddress(HMODULE hModule, hash32_t fnvInterface)
+	{
+		// credits : https://www.unknowncheats.me/forum/counterstrike-global-offensive/165359-easy-createinterface.html
+
+		VMProtectBeginMutation("interfaces::getInterfaceAddress");
+
+		void* pCreateInterface = NULL;
+
+		// resolve the CreateInterface function dynamicaly from exports
+		RESOLVE_EXPORT(pCreateInterface, CreateInterface, "CreateInterface*", hModule, void*)
+
+		ULONG ShortJump = (ULONG)pCreateInterface + 5; //magic number shit explained above
+
+		ULONG Jump = (((ULONG)pCreateInterface + 5) + *(ULONG*)ShortJump) + 4;
+
+		InterfaceNode* List = **(InterfaceNode***)(Jump + 6);
+
+		do {
+			if (List)
+			{
+				if (FNV1a::get(List->InterfaceName) == fnvInterface)
+					return List->Interface();
+			}
+
+		} while (List = List->NextInterface);
+
+		VMProtectEnd();
+
+		return 0;
+	}
+
 	void fromName()
 	{
 		VMProtectBeginMutation("interfaces::fromName");
 
-		RESOLVE_INTERFACE(baseClientDll, StringHeavy("VClient018"), common::clientModule, IBaseClientDll)
-		RESOLVE_INTERFACE(engineClient, StringHeavy("VEngineClient014"), common::engineModule, IEngineClient)
-		RESOLVE_INTERFACE(materialSystem, StringHeavy("VMaterialSystem080"), common::materialsystemModule, IMaterialSystem)
-		RESOLVE_INTERFACE(panel, StringHeavy("VGUI_Panel009"), common::vgui2Module, IVPanel)
-		RESOLVE_INTERFACE(surface, StringHeavy("VGUI_Surface031"), common::vguimatsurfaceModule, ISurface)
-		RESOLVE_INTERFACE(clientEntityList, StringHeavy("VClientEntityList003"), common::clientModule, IClientEntityList)
-		RESOLVE_INTERFACE(debugOverlay, StringHeavy("VDebugOverlay004"), common::engineModule, IVDebugOverlay)
-		RESOLVE_INTERFACE(modelInfo, StringHeavy("VModelInfoClient004"), common::engineModule, IVModelInfo)
-		RESOLVE_INTERFACE(modelRender, StringHeavy("VEngineModel016"), common::engineModule, IVModelRender)
-		RESOLVE_INTERFACE(renderView, StringHeavy("VEngineRenderView014"), common::engineModule, IVRenderView)
-		RESOLVE_INTERFACE(cvar, StringHeavy("VEngineCvar007"), common::vstdlibModule, ICVar)
-		RESOLVE_INTERFACE(gameEventManager, StringHeavy("GAMEEVENTSMANAGER002"), common::engineModule, IGameEventManager2)
-		RESOLVE_INTERFACE(localize, StringHeavy("Localize_001"), common::localizeModule, ILocalize)
-		RESOLVE_INTERFACE(console, StringHeavy("VEngineCvar007"), common::vstdlibModule, IConsole)
-		RESOLVE_INTERFACE(clientStringTableContainer, StringHeavy("VEngineClientStringTable001"), common::engineModule, CNetworkStringTableContainer)
-		RESOLVE_INTERFACE(studioRender, StringHeavy("VStudioRender026"), common::studiorenderModule, IStudioRender)
-		RESOLVE_INTERFACE(mdlCache, StringHeavy("MDLCache004"), common::datacacheModule, void)
+		RESOLVE_INTERFACE(baseClientDll, ("VClient018"), common::clientModule, IBaseClientDll)
+		RESOLVE_INTERFACE(engineClient, ("VEngineClient014"), common::engineModule, IEngineClient)
+		RESOLVE_INTERFACE(materialSystem, ("VMaterialSystem080"), common::materialsystemModule, IMaterialSystem)
+		RESOLVE_INTERFACE(panel, ("VGUI_Panel009"), common::vgui2Module, IVPanel)
+		RESOLVE_INTERFACE(surface, ("VGUI_Surface031"), common::vguimatsurfaceModule, ISurface)
+		RESOLVE_INTERFACE(clientEntityList, ("VClientEntityList003"), common::clientModule, IClientEntityList)
+		RESOLVE_INTERFACE(debugOverlay, ("VDebugOverlay004"), common::engineModule, IVDebugOverlay)
+		RESOLVE_INTERFACE(modelInfo, ("VModelInfoClient004"), common::engineModule, IVModelInfo)
+		RESOLVE_INTERFACE(modelRender, ("VEngineModel016"), common::engineModule, IVModelRender)
+		RESOLVE_INTERFACE(renderView, ("VEngineRenderView014"), common::engineModule, IVRenderView)
+		RESOLVE_INTERFACE(cvar, ("VEngineCvar007"), common::vstdlibModule, ICVar)
+		RESOLVE_INTERFACE(gameEventManager, ("GAMEEVENTSMANAGER002"), common::engineModule, IGameEventManager2)
+		RESOLVE_INTERFACE(localize, ("Localize_001"), common::localizeModule, ILocalize)
+		RESOLVE_INTERFACE(console, ("VEngineCvar007"), common::vstdlibModule, IConsole)
+		RESOLVE_INTERFACE(clientStringTableContainer, ("VEngineClientStringTable001"), common::engineModule, CNetworkStringTableContainer)
+		RESOLVE_INTERFACE(studioRender, ("VStudioRender026"), common::studiorenderModule, IStudioRender)
+		RESOLVE_INTERFACE(mdlCache, ("MDLCache004"), common::datacacheModule, void)
 
 #ifdef _DEBUG
 			common::ps(StringHeavy("interfaces::fromName : done"));
@@ -169,7 +213,7 @@ namespace interfaces {
 		RESOLVE_PATTERN(playerResource, *(C_CSPlayerResource ***), common::clientModule, "A1 ? ? ? ? 57 85 C0 74 08", 1)
 		RESOLVE_PATTERN(loadFromBufferMaterial, (void*), common::clientModule, "55 8B EC 83 E4 F8 83 EC 34 53 8B 5D 0C 89 4C 24 04", 0)
 		RESOLVE_PATTERN(initKeyValuesMaterial, (void*), common::clientModule, "55 8B EC 51 33 C0 C7 45", 0)
-		//RESOLVE_PATTERN(voiceRecordStart, (void*), common::engineModule, "55 8B EC 83 EC 0C 83 3D ? ? ? ? ? 56 57", 0)
+		RESOLVE_PATTERN(voiceRecordStart, (void*), common::engineModule, "55 8B EC 83 EC 0C 83 3D ? ? ? ? ? 56 57", 0)
 		RESOLVE_PATTERN(fileSystem, **(void***), common::engineModule, "8B 0D ? ? ? ? 8D 95 ? ? ? ? 6A 00 C6", 2)
 		RESOLVE_PATTERN(itemSchema, (void*), common::clientModule, "E8 ? ? ? ? FF 76 0C 8D 48 04 E8", 0)
 		RESOLVE_PATTERN(forceUpdate, (forceUpdateFn), common::engineModule, "A1 ? ? ? ? B9 ? ? ? ? 56 FF 50 14 8B 34 85", 0)
@@ -178,16 +222,19 @@ namespace interfaces {
 		RESOLVE_PATTERN(invalidatePhysicsRecursive, invalidatePhysicsRecursiveFn, common::clientModule, "55 8B EC 83 E4 F8 83 EC 0C 53 8B 5D 08 8B C3 56 83 E0 04", 0)
 		RESOLVE_PATTERN(getSequenceActivity, getSequenceActivityFn, common::clientModule, "55 8B EC 53 8B 5D 08 56 8B F1 83", 0)
 
+		// from export 
+
+		RESOLVE_EXPORT(UCS2ToUTF8, V_UCS2ToUTF8, "UCS2ToUTF8*", common::vstdlibModule, int(*)(const wchar_t* ucs2, char* utf8, int len))
+
+		// from offsets
+
 		globals = **reinterpret_cast<IGlobalVarsBase***>((*reinterpret_cast<uintptr_t**>(baseClientDll)[0] + 0x1F));	
 		isValid(globals, StringHeavy("**IGlobalVarsBase***"));
-
-		UCS2ToUTF8 = static_cast<int(*)(const wchar_t* ucs2, char* utf8, int len)>(getExport(common::vstdlibModule, StringHeavy("V_UCS2ToUTF8")));
-		isValid(UCS2ToUTF8, StringHeavy("UCS2ToUTF8*"));
 
 		clientMode = **reinterpret_cast<ClientMode***>((*reinterpret_cast<uintptr_t**>(baseClientDll))[10] + 5);
 		isValid(clientMode, StringHeavy("**ClientMode***"));
 
-		setupSteamInterfaces();
+		//setupSteamInterfaces();
 
 		//D3DDevice9 = **(IDirect3DDevice9 ***)(patternScan((HMODULE)dx9api, StringHeavy("A1 ? ? ? ? 50 8B 08 FF 51 0C")) + 1);
 
@@ -198,6 +245,7 @@ namespace interfaces {
 		VMProtectEnd();
 	}
 
+	/*
 	ISteamGameServer* BruteInterfaceSteamGameServer(HSteamUser hSteamUser, HSteamPipe hSteamPipe, ISteamClient* steamClient)
 	{
 		// thx OneShot
@@ -276,7 +324,7 @@ namespace interfaces {
 		VMProtectEnd();
 
 		return pFunction;
-	}
+	}*/
 
 	std::vector<int> patternToByte(const char* pattern) {
 
