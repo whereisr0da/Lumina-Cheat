@@ -126,7 +126,7 @@ It's why I don't provide screenshots of the menu.
 
 # Bugs
 
-There is still a bug when you plant a bomb, sometimes it crashes but it's too rare so I can debug it.
+There is still a bug when you plant a bomb, sometimes it crashes but it's too rare, so I can't debug it.
 
 # Credit
 
