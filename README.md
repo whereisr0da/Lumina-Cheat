@@ -1,8 +1,7 @@
 ![](Resources/logo.png)
 
 
-
-![](Resources/preview_0.png)
+![](Resources/preview_0.jpg)
 
 # IMPORTANT UPDATE
 

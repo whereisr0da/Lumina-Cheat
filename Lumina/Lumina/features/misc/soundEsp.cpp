@@ -3,6 +3,8 @@
 #include "../../common/includes.h"
 #include "../../common/common.h"
 
+// modded from ekknod : https://github.com/ekknod/nv_v2
+
 namespace soundEsp {
 
     static Entity* _target;
