@@ -175,6 +175,7 @@
     <ClCompile Include="features\backtrack\backtrack.cpp" />
     <ClCompile Include="features\misc\bypasses.cpp" />
     <ClCompile Include="features\misc\misc.cpp" />
+    <ClCompile Include="features\misc\soundEsp.cpp" />
     <ClCompile Include="features\misc\voice.cpp" />
     <ClCompile Include="features\visuals\animationfix.cpp" />
     <ClCompile Include="features\visuals\chams.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="features\backtrack\backtrack.h" />
     <ClInclude Include="features\misc\bypasses.h" />
     <ClInclude Include="features\misc\misc.h" />
+    <ClInclude Include="features\misc\soundEsp.h" />
     <ClInclude Include="features\misc\voice.h" />
     <ClInclude Include="features\visuals\animationfix.h" />
     <ClInclude Include="features\visuals\chams.h" />

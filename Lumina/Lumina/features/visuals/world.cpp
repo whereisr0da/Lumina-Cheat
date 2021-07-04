@@ -13,9 +13,7 @@ void world::worldModulation() {
 	if (!game::getLocalPlayer() || !game::isEnvironmentValid())
 		return;
 
-	static ConVar* r_DrawSpecificStaticProp = (ConVar*)interfaces::console->get_convar(XorStr("r_DrawSpecificStaticProp"));
-
-	*(int*)((DWORD)&r_DrawSpecificStaticProp->fnChangeCallbacks + 0xC) = NULL;
+	static ConVar* r_DrawSpecificStaticProp = game::getConvarNullCallback(XorStr("r_DrawSpecificStaticProp"));
 
 	// IsUsingStaticPropDebugModes : thx pandora
 	r_DrawSpecificStaticProp->set_value(config::visual.world.enable ? 0 : -1);
@@ -79,9 +77,7 @@ void world::changeWorldSky() {
 	if (!game::getLocalPlayer() || !game::isEnvironmentValid())
 		return;
 
-	static ConVar* r_3dsky = (ConVar*)interfaces::console->get_convar(XorStr("r_3dsky"));
-
-	*(int*)((DWORD)&r_3dsky->fnChangeCallbacks + 0xC) = NULL;
+	static ConVar* r_3dsky = game::getConvarNullCallback(XorStr("r_3dsky"));
 
 	r_3dsky->set_value(config::visual.sky.enable ? 0 : 1);
 

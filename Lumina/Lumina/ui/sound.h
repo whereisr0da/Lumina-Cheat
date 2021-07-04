@@ -13,12 +13,9 @@ namespace sound {
 
 	void playClosingSound();
 
-	void writeFile(const char* name, const char* buffer, int size);
+	void playSoundShort(int id);
 
-	//extern const char openRaw[];
-
-	//extern const char closeRaw[];
-
-	extern std::vector<std::string> sounds;
+	extern std::vector<std::string> sounds_short;
+	extern std::vector<std::string> sounds_long;
 }
 #endif

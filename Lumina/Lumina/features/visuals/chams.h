@@ -13,13 +13,21 @@ struct materialInfo {
 	void* currentMatrix;
 };
 
-#define CHAMS(config, vector, info, matrix) if (config.enable && vector) { \
-		drawMaterial(&(config), info, matrix); \
+#define CHAMS(config, vector, info, matrix, throughZ) if (config.enable && vector) { \
+		drawMaterial(&(config), info, matrix, throughZ, throughZ); \
+		if(throughZ) { \
+			drawMaterial(&(config), info, matrix, false, throughZ); \
+			/*drawOverlay(&(config), info, matrix, throughZ);*/ \
+		} \
 		drawOriginal = false; \
 	} \
 
-#define CHAMS_ELSE(config, vector, info, matrix) else if (config.enable && vector) { \
-		drawMaterial(&(config), info, matrix); \
+#define CHAMS_ELSE(config, vector, info, matrix, throughZ) else if (config.enable && vector) { \
+		drawMaterial(&(config), info, matrix, throughZ, throughZ); \
+		if(throughZ) { \
+			drawMaterial(&(config), info, matrix, false, throughZ); \
+			/*drawOverlay(&(config), info, matrix, throughZ);*/  \
+		} \
 		drawOriginal = false; \
 	} \
 
@@ -29,7 +37,8 @@ namespace chams {
 
 	bool drawModelExecute(void* context, void* state, const ModelRenderInfo_t& renderInfo, void* matrix, const char* modelName, bool arms, bool sleeve);
 
-	void drawMaterial(chams_t* chams, const ModelRenderInfo_t& renderInfo, void* matrix);
+	void drawMaterial(chams_t* chams, const ModelRenderInfo_t& renderInfo, void* matrix, bool throughZ, bool delayOverlay);
+	void drawOverlay(chams_t* chams, const ModelRenderInfo_t& renderInfo, void* matrix, bool throughZ);
 
 	extern const char* materialsNames[];
 	extern int materialSize;

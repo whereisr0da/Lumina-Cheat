@@ -39,6 +39,8 @@ namespace interfaces {
 	ISteamGameServer* steamGameServer = NULL;
 	IStudioRender* studioRender = NULL;
 	invalidatePhysicsRecursiveFn invalidatePhysicsRecursive = NULL;
+	i_client_state* clientState = NULL;
+	CHudChat* hudChat = NULL;
 
 	void init() {
 
@@ -120,32 +122,6 @@ namespace interfaces {
 		VMProtectEnd();
 	}
 
-	/*
-	void* getInterface(HMODULE module, const char* name)
-	{
-		VMProtectBeginMutation("interfaces::getInterface");
-
-		using createInterfacePrototype = void*(*)(const char*, int*);
-
-		auto createInterfaceAddress = (createInterfacePrototype)(LI_FN(GetProcAddress).get()(module, StringHeavy("CreateInterface")));
-
-		auto interfaceAddress = createInterfaceAddress(name, nullptr);
-
-		VMProtectEnd();
-
-		return interfaceAddress;
-	}
-
-	bool checkPageProtection(HMODULE hModule, LPCVOID iAddress, int protection) {
-
-		MEMORY_BASIC_INFORMATION mbi = { 0 };
-
-		if (VirtualQuery(iAddress, &mbi, sizeof(mbi)) == sizeof(mbi)) 
-			return mbi.AllocationBase && mbi.Protect & protection;
-
-		return false;
-	}*/
-
 	void* getInterfaceAddress(HMODULE hModule, hash32_t fnvInterface)
 	{
 		// credits : https://www.unknowncheats.me/forum/counterstrike-global-offensive/165359-easy-createinterface.html
@@ -221,6 +197,7 @@ namespace interfaces {
 		RESOLVE_PATTERN(hasC4, hasC4Fn, common::clientModule, "56 8B F1 85 F6 74 31", 0)
 		RESOLVE_PATTERN(invalidatePhysicsRecursive, invalidatePhysicsRecursiveFn, common::clientModule, "55 8B EC 83 E4 F8 83 EC 0C 53 8B 5D 08 8B C3 56 83 E0 04", 0)
 		RESOLVE_PATTERN(getSequenceActivity, getSequenceActivityFn, common::clientModule, "55 8B EC 53 8B 5D 08 56 8B F1 83", 0)
+		RESOLVE_PATTERN(clientState, **(i_client_state***), common::engineModule, "A1 ? ? ? ? 8B 80 ? ? ? ? C3", 1)
 
 		// from export 
 
@@ -234,9 +211,9 @@ namespace interfaces {
 		clientMode = **reinterpret_cast<ClientMode***>((*reinterpret_cast<uintptr_t**>(baseClientDll))[10] + 5);
 		isValid(clientMode, StringHeavy("**ClientMode***"));
 
-		//setupSteamInterfaces();
-
 		//D3DDevice9 = **(IDirect3DDevice9 ***)(patternScan((HMODULE)dx9api, StringHeavy("A1 ? ? ? ? 50 8B 08 FF 51 0C")) + 1);
+
+		hudChat = (CHudChat*)FindHudElement<CHudChat>(XorStr("CHudChat"));
 
 #ifdef _DEBUG
 		common::ps(StringHeavy("interfaces::fromPattern : done"));
@@ -245,86 +222,16 @@ namespace interfaces {
 		VMProtectEnd();
 	}
 
-	/*
-	ISteamGameServer* BruteInterfaceSteamGameServer(HSteamUser hSteamUser, HSteamPipe hSteamPipe, ISteamClient* steamClient)
+
+	template<class T>
+	static T* FindHudElement(const char* name)
 	{
-		// thx OneShot
+		static auto pThis = *reinterpret_cast<DWORD**>(patternScan(common::clientModule, XorStr("B9 ? ? ? ? E8 ? ? ? ? 8B 5D 08")) + 1);
 
-		VMProtectBeginMutation("interfaces::BruteInterfaceSteamGameServer");
+		static auto find_hud_element = reinterpret_cast<DWORD(__thiscall*)(void*, const char*)>(patternScan(common::clientModule, XorStr("55 8B EC 53 8B 5D 08 56 57 8B F9 33 F6 39 77 28")));
 
-		std::string interfaceName = StringHeavy("SteamGameServer");
-
-		char buffer[64];
-		int count = 0;
-		sprintf(buffer, XorStr("%s%03i"), interfaceName.c_str(), 0);
-		auto hInterface = steamClient->GetISteamGameServer(hSteamUser, hSteamPipe, buffer);
-
-		while (count < 200)
-		{
-			count++;
-
-			if (count == 1000)
-				return nullptr;
-
-			sprintf(buffer, XorStr("%s%03i"), interfaceName.c_str(), count);
-			hInterface = steamClient->GetISteamGameServer(hSteamUser, hSteamPipe, buffer);
-
-			if (hInterface) {
-#ifdef _DEBUG
-				common::pf(StringHeavy("interfaces::setupSteamInterfaces : ISteamGameServer is version %03i"), count);
-#endif
-			}
-		}
-
-		VMProtectEnd();
-
-		return hInterface;
+		return (T*)find_hud_element(pThis, name);
 	}
-
-	void setupSteamInterfaces() {
-
-		VMProtectBeginMutation("interfaces::setupSteamInterfaces");
-
-		HSteamUser hSteamUser = ((HSteamUser(__cdecl*)(void))(getExport(common::steamApiModule, StringHeavy("SteamAPI_GetHSteamUser"))))();
-		isValid((void*)hSteamUser, StringHeavy("hSteamUser"));
-
-		HSteamPipe hSteamPipe = ((HSteamPipe(__cdecl*)(void))(getExport(common::steamApiModule, StringHeavy("SteamAPI_GetHSteamPipe"))))();
-		isValid((void*)hSteamPipe, StringHeavy("hSteamPipe"));
-
-		ISteamClient* steamClient = ((ISteamClient*(__cdecl*)(void))(getExport(common::steamApiModule, StringHeavy("SteamClient"))))();
-		isValid(steamClient, StringHeavy("ISteamClient*"));
-
-		steamGameServer = steamClient->GetISteamGameServer(hSteamUser, hSteamPipe, StringHeavy("SteamGameServer010"));
-		//steamGameServer = BruteInterfaceSteamGameServer(hSteamUser, hSteamPipe, steamClient);
-		isValid(steamGameServer, StringHeavy("ISteamGameServer*"));
-
-		VMProtectEnd();
-	}
-
-	void* getExport(const char* module_name, const char* export_name) {
-
-		VMProtectBeginMutation("interfaces::getExport");
-
-		HMODULE mod;
-
-		while (!((mod = GetModuleHandleA(module_name))))
-			Sleep(100);
-
-		VMProtectEnd();
-
-		return reinterpret_cast<void*>(GetProcAddress(mod, export_name));
-	}
-
-	void* getExport(HMODULE module, const char* export_name) {
-
-		VMProtectBeginMutation("interfaces::getExport2");
-
-		void* pFunction = reinterpret_cast<void*>(GetProcAddress(module, export_name));
-
-		VMProtectEnd();
-
-		return pFunction;
-	}*/
 
 	std::vector<int> patternToByte(const char* pattern) {
 

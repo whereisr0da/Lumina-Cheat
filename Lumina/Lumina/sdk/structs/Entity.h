@@ -206,6 +206,8 @@ public:
 	OFFSET(float, m_flFlashAlpha, 0xA41C - 0x8);
 	OFFSET(float, m_flFlashMaxAlpha, 0xA41C);
 
+	OFFSET(Vector, m_viewPunchAngle, 0x3020);
+
 	OFFSET(int, m_fFlags, 0x104);
 
 	OFFSET(Vector, m_vecVelocity, 0x114);

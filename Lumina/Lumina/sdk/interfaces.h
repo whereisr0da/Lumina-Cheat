@@ -26,6 +26,37 @@ struct InterfaceNode
 	InterfaceNode* NextInterface; //0x0008 
 };
 
+class CHudChat
+{
+public:
+	enum ChatFilters
+	{
+		CHAT_FILTER_NONE = 0,
+		CHAT_FILTER_JOINLEAVE = 0x000001,
+		CHAT_FILTER_NAMECHANGE = 0x000002,
+		CHAT_FILTER_PUBLICCHAT = 0x000004,
+		CHAT_FILTER_SERVERMSG = 0x000008,
+		CHAT_FILTER_TEAMCHANGE = 0x000010,
+
+		//=============================================================================
+		// HPE_BEGIN:
+		// [tj]Added a filter for achievement announce
+		//=============================================================================
+
+		CHAT_FILTER_ACHIEVEMENT = 0x000020,
+
+		//=============================================================================
+		// HPE_END
+		//=============================================================================
+	};
+
+	void ChatPrintf(int iPlayerIndex, int iFilter, const char* fmt, ...)
+	{
+		using original_fn = void(__cdecl*)(void*, int, int, const char*, ...);
+		return (*(original_fn**)this)[27](this, iPlayerIndex, iFilter, fmt);
+	}
+};
+
 
 enum InvalidatePhysicsBits_t : int {
 	POSITION_CHANGED = 0x1,
@@ -79,6 +110,8 @@ namespace interfaces {
 	extern CNetworkStringTableContainer* clientStringTableContainer;
 	extern ISteamGameServer* steamGameServer;
 	extern IStudioRender* studioRender;
+	extern i_client_state* clientState;
+	extern CHudChat* hudChat;
 
 	void init();
 	void* getExport(const char* module_name, const char* export_name);
@@ -93,6 +126,9 @@ namespace interfaces {
 	std::uint8_t* patternScan(void* module, const char* signature);
 	void setupSteamInterfaces();
 	void* getExport(HMODULE module, const char* export_name);
+
+	template<class T>
+	static T* FindHudElement(const char* name);
 }
 
 #endif

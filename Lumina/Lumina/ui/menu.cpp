@@ -20,6 +20,9 @@
 
 #include "../features/visuals/chams.h"
 #include "../features/visuals/skinchanger.h"
+#include "../features/misc/soundEsp.h"
+#include "../features/misc/misc.h"
+#include "../features/misc/voice.h"
 
 #include "image.h"
 #include "sound.h"
@@ -61,6 +64,8 @@ namespace menu {
 	Color mainTab;
 
 	Color highContrast;
+
+	std::string pseudo;
 
 
 	Color textColor;
@@ -905,6 +910,46 @@ namespace menu {
 		zgui::slider_float(XorStr("Spread minimun#spreadCicleminimun"), 0, 100, config::visual.spreadCircle.min);
 
 
+		zgui::setMousePos(x, y + 170);
+
+		zgui::checkbox(XorStr("Infinit Duck"), config::cheats.infinitDuck);
+
+		zgui::setMousePos(x + 150, y + 170);
+
+		if (zgui::checkbox(XorStr("Volume ESP"), config::cheats.volumeEsp)) {
+
+			// make sure to exec after zgui::checkbox
+			if (!config::cheats.volumeEsp) {
+				soundEsp::remove();
+			}
+		}
+
+		zgui::setMousePos(x + 200, y + 170);
+
+		if (zgui::button(XorStr("Copy clear cheat exploit#sgsd0grdsgdshsdhsh"), { 150, 20 })) {
+			misc::copyClipboardExploit();
+		}
+
+
+		zgui::setMousePos(x + 360, y + 170);
+
+		if (zgui::button(XorStr("Hide name from vote#sgsd0grdsqsfqfqsfqdhsh"), { 150, 20 })) {
+			misc::hideVoteName();
+		}
+
+		zgui::setMousePos(x + 520, y + 170);
+
+		//zgui::text_input(XorStr("Fake ban#qgqsegqsggqee00"), pseudo, 30);
+
+		//zgui::setMousePos(x + 450, y + 170);
+
+		//if (zgui::button(XorStr("Apply#edsgqsgg44"), { 100, 20 })) {
+		//	misc::fakeMessage(pseudo);
+		//}
+
+		if (zgui::button(XorStr("Stop microphone#qsfqfsqfqf"), { 100, 20 })) {
+			voice::stop();
+		}
 
 		zgui::setMousePos(x, y + 200);
 
@@ -912,7 +957,7 @@ namespace menu {
 
 		zgui::setMousePos(x + 100, y + 200);
 
-		zgui::slider_float(XorStr("Backtrack time#Backtracktime"), 0, 50, config::cheats.backtrackTime);
+		zgui::slider_float(XorStr("Backtrack time#Backtracktime"), 0, 200, config::cheats.backtrackTime);
 
 		zgui::setMousePos(x + 300, y + 200);
 
@@ -962,33 +1007,98 @@ namespace menu {
 
 		zgui::setMousePos(x + 100, y);
 
-		zgui::combobox(XorStr("Hitmarker#HitmarkerSound"), sound::sounds, config::visual.sounds.hitmarkerSound);
+		zgui::combobox(XorStr("Hitmarker#HitmarkerSound"), sound::sounds_short, config::visual.sounds.hitmarkerSound.index);
+
+		zgui::setMousePos(x + 100, y + 50);
+
+		zgui::checkbox(XorStr("Random#HitmarkerSoundRandom"), config::visual.sounds.hitmarkerSound.random);
+
+		zgui::setMousePos(x + 100, y + 75);
+
+		zgui::checkbox(XorStr("Through mic#4524674747"), config::visual.sounds.hitmarkerSound.through_mic);
+
+
 
 		zgui::setMousePos(x + 200, y);
 
-		zgui::combobox(XorStr("Headshot#HeadshotrSound"), sound::sounds, config::visual.sounds.headShootSound);
+		zgui::combobox(XorStr("Headshot#HeadshotrSound"), sound::sounds_short, config::visual.sounds.headShootSound.index);
+
+		zgui::setMousePos(x + 200, y + 50);
+
+		zgui::checkbox(XorStr("Random#RandomHeadshotrSound"), config::visual.sounds.headShootSound.random);
+
+		zgui::setMousePos(x + 200, y + 75);
+
+		zgui::checkbox(XorStr("Through mic#563746464"), config::visual.sounds.headShootSound.through_mic);
+
+
 
 		zgui::setMousePos(x + 300, y);
 
-		zgui::combobox(XorStr("Bomb Planted#BombSound"), sound::sounds, config::visual.sounds.bombPlantedSound);
+		zgui::combobox(XorStr("Bomb Planted#BombSound"), sound::sounds_short, config::visual.sounds.bombPlantedSound.index);
+
+		zgui::setMousePos(x + 300, y + 50);
+
+		zgui::checkbox(XorStr("Random#BombSoundRandom"), config::visual.sounds.bombPlantedSound.random);
+
+		zgui::setMousePos(x + 300, y + 75);
+
+		zgui::checkbox(XorStr("Through mic#54678634524"), config::visual.sounds.bombPlantedSound.through_mic);
+
+
 
 		zgui::setMousePos(x + 400, y);
 
-		zgui::combobox(XorStr("Round Lost#RoundLostSound"), sound::sounds, config::visual.sounds.roundEndLostSound);
+		zgui::combobox(XorStr("Round Lost#RoundLostSound"), sound::sounds_short, config::visual.sounds.roundEndLostSound.index);
+
+		zgui::setMousePos(x + 400, y + 50);
+
+		zgui::checkbox(XorStr("Random#RandomRoundLostSound"), config::visual.sounds.roundEndLostSound.random);
+
+
+		zgui::setMousePos(x + 400, y + 75);
+
+		zgui::checkbox(XorStr("Through mic#54678676746"), config::visual.sounds.roundEndLostSound.through_mic);
+
+
 
 		zgui::setMousePos(x + 500, y);
 
-		zgui::combobox(XorStr("Round Won#RoundWonSound"), sound::sounds, config::visual.sounds.roundEndWonSound);
+		zgui::combobox(XorStr("Round Won#RoundWonSound"), sound::sounds_short, config::visual.sounds.roundEndWonSound.index);
+
+		zgui::setMousePos(x + 500, y + 50);
+
+		zgui::checkbox(XorStr("Random#RandomRoundWonSound"), config::visual.sounds.roundEndWonSound.random);
+
+		zgui::setMousePos(x + 500, y + 75);
+
+		zgui::checkbox(XorStr("Through mic#RanThroughundWonSound"), config::visual.sounds.roundEndWonSound.through_mic);
+
+
+
 
 		zgui::setMousePos(x + 600, y);
 
-		zgui::combobox(XorStr("Round Start#RoundStartSound"), sound::sounds, config::visual.sounds.roundStartSound);
+		zgui::combobox(XorStr("Round Start#RoundStartSound"), sound::sounds_short, config::visual.sounds.roundStartSound.index);
 
-		zgui::setMousePos(x, y + 100);
+		zgui::setMousePos(x + 600, y + 50);
+
+		zgui::checkbox(XorStr("Random#RandomRoundStartSound"), config::visual.sounds.roundStartSound.random);
+
+		zgui::setMousePos(x + 600, y + 75);
+
+		zgui::checkbox(XorStr("Through mic#57456h78645"), config::visual.sounds.roundStartSound.through_mic);
+
+
+
+		zgui::setMousePos(x, y + 200);
 
 		zgui::checkbox(XorStr("Enable Team Model#EnableTeamModel"), config::visual.teamMateModel.enable);
 
-		zgui::setMousePos(x + 100, y + 100);
+
+
+
+		zgui::setMousePos(x + 100, y + 200);
 
 		zgui::combobox(XorStr("Model#Model__"), modelNames, config::visual.teamMateModel.id);
 

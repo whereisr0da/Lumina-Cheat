@@ -192,6 +192,9 @@
     <ClCompile Include="features\backtrack\backtrack.cpp">
       <Filter>Fichiers sources\features\backtrack</Filter>
     </ClCompile>
+    <ClCompile Include="features\misc\soundEsp.cpp">
+      <Filter>Fichiers sources\features\misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common\includes.h">
@@ -517,6 +520,9 @@
     </ClInclude>
     <ClInclude Include="features\backtrack\backtrack.h">
       <Filter>Fichiers sources\features\backtrack</Filter>
+    </ClInclude>
+    <ClInclude Include="features\misc\soundEsp.h">
+      <Filter>Fichiers sources\features\misc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

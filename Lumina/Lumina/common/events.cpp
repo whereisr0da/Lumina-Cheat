@@ -27,7 +27,7 @@ namespace events {
 		interfaces::gameEventManager->RemoveListener(eventListener);
 		
 		for (auto& eventInfoPointer : eventWorkers)
-			free((eventInfo*)(eventInfoPointer.second));
+			free(eventInfoPointer.second);
 
 		eventWorkers.clear();
 
@@ -38,10 +38,11 @@ namespace events {
 #endif
 	}
 
-#define ADD_EVENT(str,pointer,var) \
+#define ADD_EVENT(str,pointer,side,var) \
 	eventInfo* var = (eventInfo*)malloc(sizeof(eventInfo)); \
 	var->name = XorStr(str); \
 	var->hash = HASH(str); \
+	var->clientside = side; \
 	var->callback = (void*)pointer; \
 	eventWorkers[var->hash] = var; \
 
@@ -49,14 +50,18 @@ namespace events {
 	{
 		VMProtectBeginMutation("listener::listener");
 
-		ADD_EVENT("player_hurt", misc::hitmarkerSound, tmp0)
+		ADD_EVENT("player_hurt", misc::hitmarkerSound, false, tmp0)
 		//ADD_EVENT("player_spawned", misc::fixSkin, tmp1)
-		ADD_EVENT("round_end", misc::roundSounds, tmp2)
-		ADD_EVENT("round_start", misc::roundSounds, tmp3)
-		ADD_EVENT("player_death", misc::headShoot, tmp4)
+		ADD_EVENT("round_end", misc::roundSounds, false, tmp2)
+		ADD_EVENT("round_start", misc::roundSounds, false, tmp3)
+		ADD_EVENT("player_death", misc::headShoot, false, tmp4)
+		ADD_EVENT("vote_cast", misc::voteRealer, false, tmp5)
+		ADD_EVENT("vote_started", misc::voteRealer, true, tmp6)
+		ADD_EVENT("vote_failed", misc::voteRealer, true, tmp7)
+		ADD_EVENT("vote_passed", misc::voteRealer, true, tmp8)
 
 		for (auto& eventInfoPointer : eventWorkers)
-			interfaces::gameEventManager->AddListener(this, eventInfoPointer.second->name, false);
+			interfaces::gameEventManager->AddListener(this, eventInfoPointer.second->name, eventInfoPointer.second->clientside);
 
 #ifdef _DEBUG
 		common::ps(XorStr("listener::listener : done"));

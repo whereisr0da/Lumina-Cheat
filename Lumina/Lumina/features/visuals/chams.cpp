@@ -138,9 +138,9 @@ namespace chams {
 		if ((isHands || isSleeves) && (game::getLocalPlayer() && game::getLocalPlayer()->isAlive())) {
 
 			// draw hands
-			CHAMS(config::visual.handChams, isHands, renderInfo, currentMatrix)
+			CHAMS(config::visual.handChams, isHands, renderInfo, currentMatrix, false)
 			// draw sleeves
-			CHAMS_ELSE(config::visual.sleeveChams, isSleeves, renderInfo, currentMatrix)
+			CHAMS_ELSE(config::visual.sleeveChams, isSleeves, renderInfo, currentMatrix, false)
 		}
 		else {
 
@@ -166,13 +166,28 @@ namespace chams {
 					for (size_t i = 1; i < factor; i++){
 
 						// draw backtrack
-						CHAMS(config::visual.enemyChamsBacktrack, isPlayerEnemy, renderInfo, record->at(i).matrix)
+						CHAMS(config::visual.enemyChamsBacktrack, isPlayerEnemy, renderInfo, record->at(i).matrix, false)
 					}
 				}
 			}
 
+			// premium far chams by : https://www.unknowncheats.me/forum/counterstrike-global-offensive/449124-epic-cheap-dme-fix.html
+			// NOTE : still don't want to create a class for convars
+
+			static ConVar* r_PortalTestEnts = game::getConvarNullCallback(XorStr("r_PortalTestEnts"));
+			static ConVar* r_Portalsopenall = game::getConvarNullCallback(XorStr("r_Portalsopenall"));
+
+			r_PortalTestEnts->nFlags &= (1 << 14);
+			r_Portalsopenall->nFlags &= (1 << 14);
+
+			r_PortalTestEnts->set_value(config::visual.enemyChamsVisible.enable ? 0 : 1);
+			r_Portalsopenall->set_value(config::visual.enemyChamsVisible.enable ? 0 : 1);
+
+			bool shouldDrawThroughWall = config::visual.enemyChamsVisible.throughWall &&
+				(!config::visual.enemyChamsVisible.throughWallOnlyIfDead || (config::visual.enemyChamsVisible.throughWallOnlyIfDead && !game::getLocalPlayer()->isAlive()));
+
 			// draw player
-			CHAMS(config::visual.enemyChamsVisible, isPlayerEnemy, renderInfo, currentMatrix)
+			CHAMS(config::visual.enemyChamsVisible, isPlayerEnemy, renderInfo, currentMatrix, shouldDrawThroughWall)
 		}
 
 		VMProtectEnd();
@@ -180,7 +195,7 @@ namespace chams {
 		return drawOriginal;
 	}
 
-	void drawMaterial(chams_t* chams, const ModelRenderInfo_t& renderInfo, void* matrix) {
+	void drawMaterial(chams_t* chams, const ModelRenderInfo_t& renderInfo, void* matrix, bool throughZ, bool delayOverlay) {
 
 		VMProtectBeginMutation("chams::drawMaterial");
 
@@ -192,7 +207,8 @@ namespace chams {
 
 		interfaces::modelRender->ForcedMaterialOverride(mat);
 
-		mat->SetMaterialVarFlag(MATERIAL_VAR_IGNOREZ, chams->throughWall && (!chams->throughWallOnlyIfDead || (chams->throughWallOnlyIfDead && !game::getLocalPlayer()->isAlive())));
+		// set through wall mat attribut
+		mat->SetMaterialVarFlag(MATERIAL_VAR_IGNOREZ, throughZ);
 
 		interfaces::renderView->SetColorModulation(chams->color.Base());
 
@@ -204,30 +220,9 @@ namespace chams {
 		returnCall(interfaces::modelRender, ecx, currentState, renderInfo, matrix);
 
 		// overlay part
-		if (chams->enableOverlay)
+		if (chams->enableOverlay /*&& !delayOverlay*/)
 		{
-			// glow overlay
-			auto glowOverlay = interfaces::materialSystem->FindMaterial(materialsInternals.at(chams->overlayMaterial).c_str(), XorStr("Other textures"), true, nullptr);
-
-			glowOverlay->IncrementReferenceCount();
-
-			bool materialVariableFound = false;
-
-			auto tint = glowOverlay->FindVar(XorStr("$envmaptint"), &materialVariableFound);
-
-			if (materialVariableFound)
-			{
-				interfaces::modelRender->ForcedMaterialOverride(glowOverlay);
-
-				interfaces::renderView->SetColorModulation(chams->overlayColor.Base());
-
-				tint->setColor(chams->overlayColor.rBase(), chams->overlayColor.gBase(), chams->overlayColor.bBase());
-
-				interfaces::renderView->SetBlend(chams->overlayColor.aBase());
-
-				// draw overlay
-				returnCall(interfaces::modelRender, ecx, currentState, renderInfo, matrix);
-			}
+			drawOverlay(chams, renderInfo, matrix, throughZ);
 		}
 
 		// reset
@@ -235,5 +230,42 @@ namespace chams {
 		interfaces::renderView->SetColorModulation(defaultColor);
 
 		VMProtectEnd();
+	}
+
+	void drawOverlay(chams_t* chams, const ModelRenderInfo_t& renderInfo, void* matrix, bool throughZ) {
+
+		auto returnCall = reinterpret_cast<drawModelExecuteFn>(hook::modelRenderHook.get_original(21));
+
+		float defaultColor[3] = { 1.0f, 1.0f, 1.0f };
+
+		// glow overlay
+		auto glowOverlay = interfaces::materialSystem->FindMaterial(materialsInternals.at(chams->overlayMaterial).c_str(), XorStr("Other textures"), true, nullptr);
+
+		glowOverlay->IncrementReferenceCount();
+
+		bool materialVariableFound = false;
+
+		auto tint = glowOverlay->FindVar(XorStr("$envmaptint"), &materialVariableFound);
+
+		if (materialVariableFound)
+		{
+			interfaces::modelRender->ForcedMaterialOverride(glowOverlay);
+
+			// set through wall mat attribut to overlay
+			//glowOverlay->SetMaterialVarFlag(MATERIAL_VAR_IGNOREZ, throughZ);
+
+			interfaces::renderView->SetColorModulation(chams->overlayColor.Base());
+
+			tint->setColor(chams->overlayColor.rBase(), chams->overlayColor.gBase(), chams->overlayColor.bBase());
+
+			interfaces::renderView->SetBlend(chams->overlayColor.aBase());
+
+			// draw overlay
+			returnCall(interfaces::modelRender, ecx, currentState, renderInfo, matrix);
+
+			// reset
+			interfaces::modelRender->ForcedMaterialOverride(nullptr);
+			interfaces::renderView->SetColorModulation(defaultColor);
+		}
 	}
 }

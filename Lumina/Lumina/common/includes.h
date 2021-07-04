@@ -24,6 +24,7 @@
 #include <d3dx9.h>
 #include <corecrt_math.h>
 #include <unordered_map>
+#include <filesystem>
 #include <algorithm>
 
 #ifdef MUTATION

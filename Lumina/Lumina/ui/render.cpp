@@ -90,6 +90,28 @@ namespace render {
 		VMProtectEnd();
 	}
 
+	void drawText(int x, int y, unsigned long font, std::wstring string, bool text_centered, Color color) {
+
+		VMProtectBeginMutation("render::drawText");
+
+		const wchar_t* converted_text = string.c_str();
+
+		int width, height;
+		interfaces::surface->GetTextSize(font, converted_text, width, height);
+
+		interfaces::surface->DrawSetTextColor(color);
+		interfaces::surface->DrawSetTextFont(font);
+
+		if (text_centered)
+			interfaces::surface->DrawSetTextPos(x - (width / 2), y);
+		else
+			interfaces::surface->DrawSetTextPos(x, y);
+
+		interfaces::surface->DrawPrintText(converted_text, wcslen(converted_text));
+
+		VMProtectEnd();
+	}
+
 	void drawText(int x, int y, unsigned long font, std::string string, bool text_centered, Color color) {
 
 		VMProtectBeginMutation("render::drawText");

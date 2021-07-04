@@ -4,6 +4,7 @@
 
 #define IClientEntity_h
 
+
 enum DrawModelFlags_t
 {
 	STUDIO_NONE = 0x00000000,

@@ -5,7 +5,7 @@
 
 namespace animationfix {
 
-	// from aristois
+	// modded from aristois
 
 	recv_var_proxy_fn_ sequence_proxy_fn = nullptr;
 	recv_var_proxy_fn_ recv_model_index;

@@ -128,14 +128,14 @@ namespace config {
 		BOOL_WRITE(visual.enemyEsp.showFakeDuck, config[XorStr("enemyEsp")][XorStr("showFakeDuck")]);
 		BOOL_WRITE(visual.enemyEsp.showPlanting, config[XorStr("enemyEsp")][XorStr("showPlanting")]);
 
-		BOOL_WRITE(visual.sounds.enable, config[XorStr("sounds")][XorStr("enable")]);
-		INT_WRITE(visual.sounds.hitmarkerSound, config[XorStr("sounds")][XorStr("hitmarkerSound")]);
-		INT_WRITE(visual.sounds.headShootSound, config[XorStr("sounds")][XorStr("headShootSound")]);
-		INT_WRITE(visual.sounds.roundStartSound, config[XorStr("sounds")][XorStr("roundStartSound")]);
-		INT_WRITE(visual.sounds.roundEndLostSound, config[XorStr("sounds")][XorStr("roundEndLostSound")]);
-		INT_WRITE(visual.sounds.roundEndWonSound, config[XorStr("sounds")][XorStr("roundEndWonSound")]);
-		INT_WRITE(visual.sounds.bombPlantedSound, config[XorStr("sounds")][XorStr("bombPlantedSound")]);
-		INT_WRITE(visual.sounds.playerKickSound, config[XorStr("sounds")][XorStr("playerKickSound")]);
+		//BOOL_WRITE(visual.sounds.enable, config[XorStr("sounds")][XorStr("enable")]);
+		//INT_WRITE(visual.sounds.hitmarkerSound, config[XorStr("sounds")][XorStr("hitmarkerSound")]);
+		//INT_WRITE(visual.sounds.headShootSound, config[XorStr("sounds")][XorStr("headShootSound")]);
+		//INT_WRITE(visual.sounds.roundStartSound, config[XorStr("sounds")][XorStr("roundStartSound")]);
+		//INT_WRITE(visual.sounds.roundEndLostSound, config[XorStr("sounds")][XorStr("roundEndLostSound")]);
+		//INT_WRITE(visual.sounds.roundEndWonSound, config[XorStr("sounds")][XorStr("roundEndWonSound")]);
+		//INT_WRITE(visual.sounds.bombPlantedSound, config[XorStr("sounds")][XorStr("bombPlantedSound")]);
+		//INT_WRITE(visual.sounds.playerKickSound, config[XorStr("sounds")][XorStr("playerKickSound")]);
 
 		BOOL_WRITE(visual.playerModel.enable, config[XorStr("playerModel")][XorStr("enable")]);
 		INT_WRITE(visual.playerModel.id, config[XorStr("playerModel")][XorStr("id")]);
@@ -224,14 +224,14 @@ namespace config {
 		config[XorStr("enemyEsp")][XorStr("showFakeDuck")] = visual.enemyEsp.showFakeDuck;
 		config[XorStr("enemyEsp")][XorStr("showPlanting")] = visual.enemyEsp.showPlanting;
 
-		config[XorStr("sounds")][XorStr("enable")] = visual.sounds.enable;
-		config[XorStr("sounds")][XorStr("hitmarkerSound")] = visual.sounds.hitmarkerSound;
-		config[XorStr("sounds")][XorStr("headShootSound")] = visual.sounds.headShootSound;
-		config[XorStr("sounds")][XorStr("roundStartSound")] = visual.sounds.roundStartSound;
-		config[XorStr("sounds")][XorStr("roundEndLostSound")] = visual.sounds.roundEndLostSound;
-		config[XorStr("sounds")][XorStr("roundEndWonSound")] = visual.sounds.roundEndWonSound;
-		config[XorStr("sounds")][XorStr("bombPlantedSound")] = visual.sounds.bombPlantedSound;
-		config[XorStr("sounds")][XorStr("playerKickSound")] = visual.sounds.playerKickSound;
+		//config[XorStr("sounds")][XorStr("enable")] = visual.sounds.enable;
+		//config[XorStr("sounds")][XorStr("hitmarkerSound")] = visual.sounds.hitmarkerSound;
+		//config[XorStr("sounds")][XorStr("headShootSound")] = visual.sounds.headShootSound;
+		//config[XorStr("sounds")][XorStr("roundStartSound")] = visual.sounds.roundStartSound;
+		//config[XorStr("sounds")][XorStr("roundEndLostSound")] = visual.sounds.roundEndLostSound;
+		//config[XorStr("sounds")][XorStr("roundEndWonSound")] = visual.sounds.roundEndWonSound;
+		//config[XorStr("sounds")][XorStr("bombPlantedSound")] = visual.sounds.bombPlantedSound;
+		//config[XorStr("sounds")][XorStr("playerKickSound")] = visual.sounds.playerKickSound;
 
 		config[XorStr("playerModel")][XorStr("enable")] = visual.playerModel.enable;
 		config[XorStr("playerModel")][XorStr("id")] = visual.playerModel.id;

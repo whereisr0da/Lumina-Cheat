@@ -8,6 +8,7 @@
 struct eventInfo {
 	char* name;
 	uint32_t hash;
+	bool clientside;
 	void* callback;
 };
 

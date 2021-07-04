@@ -4,6 +4,8 @@
 #include "../../common/common.h"
 #include "../../features/misc/misc.h"
 #include "../../features/backtrack/backtrack.h"
+#include "../../features/misc/soundEsp.h"
+#include "../../features/misc/voice.h"
 
 bool __stdcall createMoveHook(float smt, void* cmd) {
 
@@ -21,7 +23,10 @@ bool __stdcall createMoveHook(float smt, void* cmd) {
 	if (game::getLocalPlayer()->isAlive()) {
 		misc::fastStop(userCmd);
 		backtrack::run(userCmd);
+		soundEsp::worker(userCmd);
 		//misc::silentWalk(userCmd);
+		misc::infiniteDuck(userCmd);
+		voice::tick();
 	}
 
 	VMProtectEnd();

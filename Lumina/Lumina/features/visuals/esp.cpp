@@ -281,19 +281,45 @@ namespace esp {
 				indicators.push_back(XorStr("HAS BOMB"));
 			}
 		}
-		/*
+
+		if (config::visual.enemyEsp.showSkeleton) {
+
+			// source : weave.su
+
+			/*studiohdr_t* pStudioHdr = interfaces::modelInfo->GetStudioModel(player->model());
+
+			if (pStudioHdr) {
+
+				Vector vParent, vChild;
+				Vector2D sParent, sChild;
+
+				for (int j = 0; j < pStudioHdr->numbones; j++)
+				{
+					mstudiobone_t* pBone = pStudioHdr->pBone(j);
+
+					if (pBone && (pBone->flags & 0x100) && (pBone->parent != -1))
+					{
+						vChild = player->get_bone_position(record.value()->bones, j);
+						vParent = player->get_bone_position(record.value()->bones, pBone->parent);
+
+						if (c_renderer::screen_transform(vParent, sParent, features->Visuals->world_to_screen_matrix) && c_renderer::screen_transform(vChild, sChild, features->Visuals->world_to_screen_matrix))
+							c_renderer::line(Vector2D(sParent.x, sParent.y), Vector2D(sChild.x, sChild.y), clr);
+
+					}
+				}
+			}*/
+		}
+
+		
 		if (config::visual.enemyEsp.showWeaponName)
 		{
-			if (player->weaponData)
+			if (player->getWeapon() && player->getWeapon()->getWeaponData())
 			{
-				std::string weaponName = player->weaponData->szWeaponName;
+				std::wstring weaponName = interfaces::localize->Find(player->getWeapon()->getWeaponData()->szHudName);
 
-				// remove the weapon_ string
-				weaponName.erase(0, 7);
-
-				render::drawText(playerBox.x, playerBox.y + playerBox.h + space, render::font, weaponName.c_str(), false, config::visual.enemyEsp.espColor);
+				render::drawText(playerBox.x, playerBox.y + playerBox.h + space, render::font, weaponName, false, config::visual.enemyEsp.espColor);
 			}
-		}*/
+		}
 
 		int startXTextIndicators = playerBox.x + playerBox.w + space;
 

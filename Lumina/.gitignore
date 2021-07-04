@@ -7,6 +7,8 @@ LuminaInjector/
 LuminaLite/
 LuminaLoader/
 LuminaOffsetDumper/
+LuminaVacFilter/
+LuminaVacModule/
 
 # User-specific files
 *.rsuser

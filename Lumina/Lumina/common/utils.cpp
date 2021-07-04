@@ -6,6 +6,47 @@
 
 #include <algorithm>
 #include <xutility>
+#include <stdarg.h>
+#include <fstream>
+#include <string>
+
+int utils::GetWavDuration(struct WavFileHeader* hdr)
+{
+	int numSamples = hdr->subchunk2_size / (hdr->num_channels * (hdr->bits_per_sample / 8));
+	int durationSeconds = numSamples / hdr->sample_rate;
+	return durationSeconds;
+}
+
+void utils::WriteFileFromBuffer(std::string file, BYTE* buffer, int size) {
+	FILE* pFile;
+	pFile = fopen(file.c_str(), "wb");
+	fwrite(buffer, 1, size * sizeof(BYTE), pFile);
+	fclose(pFile);
+}
+
+WavFileHeader* utils::ReadWavFileHeader(std::string file) {
+
+	FILE* pFile;
+	pFile = fopen(file.c_str(), "r");
+
+	WavFileHeader* buffer = (WavFileHeader*)malloc(sizeof(WavFileHeader));
+
+	fread(buffer, 1, sizeof(WavFileHeader), pFile);
+	fclose(pFile);
+
+	return buffer;
+}
+
+bool utils::FileExists(const std::string& name) {
+	if (FILE* file = fopen(name.c_str(), "r")) {
+		fclose(file);
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 
 std::vector<paint_kit> utils::getSkinsInfo() {
 

@@ -15,6 +15,14 @@ public:
 		return sqrt((a.x * a.x) + (a.y * a.y));
 	}
 
+	static void vec_normalize(Vector* vec)
+	{
+		float radius;
+
+		radius = 1.f / (float)(sqrt(vec->x * vec->x + vec->y * vec->y + vec->z * vec->z) + 1.192092896e-07f);
+		vec->x *= radius, vec->y *= radius, vec->z *= radius;
+	}
+
 	static Vector Normalize(Vector value)
 	{
 		VMProtectBeginMutation("math::Normalize");
@@ -37,6 +45,21 @@ public:
 		out.z = a.Dot(b.m_flMatVal[2]) + b.m_flMatVal[2][3];
 
 		VMProtectEnd();
+	}
+
+	static void vec_clamp(Vector* v)
+	{
+		if (v->x > 89.0f && v->x <= 180.0f) {
+			v->x = 89.0f;
+		}
+		if (v->x > 180.0f) {
+			v->x = v->x - 360.0f;
+		}
+		if (v->x < -89.0f) {
+			v->x = -89.0f;
+		}
+		v->y = fmodf(v->y + 180, 360) - 180;
+		v->z = 0;
 	}
 
 	static Vector ClampMagnitude(Vector vector, float maxLength)

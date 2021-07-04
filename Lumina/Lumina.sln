@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.1000
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lumina", "Lumina\Lumina.vcxproj", "{3857B898-29FC-4DCB-B467-FF332A0D6665}"
 EndProject
@@ -10,6 +10,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuminaInjector", "LuminaInjector\LuminaInjector.csproj", "{2835EB45-6916-4D75-B197-3A0F4C86FF04}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LuminaOffsetDumper", "LuminaOffsetDumper\LuminaOffsetDumper.vcxproj", "{30546A4D-7177-4669-A367-2EE87D10BC70}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LuminaVacModule", "LuminaVacModule\LuminaVacModule.vcxproj", "{7CFCFB18-734C-4B36-BD66-337506145FE8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LuminaVacFilter", "LuminaVacFilter\LuminaVacFilter.vcxproj", "{0FA76490-0381-430B-8AB9-DAE301E0B00D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +65,26 @@ Global
 		{30546A4D-7177-4669-A367-2EE87D10BC70}.Release|x64.Build.0 = Release|x64
 		{30546A4D-7177-4669-A367-2EE87D10BC70}.Release|x86.ActiveCfg = Release|Win32
 		{30546A4D-7177-4669-A367-2EE87D10BC70}.Release|x86.Build.0 = Release|Win32
+		{7CFCFB18-734C-4B36-BD66-337506145FE8}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{7CFCFB18-734C-4B36-BD66-337506145FE8}.Debug|x64.ActiveCfg = Debug|x64
+		{7CFCFB18-734C-4B36-BD66-337506145FE8}.Debug|x64.Build.0 = Debug|x64
+		{7CFCFB18-734C-4B36-BD66-337506145FE8}.Debug|x86.ActiveCfg = Debug|Win32
+		{7CFCFB18-734C-4B36-BD66-337506145FE8}.Debug|x86.Build.0 = Debug|Win32
+		{7CFCFB18-734C-4B36-BD66-337506145FE8}.Release|Any CPU.ActiveCfg = Release|Win32
+		{7CFCFB18-734C-4B36-BD66-337506145FE8}.Release|x64.ActiveCfg = Release|x64
+		{7CFCFB18-734C-4B36-BD66-337506145FE8}.Release|x64.Build.0 = Release|x64
+		{7CFCFB18-734C-4B36-BD66-337506145FE8}.Release|x86.ActiveCfg = Release|Win32
+		{7CFCFB18-734C-4B36-BD66-337506145FE8}.Release|x86.Build.0 = Release|Win32
+		{0FA76490-0381-430B-8AB9-DAE301E0B00D}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{0FA76490-0381-430B-8AB9-DAE301E0B00D}.Debug|x64.ActiveCfg = Debug|x64
+		{0FA76490-0381-430B-8AB9-DAE301E0B00D}.Debug|x64.Build.0 = Debug|x64
+		{0FA76490-0381-430B-8AB9-DAE301E0B00D}.Debug|x86.ActiveCfg = Debug|Win32
+		{0FA76490-0381-430B-8AB9-DAE301E0B00D}.Debug|x86.Build.0 = Debug|Win32
+		{0FA76490-0381-430B-8AB9-DAE301E0B00D}.Release|Any CPU.ActiveCfg = Release|Win32
+		{0FA76490-0381-430B-8AB9-DAE301E0B00D}.Release|x64.ActiveCfg = Release|x64
+		{0FA76490-0381-430B-8AB9-DAE301E0B00D}.Release|x64.Build.0 = Release|x64
+		{0FA76490-0381-430B-8AB9-DAE301E0B00D}.Release|x86.ActiveCfg = Release|Win32
+		{0FA76490-0381-430B-8AB9-DAE301E0B00D}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

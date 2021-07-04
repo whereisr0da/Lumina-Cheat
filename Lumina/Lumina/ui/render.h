@@ -20,6 +20,8 @@ namespace render {
 
 	void drawText(int x, int y, unsigned long font, std::string string, bool text_centered, Color color);
 
+	void drawText(int x, int y, unsigned long font, std::wstring string, bool text_centered, Color color);
+
 	void drawEntityBox(Entity* entity, Color c);
 
 	void drawOutlinedBox(int x, int y, int sizeX, int sizeY, Color color);

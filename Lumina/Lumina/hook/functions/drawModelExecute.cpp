@@ -21,16 +21,14 @@ void __stdcall drawModelExecuteHook(void* context, void* state, const ModelRende
 	const char* modelName = "";
 
 	// not optimized, but do it once :|
-	{		
-		if (renderInfo.pModel)
-		{
-			modelName = interfaces::modelInfo->GetModelName(renderInfo.pModel);
+	if (renderInfo.pModel)
+	{
+		modelName = interfaces::modelInfo->GetModelName(renderInfo.pModel);
 
-			if (modelName) {
+		if (modelName) {
 
-				arms = strstr(modelName, XorStr("arms"));
-				sleeve = strstr(modelName, XorStr("sleeve"));
-			}
+			arms = strstr(modelName, XorStr("arms"));
+			sleeve = strstr(modelName, XorStr("sleeve"));
 		}
 	}
 

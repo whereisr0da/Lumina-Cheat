@@ -26,4 +26,17 @@ namespace game {
 
 		return result;
 	}
+
+	ConVar* getConvarNullCallback(const char* name) {
+
+		VMProtectBeginMutation("game::getConvarNullCallback");
+
+		ConVar* convar = (ConVar*)interfaces::console->get_convar(name);
+
+		*(int*)((DWORD)&convar->fnChangeCallbacks + 0xC) = NULL;
+
+		VMProtectEnd();
+
+		return convar;
+	}
 }

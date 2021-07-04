@@ -1,4 +1,4 @@
-#include "misc.h"
+﻿#include "misc.h"
 
 #include "../../common/includes.h"
 #include "../../sdk/interfaces.h"
@@ -7,6 +7,9 @@
 #include "../../common/game.h"
 #include "../../common/common.h"
 #include "../../common/events.h"
+#include "voice.h"
+
+bool misc::nameChanged = false;
 
 void misc::hitmarkerSound(void* event, void* eventInfo) {
 
@@ -16,13 +19,9 @@ void misc::hitmarkerSound(void* event, void* eventInfo) {
 		return;
 
 	auto pEvent = (IGameEvent*)event;
-
-	if (!pEvent)
-		return;
-
 	auto localPlayer = game::getLocalPlayer();
 
-	if (!localPlayer)
+	if (!localPlayer || !game::isEnvironmentValid())
 		return;
 
 	int userIdAttacker = pEvent->GetInt(XorStr("attacker"), -1);
@@ -66,7 +65,16 @@ void misc::hitmarkerSound(void* event, void* eventInfo) {
 
 	if (attacker == localPlayer) {
 
-		interfaces::surface->PlaySound(sound::sounds[config::visual.sounds.hitmarkerSound].c_str());
+		int sound_index = config::visual.sounds.hitmarkerSound.index;
+
+		if (config::visual.sounds.hitmarkerSound.random)
+			sound_index = rand() % sound::sounds_short.size();
+
+		sound::playSoundShort(sound_index);
+
+		if (config::visual.sounds.hitmarkerSound.through_mic)
+			voice::play(sound_index);
+
 		common::hitmarkerTime = 255;
 		common::hitmarkerDamage = pEvent->GetInt(XorStr("dmg_health"));
 	}
@@ -74,79 +82,79 @@ void misc::hitmarkerSound(void* event, void* eventInfo) {
 	VMProtectEnd();
 }
 
-void misc::fixSkin(void* event, void* eventInfo) {
-
-	VMProtectBeginMutation("misc::fixSkin");
-
-	auto pEvent = (IGameEvent*)event;
-
-	auto localPlayer = game::getLocalPlayer();
-
-	if (!localPlayer)
-		return;
-
-	int spawnedUserId = pEvent->GetInt(XorStr("userid"), -1);
-
-	if (spawnedUserId == -1)
-		return;
-
-	auto spawnedPlayerId = interfaces::engineClient->GetPlayerForUserID(spawnedUserId);
-
-	if (!spawnedPlayerId)
-		return;
-
-	auto spawnedPlayer = (Entity*)(interfaces::clientEntityList->GetClientEntity(spawnedPlayerId));
-
-	if (!spawnedPlayer)
-		return;
-
-	// localPlayer is spawning
-	if (spawnedPlayer == localPlayer) {
-
-		skinchanger::updateSkin = true;
-
-		// wait that "skin" thread refresh id's
-		//while (skinchanger::updateSkin);
-
-		//interfaces::forceUpdate();
-	}
-
-	VMProtectEnd();
-}
+//void misc::fixSkin(void* event, void* eventInfo) {
+//
+//	VMProtectBeginMutation("misc::fixSkin");
+//
+//	auto pEvent = (IGameEvent*)event;
+//
+//	auto localPlayer = game::getLocalPlayer();
+//
+//	if (!localPlayer)
+//		return;
+//
+//	int spawnedUserId = pEvent->GetInt(XorStr("userid"), -1);
+//
+//	if (spawnedUserId == -1)
+//		return;
+//
+//	auto spawnedPlayerId = interfaces::engineClient->GetPlayerForUserID(spawnedUserId);
+//
+//	if (!spawnedPlayerId)
+//		return;
+//
+//	auto spawnedPlayer = (Entity*)(interfaces::clientEntityList->GetClientEntity(spawnedPlayerId));
+//
+//	if (!spawnedPlayer)
+//		return;
+//
+//	// localPlayer is spawning
+//	if (spawnedPlayer == localPlayer) {
+//
+//		skinchanger::updateSkin = true;
+//
+//		// wait that "skin" thread refresh id's
+//		//while (skinchanger::updateSkin);
+//
+//		//interfaces::forceUpdate();
+//	}
+//
+//	VMProtectEnd();
+//}
 
 void misc::silentWalk(void* cmd_)
 {
-	VMProtectBeginMutation("misc::silentWalk");
+	//VMProtectBeginMutation("misc::silentWalk");
 
-	if (!config::cheats.silentWalk)
-		return;
+	//if (!config::cheats.silentWalk)
+	//	return;
 
-	CUserCmd* cmd = (CUserCmd*)cmd_;
+	//CUserCmd* cmd = (CUserCmd*)cmd_;
 
-	Vector moveDir = Vector(0.f, 0.f, 0.f);
+	//Vector moveDir = Vector(0.f, 0.f, 0.f);
 
-	float maxSpeed = 130.f; //can be 134 but sometimes I make a sound, 130 works perfectly
+	//float maxSpeed = 130.f; //can be 134 but sometimes I make a sound, 130 works perfectly
 
-	Entity* localPlayer = game::getLocalPlayer();
+	//Entity* localPlayer = game::getLocalPlayer();
 
-	int movetype = localPlayer->m_nMoveType();
+	//int movetype = localPlayer->m_nMoveType();
 
-	bool InAir = !(localPlayer->m_fFlags() & FL_ONGROUND);
+	//bool InAir = !(localPlayer->m_fFlags() & FL_ONGROUND);
 
-	if (movetype == MOVETYPE_FLY || movetype == MOVETYPE_NOCLIP || InAir || cmd->buttons & IN_DUCK || !(cmd->buttons & IN_SPEED) /* When holding knife or bomb*/) // IN_WALK doesnt work
-		return;
+	//if (movetype == MOVETYPE_FLY || movetype == MOVETYPE_NOCLIP || InAir || cmd->buttons & IN_DUCK || !(cmd->buttons & IN_SPEED) /* When holding knife or bomb*/) // IN_WALK doesnt work
+	//	return;
 
-	moveDir.x = cmd->sidemove;
-	moveDir.y = cmd->forwardmove;
-	moveDir = math::ClampMagnitude(moveDir, maxSpeed);
+	//moveDir.x = cmd->sidemove;
+	//moveDir.y = cmd->forwardmove;
+	//moveDir = math::ClampMagnitude(moveDir, maxSpeed);
 
-	cmd->sidemove = moveDir.x;
-	cmd->forwardmove = moveDir.y;
+	//cmd->sidemove = moveDir.x;
+	//cmd->forwardmove = moveDir.y;
 
-	if (!(localPlayer->m_vecVelocity().Length2D() > maxSpeed + 1))
-		cmd->buttons &= ~IN_SPEED;
+	//if (!(localPlayer->m_vecVelocity().Length2D() > maxSpeed + 1))
+	//	cmd->buttons &= ~IN_SPEED;
 
-	VMProtectEnd();
+	//VMProtectEnd();
 }
 
 void misc::fastStop(void* cmd)
@@ -223,7 +231,6 @@ execute:
 	VMProtectEnd();
 }
 
-
 void misc::roundSounds(void* event, void* eventInfo_) {
 
 	VMProtectBeginMutation("misc::roundSounds");
@@ -232,6 +239,8 @@ void misc::roundSounds(void* event, void* eventInfo_) {
 		return;
 
 	auto pEvent = (IGameEvent*)event;
+
+	int sound_index = 0;
 
 	if (((eventInfo*)eventInfo_)->hash == HASH("round_end")) {
 
@@ -250,19 +259,238 @@ void misc::roundSounds(void* event, void* eventInfo_) {
 		if (winner == -1)
 			return;
 
-		if (winner == team)
-		{
-			interfaces::surface->PlaySound(sound::sounds[config::visual.sounds.roundEndWonSound].c_str());
+		//sound_index = winner == team ? config::visual.sounds.roundEndWonSound.index : config::visual.sounds.roundEndLostSound.index;
+		
+		// TODO : clear this garbadge
+		if (winner == team) {
+
+			sound_index = config::visual.sounds.roundEndWonSound.index;
+
+			if (config::visual.sounds.roundEndWonSound.random)
+				sound_index = rand() % sound::sounds_short.size();
+
+			sound::playSoundShort(sound_index);
+
+			if (config::visual.sounds.roundEndWonSound.through_mic)
+				voice::play(sound_index);
 		}
+
+		// NOTE : idk why but there is a case between winner == team and winner != team
 		else if (winner != team)
 		{
-			interfaces::surface->PlaySound(sound::sounds[config::visual.sounds.roundEndLostSound].c_str());
+			sound_index = config::visual.sounds.roundEndLostSound.index;
+
+			if (config::visual.sounds.roundEndLostSound.random)
+				sound_index = rand() % sound::sounds_short.size();
+
+			sound::playSoundShort(sound_index);
+
+			if (config::visual.sounds.roundEndLostSound.through_mic)
+				voice::play(sound_index);
 		}
 	}
 
 	else if (((eventInfo*)eventInfo_)->hash == HASH("round_start")) {
 
-		interfaces::surface->PlaySound(sound::sounds[config::visual.sounds.roundStartSound].c_str());
+		sound_index = config::visual.sounds.roundStartSound.index;
+
+		if (config::visual.sounds.roundStartSound.random)
+			sound_index = rand() % sound::sounds_short.size();
+
+		sound::playSoundShort(sound_index);
+
+		if (config::visual.sounds.roundStartSound.through_mic)
+			voice::play(sound_index);
+	}
+
+	VMProtectEnd();
+}
+
+void misc::infiniteDuck(void* cmd)
+{
+	VMProtectBeginMutation("misc::infiniteDuck");
+
+	if (!config::cheats.infinitDuck)
+		return;
+
+	((CUserCmd*)cmd)->buttons |= IN_BULLRUSH;
+
+	VMProtectEnd();
+}
+
+void misc::hideVoteName() {
+
+	VMProtectBeginMutation("misc::hideVoteName");
+
+	static std::string player_name = "";
+	static ConVar* name = game::getConvarNullCallback(XorStr("name"));
+
+	if (!misc::nameChanged) {
+
+		player_name.append(name->strString);
+
+		name->set_value(XorStr("\n\xAD\xAD\xAD"));
+		name->set_value(XorStr("MonsieurMisterMasterDrDetective"));
+
+		misc::nameChanged = true;
+	}
+
+	else {
+
+		name->set_value(XorStr("\n\xAD\xAD\xAD"));
+		name->set_value(player_name.c_str());
+
+		player_name.clear();
+
+		misc::nameChanged = false;
+	}
+
+	VMProtectEnd();
+}
+
+void misc::fakeMessage(std::string mes) {
+
+	//VMProtectBeginMutation("misc::fakeMessage");
+
+	//static std::string player_name = "";
+	//static ConVar* name = game::getConvarNullCallback(XorStr("name"));
+
+	//if (!misc::nameChanged) {
+
+	//	player_name.append(name->strString);
+
+	//	name->set_value(XorStr("\n\xAD\xAD\xAD"));
+
+	//	std::string message = XorStr("\x16\x02\x02\x09\x0A\x02\x07");
+
+	//	message.append(mes.c_str());
+	//	message.append(XorStr(" has been permanently banned from official CS:GO servers.\x01"));
+
+	//	message.append(XorStr("\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x02\x00"));
+
+	//	name->set_value(message.c_str());
+
+	//	misc::nameChanged = true;
+	//}
+
+	//else {
+
+	//	name->set_value(XorStr("\n\xAD\xAD\xAD"));
+	//	name->set_value(player_name.c_str());
+
+	//	player_name.clear();
+
+	//	misc::nameChanged = false;
+	//}
+
+	//VMProtectEnd();
+}
+
+void misc::copyClipboardExploit() {
+
+	VMProtectBeginMutation("misc::copyClipboardExploit");
+
+	const wchar_t* strData = L"﷽﷽ ﷽﷽﷽ ﷽﷽﷽ ﷽ ﷽﷽ ﷽﷽﷽ ﷽﷽﷽ ﷽ ﷽﷽ ﷽﷽ ﷽﷽﷽ ﷽﷽﷽ ﷽ ﷽﷽ ﷽﷽﷽ ﷽﷽";
+
+	// from stackoverflow
+
+	if (OpenClipboard(0)) {
+
+		EmptyClipboard();
+		HGLOBAL hClipboardData;
+		hClipboardData = GlobalAlloc(GMEM_DDESHARE, 2 * (wcslen(strData) + 1));
+		WCHAR* pchData;
+		pchData = (WCHAR*)GlobalLock(hClipboardData);
+		wcscpy(pchData, strData);
+		GlobalUnlock(hClipboardData);
+		SetClipboardData(CF_UNICODETEXT, hClipboardData);
+		CloseClipboard();
+	}
+
+	VMProtectEnd();
+}
+
+void misc::voteRealer(void* event, void* eventInfo_) {
+
+	VMProtectBeginMutation("misc::voteRealer");
+
+	auto pEvent = (IGameEvent*)event;
+
+	auto localPlayer = game::getLocalPlayer();
+
+	if (!localPlayer)
+		return;
+
+	if (((eventInfo*)eventInfo_)->hash == HASH("vote_cast")) {
+
+		int vote = pEvent->GetInt(XorStr("vote_option"));
+		int id = pEvent->GetInt(XorStr("entityid"));
+		int team = pEvent->GetInt(XorStr("team"));
+
+		player_info_t player;
+		interfaces::engineClient->GetPlayerInfo(id, &player);
+
+		if (interfaces::hudChat && player.name) {
+
+			interfaces::hudChat->ChatPrintf(0, 0, std::string("[").
+				append(XorStr("\x0A")). //Light Blue
+				append(localPlayer->m_iTeamNum() == team ? XorStr("Team-mates") : XorStr("Enemy")).
+				append(XorStr("\x01")). //Default Color
+				append(XorStr("] ")).
+				append(XorStr("Voted")).
+				append((vote == 0 ? std::string(XorStr(" \x04")).append(XorStr("YES")) : std::string(XorStr(" \x02")).append(XorStr("NO")))).
+				append(XorStr("\x01")). //Default Color
+				append(XorStr(" : [")).
+				append(XorStr("\x0A")). //Light Blue
+				append(player.name).
+				append(XorStr("\x01")). //Default Color
+				append(XorStr("]")).c_str());
+
+			int sound_index = config::visual.sounds.voteChangedSound.index;
+
+			if (config::visual.sounds.voteChangedSound.random)
+				sound_index = rand() % sound::sounds_short.size();
+
+			sound::playSoundShort(sound_index);
+
+			if (config::visual.sounds.voteChangedSound.through_mic)
+				voice::play(sound_index);
+		}
+	}
+
+	if (((eventInfo*)eventInfo_)->hash == HASH("vote_started")) {
+
+		int initiator = pEvent->GetInt(XorStr("initiator"));
+		int team = pEvent->GetInt(XorStr("team"));
+		const char* param1 = pEvent->GetString(XorStr("param1"));
+		const char* issue = pEvent->GetString(XorStr("issue"));
+
+		auto initiator_id = interfaces::engineClient->GetPlayerForUserID(initiator);
+
+		if (!initiator_id)
+			return;
+
+		player_info_t initiator_info;
+		interfaces::engineClient->GetPlayerInfo(initiator_id, &initiator_info);
+		
+		if (interfaces::hudChat && initiator_info.name) {
+
+			interfaces::hudChat->ChatPrintf(0, 0, std::string("[").
+				append(XorStr("\x0A")). //Light Blue
+				append(localPlayer->m_iTeamNum() == team ? XorStr("Team-mates") : XorStr("Enemy")).
+				append(XorStr("\x01")). //Default Color
+				append(XorStr("] [")).
+				append(XorStr("\x0A")). //Light Blue
+				append(initiator_info.name).
+				append(XorStr("\x01")). //Default Color
+				append(XorStr("] Started a vote [")).
+				append(XorStr("\x04")).
+				append(param1).
+				append(XorStr("\x01")).
+				append(XorStr("] [")).
+				append(issue).
+				append(XorStr("]")).c_str());
+		}
 	}
 
 	VMProtectEnd();
@@ -304,7 +532,15 @@ void misc::headShoot(void* event, void* eventInfo) {
 
 	if (attacker == localPlayer && headshot) {
 
-		interfaces::surface->PlaySound(sound::sounds[config::visual.sounds.headShootSound].c_str());
+		int sound_index = config::visual.sounds.headShootSound.index;
+
+		if (config::visual.sounds.headShootSound.random)
+			sound_index = rand() % sound::sounds_short.size();
+
+		sound::playSoundShort(sound_index);
+
+		if (config::visual.sounds.headShootSound.through_mic)
+			voice::play(sound_index);
 	}
 
 	VMProtectEnd();

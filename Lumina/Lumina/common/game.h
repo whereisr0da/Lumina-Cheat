@@ -4,6 +4,7 @@
 
 #include "../sdk/structs/Entity.h"
 #include "../sdk/structs/mystructs.h"
+#include "../sdk/interfaces.h"
 #include <vector>
 
 namespace game {
@@ -19,6 +20,8 @@ namespace game {
 	player_t* getPlayerFromHandle(uintptr_t pointer);
 
 	Entity* getLocalPlayer();
+
+	ConVar* getConvarNullCallback(const char* name);
 
 	bool isEnvironmentValid();
 }

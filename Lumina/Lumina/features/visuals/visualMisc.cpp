@@ -163,9 +163,7 @@ namespace visualMisc {
 
 		// omg, this code
 
-		static ConVar* mat_disable_bloom = (ConVar*)interfaces::console->get_convar(XorStr("mat_disable_bloom"));
-
-		*(int*)((DWORD)&mat_disable_bloom->fnChangeCallbacks + 0xC) = NULL;
+		static ConVar* mat_disable_bloom = game::getConvarNullCallback(XorStr("mat_disable_bloom"));
 
 		mat_disable_bloom->nFlags &= (1 << 14);
 
@@ -173,26 +171,21 @@ namespace visualMisc {
 
 
 
-		static ConVar* mat_colorcorrection = (ConVar*)interfaces::console->get_convar(XorStr("mat_colorcorrection"));
-
-		*(int*)((DWORD)&mat_colorcorrection->fnChangeCallbacks + 0xC) = NULL;
+		static ConVar* mat_colorcorrection = game::getConvarNullCallback(XorStr("mat_colorcorrection"));
 
 		mat_colorcorrection->nFlags &= (1 << 14);
 
 		mat_colorcorrection->set_value((int)!config::cheats.optimization);
 
 
-		static ConVar* shadows = (ConVar*)interfaces::console->get_convar(XorStr("cl_csm_enabled"));
-
-		*(int*)((DWORD)&shadows->fnChangeCallbacks + 0xC) = NULL;
+		static ConVar* shadows = game::getConvarNullCallback(XorStr("cl_csm_enabled"));
 
 		shadows->nFlags &= (1 << 14);
 
 		shadows->set_value((int)!config::cheats.optimization);
 
-		static ConVar* mat_postprocess_enable = (ConVar*)interfaces::console->get_convar(XorStr("mat_postprocess_enable"));
 
-		*(int*)((DWORD)&mat_postprocess_enable->fnChangeCallbacks + 0xC) = NULL;
+		static ConVar* mat_postprocess_enable = game::getConvarNullCallback(XorStr("mat_postprocess_enable"));
 
 		mat_postprocess_enable->nFlags &= (1 << 14);
 
@@ -208,9 +201,7 @@ namespace visualMisc {
 		if (!game::getLocalPlayer())
 			return;
 
-		static ConVar* cl_grenadepreview = (ConVar*)interfaces::console->get_convar(XorStr("cl_grenadepreview"));
-
-		*(int*)((DWORD)&cl_grenadepreview->fnChangeCallbacks + 0xC) = NULL;
+		static ConVar* cl_grenadepreview = game::getConvarNullCallback(XorStr("cl_grenadepreview"));
 
 		cl_grenadepreview->set_value(config::visual.showGrenadePred);
 
@@ -225,9 +216,7 @@ namespace visualMisc {
 
 		if (localPlayer && localPlayer->isAlive()) {
 
-			static ConVar* weapon_debug_spread_show = (ConVar*)interfaces::console->get_convar(XorStr("weapon_debug_spread_show"));
-
-			*(int*)((DWORD)&weapon_debug_spread_show->fnChangeCallbacks + 0xC) = NULL;
+			static ConVar* weapon_debug_spread_show = game::getConvarNullCallback(XorStr("weapon_debug_spread_show"));
 
 			weapon_debug_spread_show->set_value(localPlayer->m_bIsScoped() || !config::visual.spreadCircle.enable ? 0 : 3);
 		}
@@ -266,7 +255,9 @@ namespace visualMisc {
 
 		float alpha = ((spreadRadius / max) * 255);
 
-		if (spreadRadius < max && (255 - alpha) > 0)
+		if(alpha < 40)
+			render::drawCircle(w / 2, h / 2, 1, 240, Color(255, 255, 255, 255));
+		else if (spreadRadius < max && (255 - alpha) > 0)
 			render::drawCircle(w / 2, h / 2, static_cast<int>((spreadRadius)), 240, Color(255, 255, 255, 255 - alpha));
 
 		VMProtectEnd();

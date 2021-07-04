@@ -307,13 +307,78 @@ namespace config {
 		struct
 		{
 			bool enable;
-			int hitmarkerSound;
-			int headShootSound;
-			int roundStartSound;
-			int roundEndLostSound;
-			int roundEndWonSound;
-			int bombPlantedSound;
-			int playerKickSound;
+
+			struct
+			{
+				int index;
+				bool random;
+				bool through_mic;
+			} hitmarkerSound;
+
+			struct
+			{
+				int index;
+				bool random;
+				bool through_mic;
+			} headShootSound;
+
+
+			struct
+			{
+				int index;
+				bool random;
+				bool through_mic;
+			} roundStartSound;
+
+			struct
+			{
+				int index;
+				bool random;
+				bool through_mic;
+			} roundEndLostSound;
+
+			struct
+			{
+				int index;
+				bool random;
+				bool through_mic;
+			} roundEndWonSound;
+
+			struct
+			{
+				int index;
+				bool random;
+				bool through_mic;
+			} bombPlantedSound;
+
+			struct
+			{
+				int index;
+				bool random;
+				bool through_mic;
+			} voteStartedSound;
+
+			struct
+			{
+				int index;
+				bool random;
+				bool through_mic;
+			} voteChangedSound;
+
+			struct
+			{
+				int index;
+				bool random;
+				bool through_mic;
+			} votePassedSound;
+
+			struct
+			{
+				int index;
+				bool random;
+				bool through_mic;
+			} voteFailledSound;
+
 		} sounds;
 
 		bool showSpectators;
@@ -340,6 +405,9 @@ namespace config {
 		bool fastStop;
 		bool silentWalk;
 		bool optimization;
+		bool infinitDuck;
+
+		bool volumeEsp;
 
 		bool backtrack;
 		float backtrackVisibility;

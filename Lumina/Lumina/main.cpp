@@ -12,6 +12,8 @@
 #include "features/visuals/animationfix.h"
 #include "ui/sound.h"
 #include "features/visuals/world.h"
+#include "features/misc/soundEsp.h"
+#include "features/misc/voice.h"
 
 bool CheckGame() {
 
@@ -48,7 +50,7 @@ DWORD WINAPI Start(LPVOID param) {
 
 	freopen_s((FILE**)stdout, XorStr("CONOUT$"), XorStr("w"), stdout);
 
-	common::ps(XorStr("Lumina build : 0.1.12"));
+	common::ps(XorStr("Lumina build : 0.1.13"));
 
 #endif
 
@@ -59,6 +61,8 @@ DWORD WINAPI Start(LPVOID param) {
 	while (!LI_FN(GetModuleHandleA).get()(XorStr("serverbrowser.dll")))
 		Sleep(200);
 
+	srand(time(NULL));
+
 	interfaces::init();
 
 	chams::init();
@@ -68,6 +72,8 @@ DWORD WINAPI Start(LPVOID param) {
 	config::init();
 
 	sound::init();
+
+	soundEsp::init();
 
 	world::init();
 

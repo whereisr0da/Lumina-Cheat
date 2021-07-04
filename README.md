@@ -55,10 +55,10 @@ Place the `crashhandler.dll` file Steam's root folder. CSGO will load it before 
 Like I said, it's a legit cheat, so features are meant to be hidden regarding overwatch. But it's depending of your own gameplay.
 
 - Chams
-    - Enemy
+    - Enemy (+through wall, +only if dead)
     - Backtrack
     - Hands and Steeves 
-- Glow
+- Glow (+only if dead)
 - Skin Changer (two slots, T and CT)
     - Weapon (paint, stickers, ...) 
     - Knife 
@@ -68,18 +68,26 @@ Like I said, it's a legit cheat, so features are meant to be hidden regarding ov
     - Show only if dead
     - Box
     - Name
+    - Weapon name
     - Life
     - Indicators (flash, scope, has defuser, has bomb, planting, defusing, ...)
 - Grenade Prediction
 - Radar
 - Backtrack
 - Misc
-  - My Spread Circle + Crosshair (not the classic filled cirle)
-  - Hitmarker + Sound
+  - My Spread Circle + Crosshair (not the classic filled circle)
+  - Hitmarker
+  - Sounds on event (hitmarker, headshot, roundwon, roundlost, roundstart) 
+  - Play event sounds through microphone (like SLAM)
   - Spectator List
   - Fast Stop
   - Silent Walk
   - Flash Timer
+  - Infinit Duck
+  - Vote revealer
+- Exploits
+  - Clear chat exploit to clipboard
+  - Invisible vote initiator name 
 - Bypasses
   - 3 Party Files
   - Signature Checks
@@ -98,6 +106,14 @@ It's why I don't provide screenshots of the menu.
 
 # Logs
 
+- 28-06-2021 v0.1.13
+  - Fixed double chams bug through wall 
+  - Added event sound playing through microphone
+  - Added volume esp feature from NV_v2 made by ekknod
+  - Added old Natacha features (infinit duck, clear chat exploit, invisible vote initiator name, vote revealer)
+  - Improved the `crashhandler.dll` ripper (takes the according dates of crashhandler.original)
+  - Improved some code parts
+  - Added assets to the repo (player models, sounds, skyboxes)
 - 10-03-2021 v0.1.12
   - Added a new way to grab interfaces since VAC monitors CreateInterface calls now [(see)](https://www.unknowncheats.me/forum/counterstrike-global-offensive/444181-vac-monitors-createinterface-calls.html#post3084991)
   - "Policy" update
@@ -131,6 +147,8 @@ There is still a bug when you plant a bomb, sometimes it crashes but it's too ra
 # Credit
 
 - Oneshot
+- ekknod
+- coders from weave.su
 - coders from legendware
 - fatality.win 2018 source code
 - JsonCpp http://jsoncpp.sourceforge.net/

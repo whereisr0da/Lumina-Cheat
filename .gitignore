@@ -4,6 +4,7 @@
 *.vmp
 *.lib
 *.ilk
+*.sig
 *.exp
 *.pdb
 *.iobj
